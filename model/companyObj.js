@@ -149,4 +149,26 @@ Company.prototype.getFlatVersionX = function(companyObj) {
     return companyObj;
 };
 
+Company.prototype.delByCustomerId = function(db, param, next, callback) {
+    if (param.customerId && param.customerId > 0) {
+        // existing
+        db.get("SELECT company_id FROM customer WHERE customer_id = ?", [ param.customerId ], function(err, rows) {
+            if(err) {
+                console.log('SQL Error delete CompanyByCustomerId '+ util.inspect(err, false, null));
+                next(err);
+            } else {
+                if (rows) { // TODO
+                    async.series( [ function() {
+                        rows.forEach(function(row) {
+                            console.log("Delete Person id = " + row.person_id);
+                            db.run("DELETE FROM Person WHERE id = ?",  [ row.person_id ], function(err, row) { if (err) next(err); } );
+                        });
+                    }]  );
+                    callback(); // deleted
+                } else callback(); // no person to delete
+            }
+        });
+    } else callback(); // nothing to delete
+};
+
 module.exports = new Company();

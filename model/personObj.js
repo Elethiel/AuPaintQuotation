@@ -157,7 +157,7 @@ Person.prototype.findAllByCustomerId = function(db, param, next, callback) {
             console.log('SQL Error Person findAllByCustomerId '  + util.inspect(err, false, null));
             next(err);
         } else {
-            if (rows)    {
+            if (rows) {
                 async.series( [ function() {
                     rows.forEach(function(row) {
                         findById(db, { personId: row.person_id }, next, function(personObj) {
@@ -170,6 +170,28 @@ Person.prototype.findAllByCustomerId = function(db, param, next, callback) {
             callback(personList);
         }
     });
+};
+
+Person.prototype.delByCustomerId = function(db, param, next, callback) {
+    if (param.customerId && param.customerId > 0) {
+        // existing
+        db.all("SELECT person_id FROM customer_person WHERE customer_id = ?", [ param.customerId ], function(err, rows) {
+            if(err) {
+                console.log('SQL Error delete PersonByCustomerId '+ util.inspect(err, false, null));
+                next(err);
+            } else {
+                if (rows) {
+                    async.series( [ function() {
+                        rows.forEach(function(row) {
+                            console.log("Delete Person id = " + row.person_id);
+                            db.run("DELETE FROM Person WHERE id = ?",  [ row.person_id ], function(err, row) { if (err) next(err); } );
+                        });
+                    }]  );
+                    callback(); // deleted
+                } else callback(); // no person to delete
+            }
+        });
+    } else callback(); // nothing to delete
 };
 
 module.exports = new Person();

@@ -136,36 +136,32 @@ Product.prototype.findAll = function( db, next, callback) {
 Product.prototype.delById = function(db, param, next, callback) {
     if (param.productId && param.productId > 0) {
         // existing
-        db.get("SELECT COUNT(id) as nb FROM presta WHERE product_id = ?",
-                [ param.productId ],
-                function(err, row) {
-                    if(err) {
-                        console.log('SQL Error delete Product check relation '+ util.inspect(err, false, null));
-                        next(err);
-                    } else {
-                        if (row && row.nb > 0) {
-                            console.log("Functional Error Product : already used by " + row.nb + " Presta");
-                            callback({msg:"rej", productNb : row.nb});
+        db.get("SELECT COUNT(id) as nb FROM presta WHERE product_id = ?", [ param.productId ], function(err, row) {
+            if(err) {
+                console.log('SQL Error delete Product check relation '+ util.inspect(err, false, null));
+                next(err);
+            } else {
+                if (row && row.nb > 0) {
+                    console.log("Functional Error Product : already used by " + row.nb + " Presta");
+                    callback({msg:"rej", productNb : row.nb});
+                } else {
+                    db.run("DELETE FROM Product WHERE id = ?", [ param.productId ], function (err, row) {
+                        if(err) {
+                            console.log('SQL Error delete Product '+ util.inspect(err, false, null));
+                           next(err);
                         } else {
-                            db.run("DELETE FROM Product WHERE id = ?",
-                                [ param.productId ],
-                                function (err, row) {
-                                    if(err) {
-                                        console.log('SQL Error delete Product '+ util.inspect(err, false, null));
-                                       next(err);
-                                    } else {
-                                        if (this.changes && this.changes > 0)    {
-                                            console.log("delete Product OK (" + this.changes + ") : " + param.productId);
-                                            callback({msg:"ok", productId : this.changes});
-                                        } else {
-                                            console.log("delete Product NOK");
-                                            callback({msg:"nok", productId: 0});
-                                        }
-                                    }
-                                });
+                            if (this.changes && this.changes > 0)    {
+                                console.log("delete Product OK (" + this.changes + ") : " + param.productId);
+                                callback({msg:"ok", productId : this.changes});
+                            } else {
+                                console.log("delete Product NOK");
+                                callback({msg:"nok", productId: 0});
+                            }
                         }
-                    }
-                });
+                    });
+                }
+            }
+        });
     } else callback({msg:"nok", productId: 0});
 };
 

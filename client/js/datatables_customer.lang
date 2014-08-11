@@ -1,0 +1,22 @@
+{
+    "sProcessing":      "Traitement en cours...",
+    "sSearch":          "Rechercher&nbsp;:",
+    "sLengthMenu":      "Afficher _MENU_ Client",
+    "sInfo":            "_START_ &agrave; _END_ (Total: _TOTAL_ Client)",
+    "sInfoEmpty":       "",
+    "sInfoFiltered":    "(filtr&eacute; sur _MAX_ Client au total)",
+    "sInfoPostFix":     "",
+    "sLoadingRecords":  "Chargement en cours...",
+    "sZeroRecords":     "Aucun Client &agrave; afficher",
+    "sEmptyTable":      "Pas de Client",
+    "oPaginate": {
+        "sFirst":       "Premier",
+        "sPrevious":    "Pr&eacute;c&eacute;dent",
+        "sNext":        "Suivant",
+        "sLast":        "Dernier"
+    },
+    "oAria": {
+        "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+        "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+    }
+}

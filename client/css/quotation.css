@@ -1,0 +1,173 @@
+body {
+    padding-top: 50px;
+}
+.wrapper {
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+    padding-bottom: 100px;
+}
+.wrapper * {
+    position:relative;
+}
+
+.wrapper .background {
+    content : "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    opacity : 0.5;
+    z-index: -1;
+}
+
+html, body {
+    height: 100%;
+}
+.footerContent {
+    margin: -100px auto;
+}
+
+.footer {
+    width: 100%;
+    height: 30px;
+    color: #FFF;
+    background-color: #000;
+    display: table;
+}
+
+.footer-content {
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.logomenu {
+    margin-top: -10px;
+}
+.center {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+.p15LR {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.highlight {
+    background: #428BCA;
+    color: #ffffff;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
+
+
+.midlight {
+    margin-left: 50px;
+    margin-right: 50px;
+    background: #B2DBFF;
+    color: #327BCA;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-radius: 10px;
+}
+.help {
+    font-style: italic;
+}
+.text-small {
+    font-size: 12px;
+}
+.btn {
+    font-weight: bold;
+}
+.nothing td {
+    border: 0 !important;
+}
+.nothing tr {
+    background-color: transparent !important;
+}
+.selbox, .selectdropbox {
+    min-height: 46px !important;
+}
+
+.inputrefresh {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.green {
+    color: #0A0;
+}
+.red {
+    color: #A00;
+}
+.black {
+    color: #000;
+}
+/* CSS for BOOTSTRAP */
+
+.form-group {
+    margin-bottom: 5px !important;
+}
+
+.btn-default {
+    background-color: #E9E9FF !important;
+}
+.btn-default:hover {
+    background-color: #D1D1FF !important;
+}
+.modal-dialog-center {
+    margin-top: 25%;
+}
+.form-control-feedback {
+    position: absolute !important;
+}
+.sr-only {
+    position: absolute !important;
+}
+.dropdown-menu {
+    position: absolute !important;
+}
+.dropdown-menu > li > a {
+    background-color: #FFF;
+}
+.dropdown-menu > li > a:hover {
+    background-color: #DDD;
+}
+.groupProductDropDown {
+    width: 300px;
+}
+/* Add a tab container class, for a border around the entire tabset */
+.nav-tabs-container {
+    padding: 3px;
+    border: 1px solid @grayLight;
+    border-radius(4px);
+}
+.tooltip-inner {
+    max-width: 400px !important; 
+}
+/* CSS for DATATABLES */
+table.dataTable.stripe tbody tr.odd {
+    background-color: #E9E9FF !important;
+}
+
+table.dataTable.stripe tbody tr.even {
+    background-color: #F3F3FF !important;
+}
+
+/* export menu not visible */
+div.DTTT_container {
+  z-index: 2001 !important;
+}

@@ -1,0 +1,105 @@
+<form class="form-horizontal" id="ownerForm" role="form" action="/ownerUpdate" method="post" enctype="multipart/form-data"
+        data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+        data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+        data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+    <legend><h1>Configurer la Société</h1></legend>
+    <% if (srv.pstatus) { %>
+        <div class="form-group text-center">
+            <% if (srv.pstatus === "ok") { %><span class="label label-success">Configuration bien enregistrée !</span><% } %>
+            <% if (srv.pstatus === "nok") { %><span class="label label-danger">Erreur lors de la mise à jour (<%= srv.id %>)</span><% } %>
+            <% if (srv.pstatus === "rej") { %><span class="label label-danger">Le fichier n'est pas une image JPEG !</span><% } %>
+            <% if (srv.pstatus === "nof") { %><span class="label label-danger">Erreur lors de l'upload du fichier</span><% } %>
+        </div>
+        &nbsp;<br/>
+    <% } %>
+    <small class="help">Cette société apparaîtra sur tous les documents comme société émettrice des devis et facture. Les coordonnées et informations seront donc transmises à vos clients. Prenez le temps de remplir ce formulaire proprement.</small><br/>
+    &nbsp;<br/>
+    <p class="highlight">Raison Sociale</p>
+    <% var o = { index: "1", label: "Responsable", empty: "Le responsable est obligatoire", field: "adminName", labelw: "4", inputw: "7", value: (srv.session ? srv.session.username : srv.session) } %>
+    <% include form/inputText %>
+    &nbsp;<br/>
+    <% var o = { index: "2", gender: 1, label: "Forme Juridique", field: "companyLegal", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyLegal : srv.Obj) } %>
+    <% include form/inputSelectLegal %>
+    <% include form/inputSelect %>
+    
+    <% var o = { index: "3", label: "Dénomination", empty: "Le nom de la société est obligatoire", field: "companyName", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyName : srv.Obj) } %>
+    <% include form/inputText %>
+    <% var o = { index: "4", label: "Dénomination (Rendu)", field: "rendered", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerRender : srv.Obj) } %>
+    <% include form/renderer %>
+    &nbsp;<br/>
+    &nbsp;<br/>
+        <div class="row">
+            <div class="col-sm-6">
+                <% var o = { index: "5", label: "N° TVA intracom.", field: "companyTVA", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.companyTVA : srv.Obj) } %>
+                <% include form/inputText %>
+            </div>
+            <div class="col-sm-6">
+                <% var o = { index: "6", label: "Code A.P.E.", field: "companyAPE", labelw: "5", inputw: "5", value: (srv.Obj ? srv.Obj.companyAPE : srv.Obj) } %>
+                <% include form/inputText %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <% var o = { index: "7", label: "SIRET/SIREN", field: "companySiret", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.companySiret : srv.Obj) } %>
+                <% include form/inputText %>
+            </div>
+            <div class="col-sm-6">
+                <% var o = { index: "8", label: "Début d'Exercice", field: "ownerFiscalDt", labelw: "5", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFiscalDt : srv.Obj) } %>
+                <% include form/inputSelectDate %>
+                <% include form/inputSelect %>
+            </div>
+        </div>
+    &nbsp;<br/>
+    <p class="midlight">Coordonnées</p>
+    <% var o = { index: "9", label: "Site Internet", field: "addressURL", placeholder: "http://", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.addressURL : srv.Obj) } %>
+    <% include form/inputURL %>
+    <% var o = { index: "10", label: "Adresse", field: "addressLine1", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.addressLine1 : srv.Obj) } %>
+    <% include form/inputText %>
+    <% var o = { index: "11", label: "", field: "addressLine2", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.addressLine2 : srv.Obj) } %>
+    <% include form/inputText %>
+    <div class="row">
+        <div class="col-sm-6">
+            <% var o = { index: "12", label: "CP", field: "addressCP", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.addressCP : srv.Obj) } %>
+            <% include form/inputText %>
+        </div>
+        <div class="col-sm-6">
+            <% var o = { index: "13", label: "Ville", field: "addressCity", labelw: "2", inputw: "8", value: (srv.Obj ? srv.Obj.addressCity : srv.Obj) } %>
+            <% include form/inputText %>
+        </div>
+    </div>
+    &nbsp;<br/>
+    <p class="midlight">Contact</p>
+    <% var o = { index: "14", label: "Téléphone", field: "contactTel", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactTel : srv.Obj) } %>
+    <% include form/inputTel %>
+    <% var o = { index: "15", label: "Mobile", field: "contactMobile", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactMobile : srv.Obj) } %>
+    <% include form/inputTel %>
+    <% var o = { index: "16", label: "Fax", field: "contactFax", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactFax : srv.Obj) } %>
+    <% include form/inputTel %>
+    <% var o = { index: "17", label: "Email", field: "contactMail", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactMail : srv.Obj) } %>
+    <% include form/inputMail %>
+    &nbsp;<br/>
+    <p class="highlight">Paramètres</p>
+    <% var o = { index: "18", label: "Durée de validité d'un devis par défaut (en jours)", tooltip: "Il s'agit bien d'une valeur « par défaut » qui pourra être changée pour chaque devis individuellement.", field: "ownerDefaultValidity", labelw: "8", inputw: "3", value: (srv.Obj ? srv.Obj.ownerDefaultValidity : srv.Obj) } %>
+    <% include form/inputInt %>
+    &nbsp;<br/>
+    <% var o = { index: "19", label: "Logo (JPG)", tooltip: "Le logo sera utilisé dans le menu.\nVider le champ pour ne plus utiliser d'image.", field: "ownerLogo", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerLogo : srv.Obj) } %>
+    <% include form/inputImg %>
+    &nbsp;<br/>
+    <% var o = { index: "20", label: "Grand Logo (JPG)", tooltip: "Le Grand Logo sera utilisé en icône d'application, sur les devis et en fond d'application.\nVider le champ pour ne plus utiliser d'image.", field: "ownerBigLogo", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerBigLogo : srv.Obj) } %>
+    <% include form/inputImg %>
+    &nbsp;<br/>
+    <% var o = { index: "21", symbol: "%", addon: "ok", label: "Facteur Rentabilité", placeholder:"xx.xx", tooltip: "Ce facteur permet de savoir à partir de quand une prestation est rentable.\nPar exemple un produit acheté 1€ et vendu(ht) 2€ aura une rentabilité de +100%.", field: "ownerFactorOk", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFactorOk : srv.Obj) } %>
+    <% include form/inputNum %>
+    <% var o = { index: "22", symbol: "%", addon: "null", label: "Facteur Limite", placeholder:"xx.xx", tooltip: "Ce facteur permet de savoir à partir de quand une prestation reste viable.\nPar exemple un produit acheté 1€ et vendu(ht) 2€ aura une rentabilité de +100%.", field: "ownerFactorNull", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFactorNull : srv.Obj) } %>
+    <% include form/inputNum %>
+    <% var o = { index: "23", symbol: "%", addon: "nok", label: "Facteur Défavorable", tooltip: "En dessous du facteur limite, on considère une prestation à la limite de la perte.", field: "ownerFactorNok", labelw: "4", inputw: "5" } %>
+    <% include form/inputNum %>
+    &nbsp;<br/>
+    <% var o = { index: "1", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
+            items: [ { val: "0", lab: "Pas de traitement des données du formulaire" } ] } %>
+    <% include form/inputCheck %>
+    &nbsp;<br/>
+    <div class="form-group text-right p15LR">
+        <button type="submit" class="btn btn-primary">Configurer</button>
+    </div>
+</form>

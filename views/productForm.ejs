@@ -1,0 +1,96 @@
+<form class="form-horizontal" id="productForm" role="form" action="/productUpdate" method="post"
+        data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+        data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+        data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+    <% if (srv.Obj) { %>
+        <legend><h1>Modifier une Prestation</h1></legend>
+    <% } else { %>
+        <legend><h1>Ajouter une Prestation</h1></legend>
+    <% }%>
+    <% if (srv.pstatus) { %>
+        <div class="form-group text-center">
+            <% if (srv.pstatus === "ok") { %><span class="label label-success">Prestation bien enregistrée !</span><% } %>
+            <% if (srv.pstatus === "nok") { %><span class="label label-danger">Erreur lors de la mise à jour</span><% } %>
+            <% if (srv.pstatus === "unq") { %><span class="label label-danger">Le CODE n'est pas unique. Il est déjà utilisé sur le prestation (<%= srv.productId %>)</span><% } %>
+        </div>
+        &nbsp;<br/>
+    <% } %>
+    <div class="row text-center">
+        <small class="help">Les prestations seront les éléments de bases permettant de faire un devis ou une facture.</small><br/>
+    </div>
+    &nbsp;<br/>
+    <% if (srv.Obj && srv.Obj.productId) { %>
+        <input type="hidden" name="productId" id="productId" value="<%= srv.Obj.productId %>">
+    <% } %>
+    &nbsp;<br/>
+    <% var o = { index: "1", label: "Catégorie", tooltip: "N'apparait pas au client. Il s'agit d'un classement interne.", field: "groupProductId", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.groupProductId : srv.Obj), TVAPercent: (srv.Obj ? srv.Obj.TVAPercent : srv.Obj) } %>
+    <% include form/productGroup %>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <small>Pour configurer les Catégories possibles suivre <a href="/managementMenu?subLoc=groupproduct">ce lien</a>.</small>
+        </div>
+    </div>
+    &nbsp;<br/>
+    <% var o = { index: "2", label: "CODE", placeholder:"Un Code unique", tooltip: "Le code apparaîtra sur les devis/factures des clients\ncomme référence unique pour une prestation donnée. (ex: P01, R2b, ...)", field: "productCode", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.productCode : srv.Obj) } %>
+    <% include form/inputText %>
+    <% var o = { index: "3", label: "Libellé", placeholder:"Description synthétique de la prestation", empty: "Le libellé de la Prestation est obligatoire !", tooltip: "Le libellé est ce qui apparaîtra sur le devis/la facture pour le client (ex: 1 repas adulte, Paintball: 100 billes, 1 animateur (/h), 1 animateur (/jour),...)\nAttention car un texte trop grand déformera les devis et facture !\nRestez synthétique !", field: "productLabel", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.productLabel : srv.Obj) } %>
+    <% include form/inputText %>
+    <% var o = { index: "4", symbol: "€", label: "Coût interne", placeholder:"xx.xx", tooltip: "Permet de calculer les marges sur les ventes.", field: "productPaid", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.productPaid : srv.Obj) } %>
+    <% include form/inputNum %>
+    &nbsp;<br/>
+    <% var o = { index: "5", symbol: "€", addon: "down", label: "Prix de Vente (TTC)", empty:"Le prix de vente est obligatoire !", placeholder:"xx.xx", tooltip: "Il s'agit du prix client affiché sur le devis en TTC.\nLe prix HT est calculé automatiquement selon la TVA en cours sur cette prestation si vous modifiez celui-ci. Inversement, il sera mis à jour automatiquement si vous modifiez le prix HT.", field: "productTTC", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.productTTC : srv.Obj) } %>
+    <% include form/inputNum %>
+    <% var o = { index: "6", symbol: "€", addon: "up", label: "Prix de Vente (HT)", placeholder:"xx.xx", tooltip: "Il s'agit du prix client affiché sur le devis en HT.\nLe prix TTC est calculé automatiquement selon la TVA en cours sur cette prestation si vous modifiez celui-ci. Inversement, il sera mis à jour automatiquement si vous modifiez le prix TTC.", field: "productHT", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.productHT : srv.Obj) } %>
+    <% include form/inputNum %>
+    <% var o = { index: "7", label: "Unité", placeholder:"heure, jour, minute, pièce, unité, forfait semaine...", tooltip: "Il s'agit de ce que représente l'unité de temps pour la prestation :\nEst-ce une prestation à la minute ? à l'heure ? à la journée ? à l'unité/la pièce ?\nLe but est de pouvoir avoir une prestation Animateur (/min), une autre Animateur (/heure) de façon à adapter les tarifs selon les besoins du clients", field: "productUnit", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.productUnit : srv.Obj) } %>
+    <% include form/inputText %>
+    &nbsp;<br/>
+    <% var o = { index: "1", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
+            items: [ { val: "0", lab: "Pas de traitement des données du formulaire" } ] } %>
+    <% include form/inputCheck %>
+    &nbsp;<br/>
+    <div class="form-group text-right p15LR">
+        <button type="button" id="backBut" class="btn btn-default">Retour</button>
+        <button type="submit" class="btn btn-primary">
+        <% if (srv.Obj && srv.Obj.productId) { %>
+            Modifier
+        <% } else { %>
+            Ajouter
+        <% }%>
+        </button>
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>
+    &nbsp;<br/>
+    <div id="profit">
+        <div class="form-group">
+            <label for="productProfit" class="col-sm-4 control-label">Marge nette par unité
+                <a href="#" data-placement="bottom" tabindex="-1"
+                    data-tooltip="Il faut que le coût interne et le prix de vente TTC soit renseignée pour estimer la marge unitaire.">
+                    <span class="glyphicon glyphicon-info-sign"></span></a>
+            </label>
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <span class="input-group-addon">€</span>
+                    <input class="form-control" disabled name="productProfit" id="productProfit" type="text" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="productProfitFactor" class="col-sm-4 control-label">Facteur de marge
+                <a href="#" data-placement="bottom" tabindex="-1"
+                    data-tooltip="Pourcentage proportionnel de marge. Permet de connaître la prestation la plus rentable.">
+                    <span class="glyphicon glyphicon-info-sign"></span></a>
+            </label>
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <span class="input-group-addon">%</span>
+                    <input class="form-control" disabled name="productProfitFactor" id="productProfitFactor" type="text" />
+                    <span id="factorok" class="input-group-addon glyphicon glyphicon-thumbs-up green"></span>
+                    <span id="factornull" class="input-group-addon glyphicon glyphicon-hand-right black"></span>
+                    <span id="factornok" class="input-group-addon glyphicon glyphicon-thumbs-down red"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

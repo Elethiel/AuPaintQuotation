@@ -1,0 +1,21 @@
+<div class="footerContent">
+    &nbsp;<br/>
+    <div class="footer">
+        <div class="footer-content text-center">
+            <strong>
+            <% if (srv.session.ownerObj && srv.session.ownerObj.ownerRender != "") { %>
+                <%- srv.session.ownerObj.ownerRender %>
+            <% } else { %>
+                Application Devis / Facture
+            <% } %>
+            </strong> - &copy; 2014 - 
+            <% if (srv.session.username && srv.session.username != "") { %>
+                <%= srv.session.username %>
+            <% } else { %>
+                John Doe
+            <% } %>
+        </div>
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>
+</div>

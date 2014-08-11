@@ -1,0 +1,18 @@
+<div class="form-group">
+    <label for="<%= o.field %>" class="col-sm-<%= o.labelw %> control-label"><%= o.label %>
+        <% if (o.tooltip) { %>
+        <a href="#" data-placement="bottom" tabindex="-1"
+            data-tooltip="<%= o.tooltip %>">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        <% } %>
+    </label>
+    <div class="col-sm-<%= o.inputw %>">
+        <input tabindex="<%= o.index %>" class="form-control" name="<%= o.field %>" id="<%= o.field %>" <% if (o.placeholder) { %>placeholder="<%= o.placeholder %>"<% } %> type="text"
+                <% if (o.value) { %> value="<%= o.value %>" <% } %>
+                trigger="keyup"
+                data-bv-regexp="true"
+                data-bv-regexp-regexp="^(\+{0,1}([0-9]+)|(0))\.{0,1}[1-9]([-. ]?[0-9]{2})*$"
+                data-bv-regexp-message="Le <%= o.label %> ne doit être composé que de chiffres avec des '.', '-' ou des espaces"
+            >
+    </div>
+</div>

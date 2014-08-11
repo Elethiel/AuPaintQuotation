@@ -1,0 +1,88 @@
+<% include _doc %>
+<html lang="en">
+    <head>
+        <% include _header %>
+        <% include _css %>
+        
+        <% include _js %>
+        
+        
+        <script type="text/javascript" src="/js/management.js"></script>
+    </head>
+    <body>
+        <% include _menu %>
+        <div class="wrapper">
+            <div class="background"></div> 
+                <div class="container">
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 text-center center">
+                            <div class="well">
+                                <legend><h1>Paramètres</h1></legend>
+                                <small class="help">Ces paramètres sont utilisés un peu partout sur l'application, mais une fois configurés, ils ne devraient plus beaucoup bouger.</small><br/>
+                                &nbsp;<br/>
+                                <% if (srv.pstatus != "") { %>
+                                    <div class="form-group text-center">
+                                        <% if (srv.pstatus === "upd-TVA") { %><span class="label label-success">TVA bien mise à jour</span><% } %>
+                                        <% if (srv.pstatus === "new-TVA") { %><span class="label label-success">TVA bien ajoutée</span><% } %>
+                                        <% if (srv.pstatus === "del-TVA") { %><span class="label label-success">TVA bien supprimée</span><% } %>
+                                        <% if (srv.pstatus === "err-TVA") { %><span class="label label-danger">Error lors de la suppression de la TVA</span><% } %>
+                                        <% if (srv.pstatus === "rej-TVA") { %><span class="label label-danger">Impossible de supprimer cette TVA ! Elle est utilisée sur <b><%= srv.pstatusvar %></b> Catégorie(s) de Prestation</span><% } %>
+                                        
+                                        <% if (srv.pstatus === "upd-payType") { %><span class="label label-success">Type de Paiement bien mis à jour</span><% } %>
+                                        <% if (srv.pstatus === "new-payType") { %><span class="label label-success">Type de Paiement bien ajouté</span><% } %>
+                                        <% if (srv.pstatus === "del-payType") { %><span class="label label-success">Type de Paiement bien supprimé</span><% } %>
+                                        <% if (srv.pstatus === "err-payType") { %><span class="label label-danger">Error lors de la suppression du Type de Paiement</span><% } %>
+                                        <% if (srv.pstatus === "rej-payType") { %><span class="label label-danger">Impossible de supprimer ce Type de Paiement ! Il est utilisé sur <b><%= srv.pstatusvar[0] %></b> Devis/Facture(s) et <b><%= srv.pstatusvar[1] %></b> Paiement(s)</span><% } %>
+                                        
+                                        <% if (srv.pstatus === "upd-payCond") { %><span class="label label-success">Condition bien mise à jour</span><% } %>
+                                        <% if (srv.pstatus === "new-payCond") { %><span class="label label-success">Condition bien ajoutée</span><% } %>
+                                        <% if (srv.pstatus === "del-payCond") { %><span class="label label-success">Condition bien supprimée</span><% } %>
+                                        <% if (srv.pstatus === "err-payCond") { %><span class="label label-danger">Error lors de la suppression de la Condition</span><% } %>
+                                        <% if (srv.pstatus === "rej-payCond") { %><span class="label label-danger">Impossible de supprimer cette Condition ! Elle est utilisée sur <b><%= srv.pstatusvar %></b> Devis/Facture(s)</span><% } %>
+                                        
+                                        <% if (srv.pstatus === "upd-groupProduct") { %><span class="label label-success">Catégorie bien mise à jour</span><% } %>
+                                        <% if (srv.pstatus === "new-groupProduct") { %><span class="label label-success">Catégorie bien ajoutée</span><% } %>
+                                        <% if (srv.pstatus === "del-groupProduct") { %><span class="label label-success">Catégorie bien supprimée</span><% } %>
+                                        <% if (srv.pstatus === "err-groupProduct") { %><span class="label label-danger">Error lors de la suppression de la Catégorie</span><% } %>
+                                        <% if (srv.pstatus === "rej-groupProduct") { %><span class="label label-danger">Impossible de supprimer cette Catégorie ! Elle est utilisée sur <b><%= srv.pstatusvar %></b> Prestation(s)</span><% } %>
+                                    </div>
+                                    &nbsp;<br/>
+                                <% } %>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-pills nav-wizard nav-justified" role="tablist">
+                                    <li <% if (srv.subloc != "" && srv.subloc === "TVA") { %>class="active"<% } %>><a href="#tva" role="tab" data-toggle="tab">TVA</a><div class="nav-arrow"></div></li>
+                                    <li <% if (srv.subloc != "" && srv.subloc === "groupProduct") { %>class="active"<% } %>><div class="nav-wedge"></div><a href="#groupproduct" role="tab" data-toggle="tab">Catégorie de Prestation</a><div class="nav-arrow"></li>
+                                    <li <% if (srv.subloc != "" && srv.subloc === "payType") { %>class="active"<% } %>><div class="nav-wedge"></div><a href="#paytype" role="tab" data-toggle="tab">Type de Paiement</a><div class="nav-arrow"></li>
+                                    <li <% if (srv.subloc != "" && srv.subloc === "payCond") { %>class="active"<% } %>><div class="nav-wedge"></div><a href="#paycond" role="tab" data-toggle="tab">Condition de Paiement</a></li>
+                                </ul>
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "TVA") { %> in active<% } %>" id="tva">
+                                        <% include management_tva %>
+                                    </div>
+                                    <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "groupProduct") { %> in active<% } %>" id="groupproduct">
+                                        <% include management_groupproduct %>
+                                    </div>
+                                    <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "payType") { %> in active<% } %>" id="paytype">
+                                        <% include management_paytype %>
+                                    </div>
+                                    <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "payCond") { %> in active<% } %>" id="paycond">
+                                        <% include management_paycond%>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <% include _footer %>
+        <% include _popup %>
+        
+        <script type="text/javascript">
+            $(document).ready(initTabs);
+        </script>
+    </body>
+</html>

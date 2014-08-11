@@ -1,0 +1,48 @@
+<div class="form-group">
+    <label for="<%= o.field %>" class="col-sm-<%= o.labelw %> control-label"><%= o.label %>
+        <% if (o.tooltip) { %>
+        <a href="#" data-placement="bottom" tabindex="-1"
+            data-tooltip="<%= o.tooltip %>">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        <% } %>
+    </label>
+    <div class="col-sm-<%= o.inputw %>">
+        <div class="input-group">
+            <% if (o.symbol) { %><span class="input-group-addon"><%= o.symbol %></span><% } %>
+            <% if (o.addon == "ok") { %>
+                <span class="input-group-addon glyphicon glyphicon-thumbs-up green"></span>
+            <% } else if (o.addon == "null") { %>
+                <span class="input-group-addon glyphicon glyphicon-hand-right"></span>
+            <% } else if (o.addon == "nok"){ %>
+                <span class="input-group-addon glyphicon glyphicon-thumbs-down red"></span>
+            <% } %>
+                <input <% if (o.addon == "nok") { %>disabled <% } %> tabindex="<%= o.index %>" class="form-control" name="<%= o.field %>" <% if (o.placeholder) { %>placeholder="<%= o.placeholder %>"<% } %> id="<%= o.field %>" type="text"
+                    <% if (o.value) { %> value="<%= o.value %>" <% } %>
+                        trigger="keyup blur"
+                        data-bv-regexp="true"
+                        data-bv-regexp-regexp="^([0-9])*((\.)|,){0,1}([0-9]){0,2}$"
+                        data-bv-regexp-message="<%= o.label %> doit être un chiffre avec 2 digits"
+                    <% if (o.empty) { %>
+                        data-bv-notempty="true"
+                        data-bv-notempty-message="<%= o.empty %>"
+                    <% } %>
+                    >
+            </span>
+        </div>
+    </div>
+    <% if (o.addon == "down") { %>
+        <div class="col-sm-1">
+            <a href="#" data-placement="bottom" tabindex="-1"
+                data-tooltip="Met à jour automatiquement le prix de vente HT.
+                            Un seul des deux champs ne peut être renseigné à la fois, la TVA influe entre eux.">
+                <img src="/im/down.png" border="0" class="inputrefresh" /></a>
+        </div>
+    <% } else if (o.addon == "up") { %>
+        <div class="col-sm-1">
+            <a href="#" data-placement="bottom" tabindex="-1"
+                data-tooltip="Met à jour automatiquement le prix de vente TTC.
+                        Un seul des deux champs ne peut être renseigné à la fois, la TVA influe entre eux.">
+                <img src="/im/up.png" border="0" class="inputrefresh" /></a>
+        </div>
+    <% } %>
+</div>

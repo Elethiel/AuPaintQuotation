@@ -1,0 +1,22 @@
+{
+  "name": "auPaintQuotation",
+  "version": "0.0.1",
+  "directory": "public",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "bootstrapValidator": "~0.5.0",
+    "jquery": "~2.1.1",
+    "jquery-ui": "~1.11.0",
+    "datatables": "~1.10.1",
+    "numeral": "~1.5.3",
+    "moment": "~2.7.0"
+  }
+}

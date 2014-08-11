@@ -1,0 +1,44 @@
+<!--  ****************************  groupProduct   ****************************   -->
+&nbsp;<br/>
+&nbsp;<br/>
+
+<div class="row text-center">
+    <button type="button" id="addGroupProduct" class="btn btn-primary">Ajouter une Catégorie de Prestation</button>
+</div>
+&nbsp;<br/>
+<div class="row text-center">
+    <small class="help">Les Catégories de Prestation sont utilisées pour regrouper les Prestations et leur assimiler en masse des taux de groupProduct.<br/><br/>Par exemple on pourrait avoir une catégorie «&nbsp;Restauration&nbsp;» contenant toutes les prestations liés aux repas avec une groupProduct de 10%, et une catégorie «&nbsp;Animation&nbsp;» pour toutes les prestations ayant attraits à l'animation avec une groupProduct de 20%.<br/>On peut aussi envisager des catégories plus typées pour trier les prestations (Paintball, Structure, Animation).</small><br/>
+</div>
+&nbsp;<br/>
+<div class="row">
+    <input type="hidden" id="maxGroupProduct" value="<%= srv.groupProductList.length %>" />
+    <table id="groupProducttab" class="stripe hover cell-border row-border" cellspacing="0" width="100%">
+        <thead>
+            
+            <tr>
+                <th>#</th>
+                <th>Icon</th>
+                <th>Catégorie</th>
+                <th>TVA</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+ 
+        <tbody>
+            <% if (srv.groupProductList.length > 0) { %>
+                <% for(var i = 0; i < srv.groupProductList.length; i++) { %>
+                    <tr>
+                        <td id="idGroupProduct<%= i %>"><%= srv.groupProductList[i].groupProductId %></td>
+                        <td><% if (srv.groupProductList[i].groupProductIcon) { %><img src="<%= srv.groupProductList[i].groupProductIcon %>" border="0" /><% } %></td>
+                        <td id="labelGroupProduct<%= i %>"><%= srv.groupProductList[i].groupProductLabel %></td>
+                        <td><%= srv.groupProductList[i].TVALabel %></td>
+                        <td><a href="/groupProduct?groupProductId=<%= srv.groupProductList[i].groupProductId %>"><span class="glyphicon glyphicon-pencil"></span></a> 
+                            <a id="delGroupProduct<%= i %>" href="#<%= i %>"><span class="glyphicon glyphicon-remove text-danger"></span></a></td>
+                    </tr>
+                <% } %>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+&nbsp;<br/>
+&nbsp;<br/>

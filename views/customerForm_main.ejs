@@ -1,0 +1,47 @@
+<!--  ****************************  CUSTOMER   ****************************   -->
+<form class="form-horizontal" id="customerForm" role="form" action="/customerUpdate" method="post"
+        data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+        data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+        data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+    
+    <% if (srv.Obj && srv.Obj.customerId) { %>
+        <input type="hidden" name="productId" id="productId" value="<%= srv.Obj.productId %>">
+    <% } %>
+    
+    &nbsp;<br/>
+    &nbsp;<br/>
+    <% var o = { index: "1", label: "Statut du Client", tooltip: "Un 'Prospect' est un client n'ayant jamais été facturé restant uniquement un contact pour lequel on a potentiellement fait un devis.", field: "customerStatus", labelw: "4", inputw: "2", value: (srv.Obj ? srv.Obj.customerStatus : srv.Obj),
+            items: [ { val: "0", lab: "Prospect" }, { val: "1", lab: "Client" } ] } %>
+    <% include form/inputRadio %>
+    &nbsp;<br/>
+    <% var o = { index: "2", label: "Type de Client", tooltip: "Détermine si le client est un professionnel ou un particulier.", field: "customerType", labelw: "4", inputw: "8", value: (srv.Obj ? srv.Obj.customerType : srv.Obj) } %>
+    <% include form/inputSelectCustomerType %>
+    <% include form/inputSelect %>
+    &nbsp;<br/>
+    <% var o = { index: "3", label: "Note sur le Client", tooltip: "Note interne pour vous.", field: "customerNote", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.customerNote : srv.Obj) } %>
+    <% include form/inputTextarea %>
+    &nbsp;<br/>
+    <div id="companyArea" class="<% if (srv.Obj && srv.Obj.customerType) { %><% if (srv.Obj.customerType == 0) { %>hidden<% } else if (srv.Obj.customerType == 1) { %>show<% }%><% } else { %>hidden<% } %>">
+        <% include customerForm_company %>
+    </div>
+    <div id="personArea" class="<% if (srv.Obj && srv.Obj.customerType) { %><% if (srv.Obj.customerType == 0) { %>show<% } else if (srv.Obj.customerType == 1) { %>hidden<% }%><% } else { %>hidden<% } %>">
+        <% include customerForm_person %>
+    </div>
+    &nbsp;<br/>
+    <% var o = { index: "1", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
+            items: [ { val: "0", lab: "Pas de traitement des données du formulaire" } ] } %>
+    <% include form/inputCheck %>
+    &nbsp;<br/>
+    <div class="form-group text-right p15LR">
+        <button type="button" id="backBut" class="btn btn-default">Retour</button>
+        <button type="submit" class="btn btn-primary">
+        <% if (srv.Obj && srv.Obj.customerId) { %>
+            Modifier
+        <% } else { %>
+            Ajouter
+        <% } %>
+        </button>
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>
+</form>

@@ -1,0 +1,184 @@
+a[data-tooltipsmall] {
+    position: relative;
+}
+a[data-tooltipsmall]::before, a[data-tooltipsmall]::after {
+    position: absolute;
+    display: none;
+    opacity: 0.80;
+}
+a[data-tooltipsmall]::before {
+    /*
+   * using data-tooltipsmall instead of title so we 
+   * don't have the real tooltip overlapping
+   */
+    content: attr(data-tooltipsmall);
+    white-space: pre-line;
+    background: #000;
+    color: #fff;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: center;
+    padding: 5px 10px 5px 5px;
+    border-radius: 8px;
+    text-decoration: none;
+    width: 200px;
+}
+a[data-tooltipsmall]::after {
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    content:'';
+}
+a[data-tooltipsmall]:hover::before, a[data-tooltipsmall]:hover::after {
+    display: block;
+}
+/** positioning **/
+
+/* left tooltip */
+ a[data-tooltipsmall][data-placement="left"]::before {
+    top: -25%;
+    right: 100%;
+    margin-right: 10px;
+}
+a[data-tooltipsmall][data-placement="left"]::after {
+    border-left-color: #000;
+    border-right: none;
+    top: 50%;
+    right: 100%;
+    margin-top: -6px;
+    margin-right: 4px;
+}
+/* right tooltip */
+ a[data-tooltipsmall][data-placement="right"]::before {
+    top: -25%;
+    left: 100%;
+    margin-left: 10px;
+}
+a[data-tooltipsmall][data-placement="right"]::after {
+    border-right-color: #000;
+    border-left: none;
+    top: 50%;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: 4px;
+}
+/* top tooltip */
+ a[data-tooltipsmall][data-placement="top"]::before {
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 10px;
+}
+a[data-tooltipsmall][data-placement="top"]::after {
+    border-top-color: #000;
+    border-bottom: none;
+    bottom: 100%;
+    left: 10px;
+    margin-bottom: 4px;
+}
+/* bottom tooltip */
+ a[data-tooltipsmall][data-placement="bottom"]::before {
+    top: 100%;
+    left: -60px;
+    margin-top: 10px;
+    z-index: 2000;
+}
+a[data-tooltipsmall][data-placement="bottom"]::after {
+    border-bottom-color: #000;
+    border-top: none;
+    top: 100%;
+    left: 0px;
+    margin-top: 4px;
+    z-index: 2000;
+}
+a[data-tooltip] {
+    position: relative;
+}
+a[data-tooltip]::before, a[data-tooltip]::after {
+    position: absolute;
+    display: none;
+    opacity: 0.80;
+}
+a[data-tooltip]::before {
+    /*
+   * using data-tooltip instead of title so we 
+   * don't have the real tooltip overlapping
+   */
+    content: attr(data-tooltip);
+    white-space: pre-line;
+    background: #000;
+    color: #fff;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: center;
+    padding: 5px 10px 5px 5px;
+    border-radius: 8px;
+    text-decoration: none;
+    width: 400px;
+}
+a[data-tooltip]::after {
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    content:'';
+}
+a[data-tooltip]:hover::before, a[data-tooltip]:hover::after {
+    display: block;
+}
+/** positioning **/
+
+/* left tooltip */
+ a[data-tooltip][data-placement="left"]::before {
+    top: -25%;
+    right: 100%;
+    margin-right: 10px;
+}
+a[data-tooltip][data-placement="left"]::after {
+    border-left-color: #000;
+    border-right: none;
+    top: 50%;
+    right: 100%;
+    margin-top: -6px;
+    margin-right: 4px;
+}
+/* right tooltip */
+ a[data-tooltip][data-placement="right"]::before {
+    top: -25%;
+    left: 100%;
+    margin-left: 10px;
+}
+a[data-tooltip][data-placement="right"]::after {
+    border-right-color: #000;
+    border-left: none;
+    top: 50%;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: 4px;
+}
+/* top tooltip */
+ a[data-tooltip][data-placement="top"]::before {
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 10px;
+}
+a[data-tooltip][data-placement="top"]::after {
+    border-top-color: #000;
+    border-bottom: none;
+    bottom: 100%;
+    left: 10px;
+    margin-bottom: 4px;
+}
+/* bottom tooltip */
+ a[data-tooltip][data-placement="bottom"]::before {
+    top: 100%;
+    left: -60px;
+    margin-top: 10px;
+    z-index: 2000;
+}
+a[data-tooltip][data-placement="bottom"]::after {
+    border-bottom-color: #000;
+    border-top: none;
+    top: 100%;
+    left: 0px;
+    margin-top: 4px;
+    z-index: 2000;
+}

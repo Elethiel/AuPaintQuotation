@@ -1,0 +1,21 @@
+<div class="form-group">
+    <label for="<%= o.field %>" class="col-sm-<%= o.labelw %> control-label"><%= o.label %>
+        <% if (o.tooltip) { %>
+        <a href="#" data-placement="bottom" tabindex="-1"
+            data-tooltip="<%= o.tooltip %>">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        <% } %>
+    </label>
+    <div class="col-sm-<%= o.inputw %>">
+        <span id="<%= o.field %>" class="form-control">
+                <% if (o.value) { %><%- o.value %><% } %>
+        </span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <small class="help">==> Vous pouvez utiliser $ORANGE$---$ pour colorer votre texte. Le système supporte les couleurs RGB<br>
+        Ex: S.A.R.L. $ORANGE$My Company$   ==>    S.A.R.L. <font color="ORANGE">My Company</font><br/>
+        S.A.R.L. $BLUE$My Company$   ==>    S.A.R.L. <font color="BLUE">My Company</font></small><br/>
+    </div>
+</div>

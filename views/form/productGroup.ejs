@@ -1,0 +1,64 @@
+<div class="form-group text-left">
+    <label for="<%= o.field %>" class="col-sm-<%= o.labelw %> control-label"><%= o.label %>
+        <% if (o.tooltip) { %>
+        <a href="#" data-placement="bottom" tabindex="-1"
+            data-tooltip="<%= o.tooltip %>">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        <% } %>
+    </label>
+    <div class="col-sm-<%= o.inputw %>">
+        <input type="hidden" name="<%= o.field %>" id="<%= o.field %>" value="<% if (o.value) { %><%= o.value %><% } %>" />
+        <input type="hidden" name="groupProductTVAPercent" id="groupProductTVAPercent" value="<% if (o.TVAPercent) { %><%= o.TVAPercent %><% } %>" 
+                trigger="blur"
+                data-bv-regexp="true"
+                data-bv-regexp-regexp="^([0-9])*((\.)|,){0,1}([0-9]){0,2}$"
+                data-bv-regexp-message="Merci de sélectionner une Catégorie !" 
+                data-bv-notempty="true"
+                data-bv-notempty-message="Merci de sélectionner une Catégorie !">
+        <input type="hidden" name="maxGroupList" id="maxGroupList" value="<%= srv.groupProductList.length %>" />
+        <div class="btn-group">
+            <button id="selectGroup" type="button" class="selbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=-1>
+                <% if (o.value) { %>
+                    <table class='nothing' border='0'>
+                        <tr>
+                            <td width='80' class='text-center'>
+                                <% if (srv.Obj.groupProductIcon) { %>
+                                    <img src="<%= srv.Obj.groupProductIcon %>" border="0" />
+                                <% } %>
+                            </td>
+                            <td class='text-left'>
+                                <%= srv.Obj.groupProductLabel %> ( <%= srv.Obj.TVALabel %> )
+                            </td>
+                        </tr>
+                    </table>
+                <% } else { %>Sélectionnez une Catégorie<% } %>
+            </button>
+            <button id="selectDrop" type="button" class="selectdropbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=<%= o.index %>>
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu groupProductDropDown" role="menu">
+                <% for(var i = 0; i < srv.groupProductList.length; i++) { %>
+                    <li>
+                        <input id="optionGroupId<%= i %>" type="hidden" value="<%= srv.groupProductList[i].groupProductId %>" />
+                        <input id="TVAPercent<%= i %>" type="hidden" value="<% if (srv.groupProductList[i].TVAPercent) { %><%= srv.groupProductList[i].TVAPercent %><% } %>" />
+                        <a href="#" id="optionGroup<%= i %>">
+                            <table class='nothing' border='0'>
+                                <tr>
+                                    <td width='80' class='text-center'>
+                                        <% if (srv.groupProductList[i].groupProductIcon) { %>
+                                            <img src="<%= srv.groupProductList[i].groupProductIcon %>" border="0" />
+                                        <% } %>
+                                    </td>
+                                    <td class='text-left'>
+                                        <%= srv.groupProductList[i].groupProductLabel %> ( <%= srv.groupProductList[i].TVALabel %> )
+                                    </td>
+                                </tr>
+                            </table>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</div>

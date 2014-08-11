@@ -1,0 +1,37 @@
+<div class="form-group text-left">
+    <label for="<%= o.field %>" class="col-sm-<%= o.labelw %> control-label"><%= o.label %>
+        <% if (o.tooltip) { %>
+        <a href="#" data-placement="bottom" tabindex="-1"
+            data-tooltip="<%= o.tooltip %>">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        <% } %>
+    </label>
+    <div class="col-sm-<%= o.inputw %>">
+        <input type="hidden" name="max<%= o.field %>List" id="max<%= o.field %>List" value="<%= o.items.length %>" />
+        <input type="hidden" name="<%= o.field %>" id="<%= o.field %>" value="<% if (o.value) { %><%= o.value %><% } %>" 
+                    trigger="blur"
+                    data-bv-notempty="true"
+                    data-bv-notempty-message="Merci de sélectionner un <%= o.label %>">
+        <div class="btn-group">
+            <button id="select<%= o.field %>" type="button" class="selbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=-1>
+                <% if (o.value) { %>
+                    <% for (var i = 0; i < o.items.length; i++) { %>
+                        <% if (o.value == o.items[i].val) { %><%= o.items[i].label %><% } %>
+                    <% } %>
+                <% } else { %>Sélectionnez un<% if (o.gender = 1) { %>e<% } %> <%= o.label %><% } %>
+            </button>
+            <button id="selectDrop<%= o.field %>" type="button" class="selectdropbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=<%= o.index %>>
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu groupProductDropDown" role="menu">
+                <% for (var i = 0; i < o.items.length; i++) { %>
+                    <li>
+                        <input id="optionval<%= o.field %><%= i %>" type="hidden" value="<%= o.items[i].val %>" />
+                        <a href="#" id="option<%= o.field %><%= i %>"><%= o.items[i].label %></a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</div>

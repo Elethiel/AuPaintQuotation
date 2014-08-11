@@ -1,0 +1,98 @@
+<% include _doc %>
+<html lang="en">
+    <head>
+        <% include _header %>
+        <% include _css %>
+        
+        <% include _js %>
+       
+        <script type="text/javascript" src="/js/customer.js"></script>
+    </head>
+    <body>
+        <% include _menu %>
+        <div class="wrapper">
+            <div class="background"></div> 
+            
+                <div class="container">
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 text-center center">
+                            <div class="well">
+                                <legend><h1>Gérer ses Clients</h1></legend>
+                                &nbsp;<br/>
+                                <% if (srv.pstatus != "") { %>
+                                    <div class="form-group text-center">
+                                        <% if (srv.pstatus === "upd-CUS") { %><span class="label label-success">Client bien mis à jour</span><% } %>
+                                        <% if (srv.pstatus === "new-CUS") { %><span class="label label-success">Client bien ajouté</span><% } %>
+                                        <% if (srv.pstatus === "del-CUS") { %><span class="label label-success">Client bien supprimé</span><% } %>
+                                        <% if (srv.pstatus === "err-CUS") { %><span class="label label-danger">Error lors de la suppression du Client</span><% } %>
+                                     </div>
+                                    &nbsp;<br/>
+                                <% } %>
+                                <!--  ****************************  PRODUCT   ****************************   -->
+                                
+                                <div class="row text-center">
+                                    <button type="button" id="addCustomer" class="btn btn-primary">Ajouter un Client</button>
+                                </div>
+                                &nbsp;<br/>
+                                <small class="help">Les clients peuvent être de simples contacts pour devis ou de vrais clients liés à une facture.<br/>Lorsqu'un devis devient une facture, le client "prospect" devient un client à part entière.</small><br/>
+                                &nbsp;<br/>
+                                <div class="row">
+                                    <% if (srv.customerList && srv.customerList.length > 0) { %>
+                                        <input type="hidden" id="maxCustomer" value="<%= srv.customerList.length %>" />
+                                    <% } %>
+                                    <table id="customertab" class="stripe hover cell-border row-border nowrap" cellspacing="0" width="100%">
+                                        <thead>
+                                            
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Type</th>
+                                                <th>Client</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                        </thead>
+                                 
+                                        <tbody>
+                                            <% if (srv.customerList && srv.customerList.length > 0) { %>
+                                                <% for(var i = 0; i < srv.customerList.length; i++) { %>
+                                                    <tr>
+                                                        <td id="idCustomer<%= i %>"><%= srv.customerList[i].customerId %></td>
+                                                        <td>
+                                                            <% if (srv.customerList[i].customerType == 0) { %>
+                                                                <img src="/im/gl_group.png" title="Personne Morale" alt="Morale" border="0"/>
+                                                            <% } else { %>
+                                                                <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/>
+                                                            <% } %>
+                                                        </td>
+                                                        <td id="labelCustomer<%= i %>">
+                                                            <% if (srv.customerList[i].customerType == 0) { %>
+                                                                <%= srv.customerList[i].companyName %>
+                                                            <% } else { %>
+                                                                <%= srv.customerList[i].personLastname ? srv.customerList[i].personLastname : "" %> <%= srv.customerList[i].personFirstname ? srv.customerList[i].personFirstname : "" %>
+                                                            <% } %>
+                                                        </td>
+                                                        <td><a href="/customer?customerId=<%= srv.customerList[i].customerId %>"><span class="glyphicon glyphicon-pencil"></span></a> 
+                                                            <a id="delCustomer<%= i %>" href="#<%= i %>"><span class="glyphicon glyphicon-remove text-danger"></span></a></td>
+                                                    </tr>
+                                                <% } %>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                &nbsp;<br/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <% include _footer %>
+        <% include _popup %>
+        
+        <script type="text/javascript">
+            $(document).ready(customerInitTab());
+        </script>
+    </body>
+</html>

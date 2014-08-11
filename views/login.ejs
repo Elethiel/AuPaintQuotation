@@ -1,0 +1,53 @@
+<% include _doc %>
+<html lang="en">
+    <head>
+        <% include _header %>
+        <% include _css %>
+        
+        <% include _js %>
+    </head>
+    <body>
+        <% include _menu %>
+        <div class="wrapper">
+            <div class="background"></div> 
+            
+                <div class="container">
+                    <div class="row">&nbsp;</div>
+                        
+                    <div class="row">&nbsp;</div>
+                        
+                    <div class="row">&nbsp;</div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 center">
+                            <div class="well">
+                                <form class="form-vertical" role="form" action="/in" method="post">
+                                    <legend class="text-center"><span class="glyphicon glyphicon-user"></span> Se Connecter</legend>
+                                    <% if (srv.err != "") { %>
+                                        <div class="form-group text-center">
+                                            <span class="label label-danger">Erreur de login ou de pass</span>
+                                        </div>
+                                    <% } %>
+                                    <div class="form-group">
+                                        <label for="inputLogin" class="control-label">Login</label>
+                                        <input class="form-control" name="inputLogin" id="inputLogin" placeholder="Login" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPass" class="control-label">Mot de Passe</label>
+                                        <input class="form-control" name="inputPass" id="inputPass" placeholder="Mot de Passe" type="password">
+                                    </div>
+                                    <div class="form-group text-right">
+                                        <button type="submit" class="btn btn-primary">Connexion</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <% include _footer %>
+    </body>
+
+</html>

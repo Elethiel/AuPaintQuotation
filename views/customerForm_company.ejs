@@ -1,0 +1,55 @@
+<p class="highlight">Personne Morale</p>
+
+<% var o = { index: "4", gender: 1, label: "Forme Juridique", field: "companyLegal", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyLegal : srv.Obj) } %>
+<% include form/inputSelectLegal %>
+<% include form/inputSelect %>
+<% var o = { index: "5", label: "Dénomination", empty: "Le nom de la société est obligatoire !", field: "companyName", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyName : srv.Obj) } %>
+<% include form/inputText %>
+
+<div class="row">
+    <div class="col-sm-6">
+        <% var o = { index: "6", label: "N° TVA intracom.", field: "companyTVA", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.companyTVA : srv.Obj) } %>
+        <% include form/inputText %>
+    </div>
+    <div class="col-sm-6">
+        <% var o = { index: "7", label: "Code A.P.E.", field: "companyAPE", labelw: "6", inputw: "4", value: (srv.Obj ? srv.Obj.companyAPE : srv.Obj) } %>
+        <% include form/inputText %>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <% var o = { index: "8", label: "SIRET/SIREN", field: "companySiret", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.companySiret : srv.Obj) } %>
+        <% include form/inputText %>
+    </div>
+</div>
+&nbsp;<br/>
+<p class="midlight">Coordonnées (Morale)</p>
+<% var o = { index: "9", label: "Site Internet", field: "companyAddressURL", placeholder: "http://", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyAddressURL : srv.Obj) } %>
+<% include form/inputURL %>
+<% var o = { index: "10", label: "Adresse", field: "companyAddressLine1", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyAddressLine1 : srv.Obj) } %>
+<% include form/inputText %>
+<% var o = { index: "11", label: "", field: "companyAddressLine2", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyAddressLine2 : srv.Obj) } %>
+<% include form/inputText %>
+<div class="row">
+    <div class="col-sm-6">
+        <% var o = { index: "12", label: "CP", field: "companyAddressCP", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.companyAddressCP : srv.Obj) } %>
+        <% include form/inputText %>
+    </div>
+    <div class="col-sm-6">
+        <% var o = { index: "13", label: "Ville", field: "companyAddressCity", labelw: "2", inputw: "8", value: (srv.Obj ? srv.Obj.companyAddressCity : srv.Obj) } %>
+        <% include form/inputText %>
+    </div>
+</div>
+<% var o = { index: "14", label: "Pays", field: "companyAddressCountry", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyAddressCountry : srv.Obj) } %>
+<% include form/inputText %>
+&nbsp;<br/>
+<p class="midlight">Contact (Morale)</p>
+<% var o = { index: "15", label: "Téléphone", field: "companyContactTel", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyContactTel : srv.Obj) } %>
+<% include form/inputTel %>
+<% var o = { index: "16", label: "Mobile", field: "companyContactMobile", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyContactMobile : srv.Obj) } %>
+<% include form/inputTel %>
+<% var o = { index: "17", label: "Fax", field: "companyContactFax", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyContactFax : srv.Obj) } %>
+<% include form/inputTel %>
+<% var o = { index: "18", label: "Email", field: "companyContactMail", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyContactMail : srv.Obj) } %>
+<% include form/inputMail %>
+&nbsp;<br/>

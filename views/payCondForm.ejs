@@ -1,0 +1,42 @@
+<form class="form-horizontal" id="payCondForm" role="form" action="/payCondUpdate" method="post" 
+        data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+        data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+        data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+    <% if (srv.Obj) { %>
+        <legend><h1>Modifier une Condition de Paiement</h1></legend>
+    <% } else { %>
+        <legend><h1>Ajouter une Condition de Paiement</h1></legend>
+    <% }%>
+    <% if (srv.pstatus != "") { %>
+        <div class="form-group text-center">
+            <span class="label label-danger">Erreur lors de la mise à jour (<%= srv.id %>)</span>
+        </div>
+    <% } %>
+    <div class="row text-center">
+        <small class="help">Les Conditions de Paiement sont utilisées pour les devis et facture comme accord sur la manière dont le client pourra s'acquitter de sa facture.</small><br/>
+    </div>
+    &nbsp;<br/>
+    
+    <% if (srv.Obj && srv.Obj.payCondId) { %>
+        <input type="hidden" name="payCondId" id="payCondId" value="<%= srv.Obj.payCondId %>">
+    <% } %>
+    
+    <% var o = { index: "1", label: "Description", empty: "La description de la description de paiement est obligatoire", field: "payCondLabel", labelw: "3", inputw: "8", value: (srv.Obj ? srv.Obj.payCondLabel : srv.Obj) } %>
+    <% include form/inputText %>
+    &nbsp;<br/>
+    <% var o = { index: "1", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
+            items: [ { val: "0", lab: "Pas de traitement des données du formulaire" } ] } %>
+    <% include form/inputCheck %>
+    
+    &nbsp;<br/>
+    <div class="form-group text-right p15LR">
+        <button type="button" id="backBut" class="btn btn-default">Retour</button>
+        <button type="submit" class="btn btn-primary">
+        <% if (srv.Obj && srv.Obj.payCondId) { %>
+            Modifier
+        <% } else { %>
+            Ajouter
+        <% }%>
+        </button>
+    </div>
+</form>

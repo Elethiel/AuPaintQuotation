@@ -1,0 +1,67 @@
+<% include _doc %>
+<html lang="en">
+    <head>
+        <% include _header %>
+        <% include _css %>
+        
+        <% include _js %>
+        
+        
+        <script type="text/javascript" src="/js/customer.js"></script>
+    </head>
+    <body>
+        <% include _menu %>
+        <div class="wrapper">
+            <div class="background"></div> 
+                <div class="container">
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 text-center center">
+                            <div class="well">
+                                <% if (srv.Obj) { %>
+                                    <legend><h1>Modifier un Client</h1></legend>
+                                <% } else { %>
+                                    <legend><h1>Ajouter un Client</h1></legend>
+                                <% }%>
+                                <small class="help">Un client peut être soit une personne morale (société, association, organisation) soit une personne physique.<br/>Un client peut avoir plusieurs contacts différents, mais avec toujours un contact direct.</small><br/>
+                                &nbsp;<br/>
+                                <% if (srv.pstatus != "") { %>
+                                    <div class="form-group text-center">
+                                        <% if (srv.pstatus === "upd-CUS") { %><span class="label label-success">Client bien mis à jour</span><% } %>
+                                        <% if (srv.pstatus === "new-CUS") { %><span class="label label-success">Client bien ajouté</span><% } %>
+                                    </div>
+                                    &nbsp;<br/>
+                                <% } %>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-pills nav-wizard nav-justified" role="tablist">
+                                    <% if (srv.Obj && srv.Obj.customerId) { %>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "customer") { %>class="active"<% } %>><a href="#customer" role="tab" data-toggle="customer">Raison Sociale</a><div class="nav-arrow"></div></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "contact") { %>class="active"<% } %>><div class="nav-wedge"></div><a href="#contact" role="tab" data-toggle="contact">Contacts</a></li>
+                                    <% } else { %>
+                                        <li class="active"><a href="#customer" role="tab" data-toggle="customer">Raison Sociale</a></li>
+                                    <% } %>
+                                </ul>
+                                <!-- Tab panes -->
+                                <div class="tab-content text-left">
+                                    <div class="tab-pane fade<% if (!(srv.Obj && srv.Obj.customerId) || (srv.subloc != "" && srv.subloc === "customer")) { %> in active<% } %>" id="customer">
+                                        <% include customerForm_main %>
+                                    </div>
+                                    <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "contact") { %> in active<% } %>" id="contact">
+                                        <% include customerForm_contact %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <% include _footer %>
+        <% include _popup %>
+        
+        <script type="text/javascript">
+            $(document).ready(customerValidator);
+        </script>
+    </body>
+</html>

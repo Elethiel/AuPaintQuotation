@@ -1,0 +1,19 @@
+<div class="form-group text-left">
+    <label for="<%= o.field %>" class="col-sm-<%= o.labelw %> control-label"><%= o.label %>
+        <% if (o.tooltip) { %>
+        <a href="#" data-placement="bottom" tabindex="-1"
+            data-tooltip="<%= o.tooltip %>">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        <% } %>
+    </label>
+    <% for (var i = 0; i < o.items.length; i++) { %>
+        <div class="col-sm-<%= o.inputw %>">
+            <label class="radio-inline" for="<%= o.field %>-<%= i %>">
+                <input tabindex="<%= o.index %>" name="<%= o.field %>" id="<%= o.field %>-<%= i %>" type="checkbox" 
+                    <% if (o.value == o.items[i].val) { %> checked="checked" <% } %>
+                    value="<%= o.items[i].val %>">
+                <%= o.items[i].lab %>
+            </label>
+        </div>
+    <% } %>
+</div>

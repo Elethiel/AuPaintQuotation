@@ -1,0 +1,18 @@
+<div class="form-group">
+    <label for="<%= o.field %>" class="col-sm-<%= o.labelw %> control-label"><%= o.label %>
+        <% if (o.tooltip) { %>
+        <a href="#" data-placement="bottom" tabindex="-1"
+            data-tooltip="<%= o.tooltip %>">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        <% } %>
+    </label>
+    <div class="col-sm-<%= o.inputw %>">
+        <!--- Display Icon if already have one --->
+        <% if (o.value) { %>
+            <img src="<%= o.value %>" border="0" /><br/>
+            <input tabindex="<%= o.index %>" class="form-control" name="<%= o.field %>" id="<%= o.field %>" type="text"
+            <% if (o.value) { %> value="<%= o.value %>" <% } %>>
+        <% } %>
+        <input class="form-control" name="<%= o.field %>File" id="<%= o.field %>File" type="file" title="<% if (o.value) { %>Changer<% } else { %>Ajouter<% } %>">
+    </div>
+</div>

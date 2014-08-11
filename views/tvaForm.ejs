@@ -1,0 +1,42 @@
+<form class="form-horizontal" id="tvaForm" role="form" action="/tvaUpdate" method="post" 
+        data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+        data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+        data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+    <% if (srv.Obj) { %>
+        <legend><h1>Modifier une TVA</h1></legend>
+    <% } else { %>
+        <legend><h1>Ajouter une TVA</h1></legend>
+    <% }%>
+    <% if (srv.pstatus != "") { %>
+        <div class="form-group text-center">
+            <span class="label label-danger">Erreur lors de la mise à jour (<%= srv.id %>)</span>
+        </div>
+    <% } %>
+    <div class="row text-center">
+        <small class="help">La TVA est utilisée sur les familles de produits afin de calculer au mieux les devis/factures.</small><br/>
+    </div>
+    &nbsp;<br/>
+    
+    <% if (srv.Obj && srv.Obj.TVAId) { %>
+        <input type="hidden" name="TVAId" id="TVAId" value="<%= srv.Obj.TVAId %>">
+    <% } %>
+    <% var o = { index: "1", label: "Libellé", empty: "Le libellé de la TVA est obligatoire", field: "TVALabel", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.TVALabel : srv.Obj) } %>
+    <% include form/inputText %>
+    <% var o = { index: "2", symbol: "%", label: "Pourcentage à appliquer", placeholder:"xx.xx", field: "TVAPercent", labelw: "4", inputw: "4", value: (srv.Obj ? srv.Obj.TVAPercent : srv.Obj) } %>
+    <% include form/inputNum %>
+    &nbsp;<br/>
+    <% var o = { index: "1", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
+            items: [ { val: "0", lab: "Pas de traitement des données du formulaire" } ] } %>
+    <% include form/inputCheck %>
+    &nbsp;<br/>
+    <div class="form-group text-right p15LR">
+        <button type="button" id="backBut" class="btn btn-default">Retour</button>
+        <button type="submit" class="btn btn-primary">
+        <% if (srv.Obj && srv.Obj.TVAId) { %>
+            Modifier
+        <% } else { %>
+            Ajouter
+        <% }%>
+        </button>
+    </div>
+</form>

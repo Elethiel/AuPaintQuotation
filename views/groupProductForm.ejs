@@ -1,0 +1,52 @@
+<form class="form-horizontal" id="groupProductForm" role="form" action="/groupProductUpdate" method="post" enctype="multipart/form-data"
+        data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+        data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+        data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+    <% if (srv.Obj && srv.Obj.groupProductId > 0) { %>
+        <legend><h1>Modifier une Catégorie</h1></legend>
+    <% } else { %>
+        <legend><h1>Ajouter une Catégorie</h1></legend>
+    <% }%>
+    <% if (srv.pstatus) { %>
+        <div class="form-group text-center">
+            <% if (srv.pstatus === "nok") { %><span class="label label-danger">Erreur lors de la mise à jour (<%= srv.id %>)</span><% } %>
+            <% if (srv.pstatus === "rej") { %><span class="label label-danger">Le fichier n'est pas une image JPEG !</span><% } %>
+            <% if (srv.pstatus === "nof") { %><span class="label label-danger">Erreur lors de l'upload du fichier</span><% } %>
+        </div>
+        &nbsp;<br/>
+    <% } %>
+    <div class="row text-center">
+        <small class="help">Les Catégories de Prestation sont utilisées pour regrouper les Prestations et leur assimiler en masse des taux de groupProduct.<br/><br/>Par exemple on pourrait avoir une catégorie «&nbsp;Restauration&nbsp;» contenant toutes les prestations liés aux repas avec une groupProduct de 10%, et une catégorie «&nbsp;Animation&nbsp;» pour toutes les prestations ayant attraits à l'animation avec une groupProduct de 20%.<br/>On peut aussi envisager des catégories plus typées pour trier les prestations (Paintball, Structure, Animation).</small><br/>
+    </div>
+    &nbsp;<br/>
+    
+    <% if (srv.Obj && srv.Obj.groupProductId) { %>
+        <input type="hidden" name="groupProductId" id="groupProductId" value="<%= srv.Obj.groupProductId %>">
+    <% } %>
+    
+    <% var o = { index: "1", label: "Description", empty: "La description est obligatoire", field: "groupProductLabel", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.groupProductLabel : srv.Obj) } %>
+    <% include form/inputText %>
+    <% var o = { index: "2", label: "Icône associée (JPG)", tooltip: "Vider le champ pour ne plus utiliser d'image.", field: "groupProductIcon", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.groupProductIcon : srv.Obj) } %>
+    <% include form/inputImg %>
+    <% var o = { index: "3", gender: 1, label: "TVA associée", field: "TVAId", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.TVAId : srv.Obj) } %>
+        <% o.items = []; %>
+        <% for(var i = 0; i < srv.TVAList.length; i++) { %>
+            <% o.items.push( { val: srv.TVAList[i].TVAId, label: srv.TVAList[i].TVALabel }); %>
+        <% } %>
+    <% include form/inputSelect %>
+    &nbsp;<br/>
+    <% var o = { index: "1", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
+            items: [ { val: "0", lab: "Pas de traitement des données du formulaire" } ] } %>
+    <% include form/inputCheck %>
+    &nbsp;<br/>
+    <div class="form-group text-right p15LR">
+        <button type="button" id="backBut" class="btn btn-default">Retour</button>
+        <button type="submit" class="btn btn-primary">
+        <% if (srv.Obj && srv.Obj.groupProductId) { %>
+            Modifier
+        <% } else { %>
+            Ajouter
+        <% }%>
+        </button>
+    </div>
+</form>

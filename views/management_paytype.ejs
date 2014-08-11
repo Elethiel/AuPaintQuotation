@@ -1,0 +1,37 @@
+<!--  ****************************  PAY TYPE   ****************************   -->
+&nbsp;<br/>
+&nbsp;<br/>
+
+<div class="row text-center">
+    <button type="button" id="addPayType" class="btn btn-primary">Ajouter un type de Paiement</button>
+</div>
+&nbsp;<br/>
+<small class="help">Les Types de Paiement sont utilisés pour autoriser des types de paiement sur un devis à titre d'informations au client, et pour valider les types des paiements des factures.</small><br/>
+&nbsp;<br/>
+<div class="row">
+    <input type="hidden" id="maxPayType" value="<%= srv.payTypeList.length %>" />
+    <table id="PayTypetab" class="stripe hover cell-border row-border" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+ 
+        <tbody>
+            <% if (srv.payTypeList.length > 0) { %>
+                <% for(var i = 0; i < srv.payTypeList.length; i++) { %>
+                    <tr>
+                        <td id="idPayType<%= i %>"><%= srv.payTypeList[i].payTypeId %></td>
+                        <td id="labelPayType<%= i %>"><%= srv.payTypeList[i].payTypeLabel %></td>
+                        <td><a href="/payType?payTypeId=<%= srv.payTypeList[i].payTypeId %>"><span class="glyphicon glyphicon-pencil"></span></a> 
+                            <a id="delPayType<%= i %>" href="#<%= i %>"><span class="glyphicon glyphicon-remove text-danger"></span></a></td>
+                    </tr>
+                <% } %>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+&nbsp;<br/>
+&nbsp;<br/>

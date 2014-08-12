@@ -4,23 +4,26 @@ var Tools = function() {};
 
 Tools.prototype.manageString = function(param) {
     // treat all fields that could came from user (FORM => post)
-    
+
+    // particular case of empty select
+    if (param.personGender && param.personGender == "-") param.personGender = " ";
+
     // numeric fields
     var numFields = [   "productTTC", "productPaid", "TVAPercent", "ownerFactorOk", "ownerFactorNull" ];
     // fields to UpperCase
-    var uppFields = [   "personLastname", "companyAddressCity", "personAddressCity", "addressCity", "addressCountry", 
+    var uppFields = [   "personLastname", "companyAddressCity", "personAddressCity", "addressCity", "addressCountry",
                         "companyAddressCountry", "personAddressCountry" ];
     // fields to Capitalize
     var capFields = [   "personFirstname", "addressLine1", "companyAddressLine1", "personAddressLine1" ];
     // fields to trim
-    var trimFields = [  "addressURL", "companyAddressURL", "personAddressURL", "addressLine2", "companyAddressLine2", 
+    var trimFields = [  "addressURL", "companyAddressURL", "personAddressURL", "addressLine2", "companyAddressLine2",
                         "personAddressLine2", "addressCP", "companyAddressCP", "personAddressCP",
-                        "contactTel", "companyContactTel", "personContactTel", "companyName", 
-                        "contactFax", "companyContactFax", "personContactFax", "companyTVA", 
-                        "contactMobile", "companyContactMobile", "personContactMobile", "companySiret", 
+                        "contactTel", "companyContactTel", "personContactTel", "companyName",
+                        "contactFax", "companyContactFax", "personContactFax", "companyTVA",
+                        "contactMobile", "companyContactMobile", "personContactMobile", "companySiret",
                         "contactMail", "companyContactMail", "personContactMail", "companyAPE", "customerNote",
-                        "groupProductLabel", "payCondLabel", "payTypeLabel", "productLabel", "productCode", "productUnit", "TVALabel" ];    
-    
+                        "groupProductLabel", "payCondLabel", "payTypeLabel", "productLabel", "productCode", "productUnit", "TVALabel" ];
+
     // numeric
     for (var num in numFields) {
         var v = numFields[num];
@@ -38,7 +41,7 @@ Tools.prototype.manageString = function(param) {
         var v = capFields[cap];
         if (param[v]) param[v] = this.capitalize(this.trim(param[v]));
     }
-    
+
     // Trim
     for (var tr in trimFields) {
         var v = trimFields[tr];

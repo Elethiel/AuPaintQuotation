@@ -8,15 +8,14 @@
     </label>
     <div class="col-sm-<%= o.inputw %>">
         <input type="hidden" name="max<%= o.field %>List" id="max<%= o.field %>List" value="<%= o.items.length %>" />
-        <input type="hidden" name="<%= o.field %>" id="<%= o.field %>" value="<% if (o.value) { %><%= o.value %><% } %>"
-                    trigger="blur"
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Merci de sélectionner un <%= o.label %>">
+        <input type="hidden" name="<%= o.field %>" id="<%= o.field %>" value="<% if (o.value) { %><% if (o.value == " ") { %>-<% } else { %><%= o.value %><% } } %>"
+                    required="true"
+                    data-bv-notempty-message="Merci de sélectionner un<% if (o.gender == 1) { %>e<% } %> <%= o.label %>">
         <div class="btn-group">
             <button id="select<%= o.field %>" type="button" class="selbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=-1>
                 <% if (o.value) { %>
                     <% for (var i = 0; i < o.items.length; i++) { %>
-                        <% if (o.value == o.items[i].val) { %><%= o.items[i].label %><% } %>
+                        <% if (o.value == o.items[i].val || (o.value === " " && o.items[i].val === "-")) { %><%= o.items[i].label %><% } %>
                     <% } %>
                 <% } else { %>Sélectionnez un<% if (o.gender = 1) { %>e<% } %> <%= o.label %><% } %>
             </button>

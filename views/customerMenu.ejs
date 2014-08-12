@@ -3,16 +3,16 @@
     <head>
         <% include _header %>
         <% include _css %>
-        
+
         <% include _js %>
-       
+
         <script type="text/javascript" src="/js/customer.js"></script>
     </head>
     <body>
         <% include _menu %>
         <div class="wrapper">
-            <div class="background"></div> 
-            
+            <div class="background"></div>
+
                 <div class="container">
                     <div class="row">&nbsp;</div>
                     <div class="row">
@@ -30,7 +30,7 @@
                                     &nbsp;<br/>
                                 <% } %>
                                 <!--  ****************************  PRODUCT   ****************************   -->
-                                
+
                                 <div class="row text-center">
                                     <button type="button" id="addCustomer" class="btn btn-primary">Ajouter un Client</button>
                                 </div>
@@ -43,15 +43,16 @@
                                     <% } %>
                                     <table id="customertab" class="stripe hover cell-border row-border nowrap" cellspacing="0" width="100%">
                                         <thead>
-                                            
+
                                             <tr>
                                                 <th>#</th>
                                                 <th>Type</th>
                                                 <th>Client</th>
+                                                <th>Contact</th>
                                                 <th>&nbsp;</th>
                                             </tr>
                                         </thead>
-                                 
+
                                         <tbody>
                                             <% if (srv.customerList && srv.customerList.length > 0) { %>
                                                 <% for(var i = 0; i < srv.customerList.length; i++) { %>
@@ -67,11 +68,46 @@
                                                         <td id="labelCustomer<%= i %>">
                                                             <% if (srv.customerList[i].customerType == -1) { %>
                                                                 <%= srv.customerList[i].companyName %>
+                                                                <% if (srv.customerList[i].personLastname || srv.customerList[i].personFirstname) { %>
+                                                                    ( <em class="text-small">
+                                                                    <%= srv.customerList[i].personGender ? srv.customerList[i].personGender : "" %>
+                                                                    <%= srv.customerList[i].personLastname ? srv.customerList[i].personLastname : "" %>
+                                                                    <%= srv.customerList[i].personFirstname ? srv.customerList[i].personFirstname : "" %>
+                                                                     </em>
+                                                                    )
+                                                                <% } %>
                                                             <% } else { %>
-                                                                <%= srv.customerList[i].personLastname ? srv.customerList[i].personLastname : "" %> <%= srv.customerList[i].personFirstname ? srv.customerList[i].personFirstname : "" %>
+                                                                <%= srv.customerList[i].personGender ? srv.customerList[i].personGender : "" %>
+                                                                <%= srv.customerList[i].personLastname ? srv.customerList[i].personLastname : "" %>
+                                                                <%= srv.customerList[i].personFirstname ? srv.customerList[i].personFirstname : "" %>
                                                             <% } %>
                                                         </td>
-                                                        <td><a href="/customer?customerId=<%= srv.customerList[i].customerId %>"><span class="glyphicon glyphicon-pencil"></span></a> 
+                                                        <td>
+                                                            <% if (srv.customerList[i].companyContactTel || srv.customerList[i].companyContactMobile || srv.customerList[i].companyContactMail) { %>
+                                                                <% if (srv.customerList[i].companyContactTel) { %>
+                                                                    <span class="glyphicon glyphicon-earphone"></span> <%- srv.customerList[i].companyContactTel.replace(new RegExp(" ", 'g'), "&nbsp;") %><br/>
+                                                                <% } %>
+                                                                <% if (srv.customerList[i].companyContactMobile) { %>
+                                                                    <span class="glyphicon glyphicon-phone"></span> <%- srv.customerList[i].companyContactMobile.replace(new RegExp(" ", 'g'), "&nbsp;") %><br/>
+                                                                <% } %>
+                                                                <% if (srv.customerList[i].companyContactMail) { %>
+                                                                    <span class="glyphicon glyphicon-envelope"></span> <%- srv.customerList[i].companyContactMail.replace(new RegExp(" ", 'g'), "&nbsp;") %><br/>
+                                                                <% } %>
+                                                            <% } %>
+                                                            <% if (srv.customerList[i].personContactTel || srv.customerList[i].personContactMobile || srv.customerList[i].personContactMail) { %>
+                                                                <% if (srv.customerList[i].personContactTel) { %>
+                                                                    <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/><span class="glyphicon glyphicon-earphone"></span> <%- srv.customerList[i].personContactTel.replace(new RegExp(" ", 'g'), "&nbsp;") %><br/>
+                                                                <% } %>
+                                                                <% if (srv.customerList[i].personContactMobile) { %>
+                                                                    <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/><span class="glyphicon glyphicon-phone"></span> <%- srv.customerList[i].personContactMobile.replace(new RegExp(" ", 'g'), "&nbsp;") %><br/>
+                                                                <% } %>
+                                                                <% if (srv.customerList[i].personContactMail) { %>
+                                                                    <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/><span class="glyphicon glyphicon-envelope"></span> <%- srv.customerList[i].personContactMail.replace(new RegExp(" ", 'g'), "&nbsp;") %><br/>
+                                                                <% } %>
+                                                            <% } %>
+
+                                                        </td>
+                                                        <td><a href="/customer?customerId=<%= srv.customerList[i].customerId %>"><span class="glyphicon glyphicon-pencil"></span></a>
                                                             <a id="delCustomer<%= i %>" href="#<%= i %>"><span class="glyphicon glyphicon-remove text-danger"></span></a></td>
                                                     </tr>
                                                 <% } %>
@@ -79,7 +115,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                
+
                                 &nbsp;<br/>
                             </div>
                         </div>
@@ -87,10 +123,10 @@
                 </div>
             </div>
         </div>
-        
+
         <% include _footer %>
         <% include _popup %>
-        
+
         <script type="text/javascript">
             $(document).ready(customerInitTab());
         </script>

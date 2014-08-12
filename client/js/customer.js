@@ -32,8 +32,13 @@ var customerInitTab = function () {
                         "targets": [2]
                     },
                     {
+                        "width": 250,
+                        "sClass": "text-left",
+                        "targets": [3]
+                    },
+                    {
                         "width": 36,
-                        "targets": [3] ,
+                        "targets": [4] ,
                         "sortable": false,
                         "searchable": false
                     }
@@ -59,8 +64,19 @@ var customerInitTab = function () {
 };
 
 var customerValidator = function() {
+    $.fn.bootstrapValidator.validators.atLeastOne = {
+        validate: function(validator, $field, options) {
+            if ($field.val().replace(/^\s+|\s+$/gm,'') != "") return true; // at least one not null OK
+            if ($field.attr("id") === "personFirstname") {
+                if ($("#personLastname").val() != "") return true;
+            } else if ($field.attr("id") === "personLastname") {
+                if ($("#personFirstname").val() != "") return true;
+            }
+            return false;
+        }
+    };
     $("#customerForm").bootstrapValidator( { excluded: [ function($field, validator) {
-            if ($("#customerType").val() == 0) {
+            if ($("#customerType").val() == -1) {
                 return false; // valide all if "type company"
             } else { // if not selected or "type person"
                 if (($field.attr("id") == "companyLegal") || ($field.attr("id") == "companyName")) {
@@ -68,10 +84,31 @@ var customerValidator = function() {
                 }
                 return false;
             }
-
-        } ] } );
+        } ] ,
+        fields: {
+                personFirstname: {
+                        validators: {
+                            atLeastOne: { message: "Merci de remplir au moins l'un des deux champs !" }
+                        }
+                    },
+                personLastname: {
+                        validators: {
+                            atLeastOne: { message: "Merci de remplir au moins l'un des deux champs !" }
+                        }
+                    }
+                }
+        });
     $('#backBut').click(function() {
         window.location.href='/customerMenu';
+    });
+    $('#backButMain').click(function() {
+        window.location.href='/customerMenu';
+    });
+    $("#personFirstname").keyup(function(){
+        $("#customerForm").bootstrapValidator("revalidateField", "personLastname");
+    });
+    $("#personLastname").keyup(function(){
+        $("#customerForm").bootstrapValidator("revalidateField", "personFirstname");
     });
     // select box "customer Type"
     for (var i = 0; i < $("#maxcustomerTypeList").val(); i++) {

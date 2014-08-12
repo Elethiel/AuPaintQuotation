@@ -128,7 +128,7 @@ Customer.prototype.getFlatVersion = function(customerObj) {
 
 Customer.prototype.findAll = function( db, next, callback) {
     var customerList = [];
-    db.all("SELECT c.id, c.type, cp.name, p.gender, p.firstname, p.lastname FROM Customer as c LEFT JOIN company as cp ON (cp.id = c.company_id) LEFT JOIN person as p ON (p.id = c.person_id)", [], function(err, rows) {
+    db.all("SELECT c.id, c.type, cp.name, cpc.tel as companyContactTel, cpc.mobile as companyContactMobile, cpc.mail as companyContactMail, p.gender, p.firstname, p.lastname, pc.tel as personContactTel, pc.mobile as personContactMobile, pc.mail as personContactMail FROM Customer as c LEFT JOIN company as cp ON (cp.id = c.company_id) LEFT JOIN contact cpc ON (cp.contact_id = cpc.id) LEFT JOIN person as p ON (p.id = c.person_id) LEFT JOIN contact pc ON (p.contact_id = pc.id) ", [], function(err, rows) {
         if(err) {
             console.log('SQL Error findAllCustomer '  + util.inspect(err, false, null));
             next(err);
@@ -136,7 +136,7 @@ Customer.prototype.findAll = function( db, next, callback) {
             if (rows)    {
                 rows.forEach(function(row) {
                     var customerObj = {};
-                    lodash.assign(customerObj, { customerId: row.id, customerType: row.type, companyName: row.name, personGender: row.gender, personFirstname: row.firstname, personLastname: row.lastname });
+                    lodash.assign(customerObj, { customerId: row.id, customerType: row.type, companyName: row.name, companyContactTel: row.companyContactTel, companyContactMobile: row.companyContactMobile, companyContactMail: row.companyContactMail, personGender: row.gender, personFirstname: row.firstname, personLastname: row.lastname, personContactTel: row.personContactTel, personContactMobile: row.personContactMobile, personContactMail: row.personContactMail });
                     customerList.push(customerObj);
                 });
             }

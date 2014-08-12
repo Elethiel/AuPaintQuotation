@@ -11,7 +11,7 @@ Address.prototype.insertUpdate = function(db, param, next, callback) {
     if (!param.notstring) tools.manageString(param);
     
     if (param.addressId && param.addressId > 0) {
-        // existing (update)    
+        // existing (update)
         db.run("UPDATE address SET url = ?, line1 = ?, line2 = ?, cp = ?, city = ?, country = ? WHERE id = ?",
                 [ param.addressURL, param.addressLine1, param.addressLine2, param.addressCP, param.addressCity, param.addressCountry, param.addressId ],
                 function(err, row) {

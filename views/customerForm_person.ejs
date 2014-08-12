@@ -4,7 +4,7 @@
 <% include form/inputSelect %>
 <% var o = { index: "21", label: "Prénom", field: "personFirstname", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.personFirstname : srv.Obj) } %>
 <% include form/inputText %>
-<% var o = { index: "22", label: "Nom", tooltip: "Le nom de famille est obligatoire. Si vous n'avez que le prénom du client, choisissez 'Autre' dans civilité et ne renseignez que le nom de famille.", empty: "Le nom de famille est obligatoire", field: "personLastname", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.personLastname : srv.Obj) } %>
+<% var o = { index: "22", label: "Nom", field: "personLastname", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.personLastname : srv.Obj) } %>
 <% include form/inputText %>
 &nbsp;<br/>
 <p class="midlight">Coordonnées de la personne</p>

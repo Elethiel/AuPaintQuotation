@@ -32,10 +32,11 @@ module.exports = function(app) {
         // submit customer (process)
         customer.insertUpdate(req.db, req.body, next, function(ret) {
             req.session.pstatus = ret.msg === "ok" ? (req.body.customerId ? "upd-CUS" : "new-CUS") : ret.msg;
+            var id = req.body.customerId ? req.body.customerId : ret.customerId
             if (ret.msg !== "ok") {
                 req.session.oldObj = req.body;
             }
-            res.redirect("/customer" + (req.body.customerId ? "?customerId=" + req.body.customerId : ""));
+            res.redirect("/customer" + (id ? "?customerId=" + id : ""));
         });
 
         // ---------------------------------------------------------------------------------------------

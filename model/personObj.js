@@ -77,7 +77,7 @@ Person.prototype.insertUpdate = function(db, param, next, callback) {
                                             } else {
                                                 // new (insert)
                                                 db.run("INSERT INTO person (gender, firstname, lastname, note, address_id, contact_id) VALUES(?, ?, ?, ?, ?, ?)",
-                                                        [ param.personGender, param.personFirstName, param.personLastname, param.personNote, addressId, contactId ],
+                                                        [ param.personGender, param.personFirstname, param.personLastname, param.personNote, addressId, contactId ],
                                                         function(err, row) {
                                                             if(err) {
                                                                 console.log('SQL Error insert PERSON ' + util.inspect(err, false, null));

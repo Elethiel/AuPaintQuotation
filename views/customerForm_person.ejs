@@ -1,10 +1,10 @@
-<p id="personTitle" class="highlight"><% if (srv.Obj && srv.Obj.customerType) { %><% if (srv.Obj.customerType == 0) { %>Contact Principal<% } else if (srv.Obj.customerType == 1) { %>Personne Physique<% }%><% } else { %>Contact Principal<% } %></p>
+<p id="personTitle" class="highlight"><% if (srv.Obj && srv.Obj.customerType) { %><% if (srv.Obj.customerType == -1) { %>Contact Principal<% } else if (srv.Obj.customerType == 1) { %>Personne Physique<% }%><% } else { %>Contact Principal<% } %></p>
 <% var o = { index: "20", gender: 1, label: "Civilité", field: "personGender", tooltip: "M. et Mr sont équivalents (Monsieur), Mme (Madame), Mlle n'est officiellement plus utilisable (Mademoiselle), et Autre permet de ne rien mettre en terme de civilité sur les factures (si vous n'avez par exemple qu'un prénom à mettre).", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.personGender : srv.Obj) } %>
 <% include form/inputSelectPersonGender %>
 <% include form/inputSelect %>
-<% var o = { index: "21", label: "Prénom", field: "personFirstName", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.personFirstName : srv.Obj) } %>
+<% var o = { index: "21", label: "Prénom", field: "personFirstname", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.personFirstname : srv.Obj) } %>
 <% include form/inputText %>
-<% var o = { index: "22", label: "Nom", tooltip: "Le nom de famille est obligatoire. Si vous n'avez que le prénom du client, choisissez 'Autre' dans civilité et ne renseignez que le nom de famille.", empty: "Le nom de famille est obligatoire", field: "personLastName", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.personLastName : srv.Obj) } %>
+<% var o = { index: "22", label: "Nom", tooltip: "Le nom de famille est obligatoire. Si vous n'avez que le prénom du client, choisissez 'Autre' dans civilité et ne renseignez que le nom de famille.", empty: "Le nom de famille est obligatoire", field: "personLastname", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.personLastname : srv.Obj) } %>
 <% include form/inputText %>
 &nbsp;<br/>
 <p class="midlight">Coordonnées de la personne</p>

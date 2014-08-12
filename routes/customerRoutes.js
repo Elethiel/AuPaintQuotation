@@ -18,7 +18,7 @@ module.exports = function(app) {
         req.param.Obj = null;
         customer.findById(req.db, { customerId: req.query.customerId }, next, function(customerObj) {
             req.param.Obj = customer.getFlatVersion(customerObj);
-            // console.log("param = " + util.inspect(req.param, false, null));
+            //console.log("param = " + util.inspect(req.param, false, null));
             if (req.session.oldObj) {
                 lodash.assign(req.param.Obj, req.session.oldObj);
                 delete req.session.oldObj;
@@ -35,10 +35,9 @@ module.exports = function(app) {
             if (ret.msg !== "ok") {
                 req.session.oldObj = req.body;
             }
-            if (ret.msg === "nok") res.redirect("/customer" + (req.body.customerId ? "?customerId=" + req.body.customerId : ""));
-            else res.redirect("/customerMenu");
+            res.redirect("/customer" + (req.body.customerId ? "?customerId=" + req.body.customerId : ""));
         });
-        
+
         // ---------------------------------------------------------------------------------------------
     }).get("/customerDel", function(req, res, next) {
         // ---------------------------------------------------------------------------------------------

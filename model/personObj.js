@@ -57,7 +57,7 @@ Person.prototype.insertUpdate = function(db, param, next, callback) {
                                             if (param.personId && param.personId > 0) {
                                                 // existing (update)
                                                 db.run("UPDATE person SET gender = ?, firstname = ?, lastname = ?, note = ?, address_id = ?, contact_id = ? WHERE id = ?",
-                                                        [ param.personGender, param.personFirstName, param.personLastname, param.personNote, addressId, contactId, param.personId],
+                                                        [ param.personGender, param.personFirstname, param.personLastname, param.personNote, addressId, contactId, param.personId],
                                                         function(err, row) {
                                                             if(err) {
                                                                 console.log('SQL Error update PERSON ' + util.inspect(err, false, null));
@@ -104,7 +104,7 @@ Person.prototype.insertUpdate = function(db, param, next, callback) {
 Person.prototype.findById = function(db, param, next, callback) {
     if (param.personId && param.personId > 0) {
         //console.log("** START find PERSON " + data.personId);
-        var companyObj = {};
+        var personObj = {};
         db.get("SELECT gender, firstname, lastname, note, address_id, contact_id  FROM person WHERE id = ?", [param.personId], function(err, row) {
             if(err) {
                 console.log('SQL Error findPerson '  + util.inspect(err, false, null));
@@ -125,7 +125,10 @@ Person.prototype.findById = function(db, param, next, callback) {
                 }
             }
         });
-    } else callback(null);
+    } else {
+        //console.log("no id for person");
+        callback(null);
+    }
 };
 
 Person.prototype.getFlatVersion = function(personObj) {
@@ -166,7 +169,7 @@ Person.prototype.findAllByCustomerId = function(db, param, next, callback) {
                     });
                 }]  );
             }
-
+            //console.log("return personList nb=" + personList.length);
             callback(personList);
         }
     });

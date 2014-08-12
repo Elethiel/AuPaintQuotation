@@ -8,10 +8,10 @@ Tools.prototype.manageString = function(param) {
     // numeric fields
     var numFields = [   "productTTC", "productPaid", "TVAPercent", "ownerFactorOk", "ownerFactorNull" ];
     // fields to UpperCase
-    var uppFields = [   "personLastName", "companyAddressCity", "personAddressCity", "addressCity", "addressCountry", 
+    var uppFields = [   "personLastname", "companyAddressCity", "personAddressCity", "addressCity", "addressCountry", 
                         "companyAddressCountry", "personAddressCountry" ];
     // fields to Capitalize
-    var capFields = [   "personFirstName", "addressLine1", "companyAddressLine1", "personAddressLine1" ];
+    var capFields = [   "personFirstname", "addressLine1", "companyAddressLine1", "personAddressLine1" ];
     // fields to trim
     var trimFields = [  "addressURL", "companyAddressURL", "personAddressURL", "addressLine2", "companyAddressLine2", 
                         "personAddressLine2", "addressCP", "companyAddressCP", "personAddressCP",

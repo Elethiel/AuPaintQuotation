@@ -1,4 +1,4 @@
-<form class="form-horizontal" id="payTypeForm" role="form" action="/payTypeUpdate" method="post" 
+<form class="form-horizontal" id="payTypeForm" role="form" action="/payTypeUpdate" method="post"
         data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
         data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
         data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
@@ -16,18 +16,18 @@
         <small class="help">Les Types de Paiement sont utilisés pour autoriser des types de paiement sur un devis à titre d'informations au client, et pour valider les types des paiements des factures.</small><br/>
     </div>
     &nbsp;<br/>
-    
+
     <% if (srv.Obj && srv.Obj.payTypeId) { %>
         <input type="hidden" name="payTypeId" id="payTypeId" value="<%= srv.Obj.payTypeId %>">
     <% } %>
-    
+
     <% var o = { index: "1", label: "Description", empty: "La description du type de paiement est obligatoire", field: "payTypeLabel", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.payTypeLabel : srv.Obj) } %>
     <% include form/inputText %>
     &nbsp;<br/>
     <% var o = { index: "1", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
-            items: [ { val: "0", lab: "Pas de traitement des données du formulaire" } ] } %>
+            items: [ { val: "1", lab: "Pas de traitement des données du formulaire" } ] } %>
     <% include form/inputCheck %>
-    
+
     &nbsp;<br/>
     <div class="form-group text-right p15LR">
         <button type="button" id="backBut" class="btn btn-default">Retour</button>

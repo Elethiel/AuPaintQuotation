@@ -124,7 +124,10 @@ Company.prototype.findById = function(db, data, next, callback) {
                 }
             }
         });
-    } else callback(null);
+    } else {
+        //console.log("no id for customer");
+        callback(null);
+    }
 };
 
 Company.prototype.getFlatVersion = function(companyObj) {

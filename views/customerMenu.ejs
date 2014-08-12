@@ -58,14 +58,14 @@
                                                     <tr>
                                                         <td id="idCustomer<%= i %>"><%= srv.customerList[i].customerId %></td>
                                                         <td>
-                                                            <% if (srv.customerList[i].customerType == 0) { %>
+                                                            <% if (srv.customerList[i].customerType == -1) { %>
                                                                 <img src="/im/gl_group.png" title="Personne Morale" alt="Morale" border="0"/>
                                                             <% } else { %>
                                                                 <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/>
                                                             <% } %>
                                                         </td>
                                                         <td id="labelCustomer<%= i %>">
-                                                            <% if (srv.customerList[i].customerType == 0) { %>
+                                                            <% if (srv.customerList[i].customerType == -1) { %>
                                                                 <%= srv.customerList[i].companyName %>
                                                             <% } else { %>
                                                                 <%= srv.customerList[i].personLastname ? srv.customerList[i].personLastname : "" %> <%= srv.customerList[i].personFirstname ? srv.customerList[i].personFirstname : "" %>

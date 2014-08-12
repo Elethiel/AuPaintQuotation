@@ -11,21 +11,21 @@ var Customer = function() {};
 Customer.prototype.insertUpdate = function(db, param, next, callback) {
     var objType = null;
     var objParam = [];
-    
+
     if (!param.notstring) tools.manageString(param);
-    
+
     // check companyId, personId
-    db.get("SELECT company_id, person_id FROM Customer WHERE id = ?", 
-            [ param.customerId ], 
+    db.get("SELECT company_id, person_id FROM Customer WHERE id = ?",
+            [ param.customerId ],
             function(err, row) {
                 if(err) {
                     console.log('SQL Error insertUpdate '  + util.inspect(err, false, null));
                     next(err);
                 }
                 else {
-                    if (row)    {   param.companyId = row.company_id; 
+                    if (row)    {   param.companyId = row.company_id;
                                     param.personId = row.person_id; }
-                    else        {   param.companyId = null; 
+                    else        {   param.companyId = null;
                                     param.personId = null; }
                     // main component (company or person for main contact of the customer)
                     company.insertUpdate(db, param, next,
@@ -40,7 +40,7 @@ Customer.prototype.insertUpdate = function(db, param, next, callback) {
                                         param.personId = ret2.personId;
                                         if (param.customerId && param.customerId > 0) {
                                             // existing (update)
-                                            
+
                                             db.run("UPDATE Customer SET status = ?, type = ?, note = ?, company_id = ?, person_id = ? WHERE id = ?",
                                                 [ param.customerStatus, param.customerType, param.customerNote, param.companyId, param.personId, param.customerId ],
                                                 function (err, row) {
@@ -76,7 +76,7 @@ Customer.prototype.insertUpdate = function(db, param, next, callback) {
                                                     }
                                                 });
                                         }
-                                    
+
                                 } else {
                                     callback({msg:"nok", customerId: -2}); // error on person
                                 }
@@ -90,7 +90,7 @@ Customer.prototype.findById = function( db, data, next, callback) {
     if (data.customerId && data.customerId > 0) {
         console.log("** START find Customer " + data.customerId);
         var customerObj = {};
-        db.get("SELECT id, status as customerStatus, type, note, company_id FROM Customer WHERE id = ?", [data.customerId], function(err, row) {
+        db.get("SELECT id, status as customerStatus, type, note, company_id, person_id FROM Customer WHERE id = ?", [data.customerId], function(err, row) {
             if(err) {
                 console.log('SQL Error findCustomer '  + util.inspect(err, false, null));
                 next(err);
@@ -117,18 +117,18 @@ Customer.prototype.findById = function( db, data, next, callback) {
 
 Customer.prototype.getFlatVersion = function(customerObj) {
     if (customerObj) { // flat not possible for personList
-        lodash.assign(customerObj, company.getFlatVersionX(customerObj.companyObj));
-        lodash.assign(customerObj, person.getFlatVersionX(customerObj.personObj));
+        if (customerObj.companyObj) lodash.assign(customerObj, company.getFlatVersionX(customerObj.companyObj));
+        if (customerObj.personObj) lodash.assign(customerObj, person.getFlatVersionX(customerObj.personObj));
         delete customerObj.companyObj;
         delete customerObj.personObj;
-
+        //console.log("** find CustomerFlat " + util.inspect(customerObj, false, null));
     }
     return customerObj;
 }
 
 Customer.prototype.findAll = function( db, next, callback) {
     var customerList = [];
-    db.all("SELECT c.id, c.type, cp.name, p.firstname, p.lastname FROM Customer as c LEFT JOIN company as cp ON (cp.id = c.company_id) LEFT JOIN person as p ON (p.id = c.person_id)", [], function(err, rows) {
+    db.all("SELECT c.id, c.type, cp.name, p.gender, p.firstname, p.lastname FROM Customer as c LEFT JOIN company as cp ON (cp.id = c.company_id) LEFT JOIN person as p ON (p.id = c.person_id)", [], function(err, rows) {
         if(err) {
             console.log('SQL Error findAllCustomer '  + util.inspect(err, false, null));
             next(err);
@@ -136,7 +136,7 @@ Customer.prototype.findAll = function( db, next, callback) {
             if (rows)    {
                 rows.forEach(function(row) {
                     var customerObj = {};
-                    lodash.assign(customerObj, { customerId: row.id, customerType: row.type, companyName: row.name, personFirstname: row.firstname, personLastname: row.lastname });
+                    lodash.assign(customerObj, { customerId: row.id, customerType: row.type, companyName: row.name, personGender: row.gender, personFirstname: row.firstname, personLastname: row.lastname });
                     customerList.push(customerObj);
                 });
             }
@@ -186,7 +186,7 @@ Customer.prototype.delById = function(db, param, next, callback) {
                         }
                     }
                 });
-        
+
     } else callback({msg:"nok", customerId: 0});
 };
 

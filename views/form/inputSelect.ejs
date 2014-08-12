@@ -8,7 +8,7 @@
     </label>
     <div class="col-sm-<%= o.inputw %>">
         <input type="hidden" name="max<%= o.field %>List" id="max<%= o.field %>List" value="<%= o.items.length %>" />
-        <input type="hidden" name="<%= o.field %>" id="<%= o.field %>" value="<% if (o.value) { %><%= o.value %><% } %>" 
+        <input type="hidden" name="<%= o.field %>" id="<%= o.field %>" value="<% if (o.value) { %><%= o.value %><% } %>"
                     trigger="blur"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Merci de sélectionner un <%= o.label %>">

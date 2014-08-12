@@ -161,9 +161,9 @@ Customer.prototype.delById = function(db, param, next, callback) {
                             callback({msg:"rej", CustomerNb : row.nb});
                         } else {
                             // 1. delete all persons linked to customer
-                            person.delByCustomerId(db, param, next, function() {
+                            person.delByCustomerId(db, param, next, function() { // don't care if something has been deleted... error are sent to next if needed
                                 // 2. delete the company linked to customer
-                                company.delByCustomerId(db, param, next, function() {
+                                company.delByCustomerId(db, param, next, function() { // the same
                                     // 3. delete the customer itself
                                     db.run("DELETE FROM customer WHERE id = ?",
                                         [ param.customerId],

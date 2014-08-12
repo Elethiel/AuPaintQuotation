@@ -10,24 +10,24 @@ var tools = require('../model/_tools');
 var Person = function() {};
 
 Person.prototype.insertUpdate = function(db, param, next, callback) {
-    
+
     if (!param.notstring) tools.manageString(param);
-    
+
     // ensure ADDRESS and CONTACT
     // ensure person, get the id if exists
-    db.get("SELECT address_id, contact_id FROM person WHERE id = ?", 
-            [param.personId], 
+    db.get("SELECT address_id, contact_id FROM person WHERE id = ?",
+            [param.personId],
             function(err, row) {
                 if(err) {
                     console.log('SQL Error insertUpdate '  + util.inspect(err, false, null));
                     next(err);
                 }
                 else {
-                    if (row)    {   param.addressId = row.address_id; 
+                    if (row)    {   param.addressId = row.address_id;
                                     param.contactId = row.contact_id; }
-                    else        {   param.addressId = null; 
+                    else        {   param.addressId = null;
                                     param.contactId = null; }
-                    address.insertUpdate(db, {  
+                    address.insertUpdate(db, {
                             addressId:          param.addressId ? param.addressId : param.personAddressId,
                             addressURL:         param.addressURL ? param.addressURL : param.personAddressURL,
                             addressLine1:       param.addressLine1 ? param.addressLine1 : param.personAddressLine1,
@@ -40,9 +40,9 @@ Person.prototype.insertUpdate = function(db, param, next, callback) {
                                 var addressId = null;
                                 if (ret.msg === "ok") {
                                     addressId = ret.addressId;
-                                }  
+                                }
                                 // ensure contact for the person
-                                contact.insertUpdate(db, {  
+                                contact.insertUpdate(db, {
                                         contactId:          param.contactId ? param.contactId : param.personContactId,
                                         contactTel:         param.contactTel ? param.contactTel : param.personContactTel,
                                         contactFax:         param.contactFax ? param.contactFax : param.personContactFax,
@@ -130,22 +130,22 @@ Person.prototype.findById = function(db, param, next, callback) {
 
 Person.prototype.getFlatVersion = function(personObj) {
     if (personObj) {
-        lodash.assign(personObj, personObj.addressObj);   
+        lodash.assign(personObj, personObj.addressObj);
         lodash.assign(personObj, personObj.contactObj);
         delete personObj.addressObj;
         delete personObj.contactObj;
-        
+
     }
     return personObj;
 }
 
 Person.prototype.getFlatVersionX = function(personObj) {
     if (personObj) {
-        lodash.assign(personObj, { personAddressId: personObj.addressObj.addressId, personAddressURL: personObj.addressObj.addressURL, personAddressLine1: personObj.addressObj.addressLine1, personAddressLine2: personObj.addressObj.addressLine2, personAddressCP: personObj.addressObj.addressCP, personAddressCity: personObj.addressObj.addressCity, personAddressCountry: personObj.addressObj.addressCountry });   
+        lodash.assign(personObj, { personAddressId: personObj.addressObj.addressId, personAddressURL: personObj.addressObj.addressURL, personAddressLine1: personObj.addressObj.addressLine1, personAddressLine2: personObj.addressObj.addressLine2, personAddressCP: personObj.addressObj.addressCP, personAddressCity: personObj.addressObj.addressCity, personAddressCountry: personObj.addressObj.addressCountry });
         lodash.assign(personObj, { personContactId: personObj.contactObj.contactId, personContactTel: personObj.contactObj.contactTel, personContactFax: personObj.contactObj.contactFax, personContactMobile: personObj.contactObj.contactMobile, personContactMail: personObj.contactObj.contactMail });
         delete personObj.addressObj;
         delete personObj.contactObj;
-        
+
     }
     return personObj;
 }
@@ -181,12 +181,27 @@ Person.prototype.delByCustomerId = function(db, param, next, callback) {
                 next(err);
             } else {
                 if (rows) {
-                    async.series( [ function() {
-                        rows.forEach(function(row) {
-                            console.log("Delete Person id = " + row.person_id);
-                            db.run("DELETE FROM Person WHERE id = ?",  [ row.person_id ], function(err, row) { if (err) next(err); } );
-                        });
-                    }]  );
+                    async.series( [
+                        function() {
+                            rows.forEach(function(row) {
+                                console.log("Delete Person id = " + row.person_id);
+                                db.run("DELETE FROM Person WHERE id = ?",  [ row.person_id ], function(err, row) { if (err) next(err); } );
+                            });
+                        },
+                        function() {
+                            db.get("SELECT person_id FROM customer WHERE customer_id = ?", [ param.customerId ], function(err, row) {
+                                if(err) {
+                                    console.log('SQL Error delete Person2ByCustomerId '+ util.inspect(err, false, null));
+                                    next(err);
+                                } else {
+                                    if (row) {
+                                        console.log("Delete Person id = " + row.person_id);
+                                        db.run("DELETE FROM Person WHERE id = ?",  [ row.person_id ], function(err, row) { if (err) next(err); } );
+                                    } else callback(); // no company to delete
+                                }
+                            });
+                        }
+                    ]  );
                     callback(); // deleted
                 } else callback(); // no person to delete
             }

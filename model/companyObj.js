@@ -9,24 +9,24 @@ var tools = require('../model/_tools');
 var Company = function() {};
 
 Company.prototype.insertUpdate = function(db, param, next, callback) {
-    
+
     if (!param.notstring) tools.manageString(param);
-    
+
     // ensure ADDRESS and CONTACT
     // ensure company, get the id if exists
-    db.get("SELECT address_id, contact_id FROM company WHERE id = ?", 
-            [param.companyId], 
+    db.get("SELECT address_id, contact_id FROM company WHERE id = ?",
+            [param.companyId],
             function(err, row) {
                 if(err) {
                     console.log('SQL Error insertUpdate '  + util.inspect(err, false, null));
                     next(err);
                 }
                 else {
-                    if (row)    {   param.addressId = row.address_id; 
+                    if (row)    {   param.addressId = row.address_id;
                                     param.contactId = row.contact_id; }
-                    else        {   param.addressId = null; 
+                    else        {   param.addressId = null;
                                     param.contactId = null; }
-                    address.insertUpdate(db, {  
+                    address.insertUpdate(db, {
                             addressId:          param.addressId ? param.addressId : param.companyAddressId,
                             addressURL:         param.addressURL ? param.addressURL : param.companyAddressURL,
                             addressLine1:       param.addressLine1 ? param.addressLine1 : param.companyAddressLine1,
@@ -41,7 +41,7 @@ Company.prototype.insertUpdate = function(db, param, next, callback) {
                                     var addressId = ret.addressId;
                                 }
                                 // ensure contact for the company
-                                contact.insertUpdate(db, {  
+                                contact.insertUpdate(db, {
                                         contactId:          param.contactId ? param.contactId : param.companyContactId,
                                         contactTel:         param.contactTel ? param.contactTel : param.companyContactTel,
                                         contactFax:         param.contactFax ? param.contactFax : param.companyContactFax,
@@ -129,22 +129,22 @@ Company.prototype.findById = function(db, data, next, callback) {
 
 Company.prototype.getFlatVersion = function(companyObj) {
     if (companyObj) {
-        lodash.assign(companyObj, companyObj.addressObj);   
+        lodash.assign(companyObj, companyObj.addressObj);
         lodash.assign(companyObj, companyObj.contactObj);
         delete companyObj.addressObj;
         delete companyObj.contactObj;
-        
+
     }
     return companyObj;
 };
 
 Company.prototype.getFlatVersionX = function(companyObj) {
     if (companyObj) {
-        lodash.assign(companyObj, { companyAddressId: companyObj.addressObj.addressId, companyAddressURL: companyObj.addressObj.addressURL, companyAddressLine1: companyObj.addressObj.addressLine1, companyAddressLine2: companyObj.addressObj.addressLine2, companyAddressCP: companyObj.addressObj.addressCP, companyAddressCity: companyObj.addressObj.addressCity, companyAddressCountry: companyObj.addressObj.addressCountry });   
+        lodash.assign(companyObj, { companyAddressId: companyObj.addressObj.addressId, companyAddressURL: companyObj.addressObj.addressURL, companyAddressLine1: companyObj.addressObj.addressLine1, companyAddressLine2: companyObj.addressObj.addressLine2, companyAddressCP: companyObj.addressObj.addressCP, companyAddressCity: companyObj.addressObj.addressCity, companyAddressCountry: companyObj.addressObj.addressCountry });
         lodash.assign(companyObj, { companyContactId: companyObj.contactObj.contactId, companycontactTel: companyObj.contactObj.contactTel, companycontactFax: companyObj.contactObj.contactFax, companycontactMobile: companyObj.contactObj.contactMobile, companycontactMail: companyObj.contactObj.contactMail });
         delete companyObj.addressObj;
         delete companyObj.contactObj;
-        
+
     }
     return companyObj;
 };
@@ -152,20 +152,16 @@ Company.prototype.getFlatVersionX = function(companyObj) {
 Company.prototype.delByCustomerId = function(db, param, next, callback) {
     if (param.customerId && param.customerId > 0) {
         // existing
-        db.get("SELECT company_id FROM customer WHERE customer_id = ?", [ param.customerId ], function(err, rows) {
+        db.get("SELECT company_id FROM customer WHERE customer_id = ?", [ param.customerId ], function(err, row) {
             if(err) {
                 console.log('SQL Error delete CompanyByCustomerId '+ util.inspect(err, false, null));
                 next(err);
             } else {
-                if (rows) { // TODO
-                    async.series( [ function() {
-                        rows.forEach(function(row) {
-                            console.log("Delete Person id = " + row.person_id);
-                            db.run("DELETE FROM Person WHERE id = ?",  [ row.person_id ], function(err, row) { if (err) next(err); } );
-                        });
-                    }]  );
+                if (row) {
+                    console.log("Delete Company id = " + row.company_id);
+                    db.run("DELETE FROM Company WHERE id = ?",  [ row.company_id ], function(err, row) { if (err) next(err); } );
                     callback(); // deleted
-                } else callback(); // no person to delete
+                } else callback(); // no company to delete
             }
         });
     } else callback(); // nothing to delete

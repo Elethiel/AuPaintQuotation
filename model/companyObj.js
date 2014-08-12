@@ -152,7 +152,7 @@ Company.prototype.getFlatVersionX = function(companyObj) {
 Company.prototype.delByCustomerId = function(db, param, next, callback) {
     if (param.customerId && param.customerId > 0) {
         // existing
-        db.get("SELECT company_id FROM customer WHERE customer_id = ?", [ param.customerId ], function(err, row) {
+        db.get("SELECT company_id FROM customer WHERE id = ?", [ param.customerId ], function(err, row) {
             if(err) {
                 console.log('SQL Error delete CompanyByCustomerId '+ util.inspect(err, false, null));
                 next(err);

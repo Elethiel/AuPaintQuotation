@@ -189,7 +189,7 @@ Person.prototype.delByCustomerId = function(db, param, next, callback) {
                             });
                         },
                         function() {
-                            db.get("SELECT person_id FROM customer WHERE customer_id = ?", [ param.customerId ], function(err, row) {
+                            db.get("SELECT person_id FROM customer WHERE id = ?", [ param.customerId ], function(err, row) {
                                 if(err) {
                                     console.log('SQL Error delete Person2ByCustomerId '+ util.inspect(err, false, null));
                                     next(err);

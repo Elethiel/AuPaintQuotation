@@ -43,6 +43,19 @@ var customerInitTab = function () {
     $("#addCustomer").click( function() {
         window.location.href='/customer';
     });
+
+    // update/delete for Customer
+    maxCustomer = $("#maxCustomer").val();
+    if (maxCustomer && maxCustomer > 0) {
+        for (var i = 0; i < maxCustomer; i++) {
+            $("#delCustomer" + i).click(function () {
+                var n = $( this ).attr('href').substring(1);
+                // update the content of popup before showing
+                popup.updateForDelete($("#labelCustomer" + n).html(), "ce Client", "/customerDel?customerId=", $("#idCustomer" + n).html());
+                popup.show();
+            });
+        }
+    }
 };
 
 var customerValidator = function() {
@@ -55,7 +68,7 @@ var customerValidator = function() {
                 }
                 return false;
             }
-        
+
         } ] } );
     $('#backBut').click(function() {
         window.location.href='/customerMenu';

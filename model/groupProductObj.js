@@ -22,7 +22,7 @@ GroupProduct.prototype.insertUpdate = function(db, param, next, callback) {
                     } else {
                         if (this.changes && this.changes > 0)    {
                             console.log("update groupProduct OK (" + this.changes + ") : " + param.groupProductId);
-                            callback({msg:"ok", groupProductId : this.changes});
+                            callback({msg:"ok", groupProductId : param.groupProductId});
                         } else {
                             console.log("update groupProduct NOK");
                             callback({msg:"nok", groupProductId: 0});

@@ -21,7 +21,7 @@ PayType.prototype.insertUpdate = function(db, param, next, callback) {
                     } else {
                         if (this.changes && this.changes > 0)    {
                             console.log("update payType OK (" + this.changes + ") : " + param.payTypeId);
-                            callback({msg:"ok", payTypeId : this.changes});
+                            callback({msg:"ok", payTypeId : param.payTypeId});
                         } else {
                             console.log("update payType NOK");
                             callback({msg:"nok", payTypeId: 0});

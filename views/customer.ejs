@@ -36,8 +36,8 @@
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-pills nav-wizard nav-justified" role="tablist">
                                     <% if (srv.Obj && srv.Obj.customerId) { %>
-                                        <li <% if (srv.subloc != "" && srv.subloc === "customer") { %>class="active"<% } %>><a href="#customer" role="tab" data-toggle="customer">Raison Sociale</a><div class="nav-arrow"></div></li>
-                                        <li <% if (srv.subloc != "" && srv.subloc === "contact") { %>class="active"<% } %>><div class="nav-wedge"></div><a href="#contact" role="tab" data-toggle="contact">Contacts</a></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "customer") { %>class="active"<% } %>><a href="#customer" role="tab" id="tab0" data-toggle="tab">Raison Sociale</a><div class="nav-arrow"></div></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "contact") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#contact" role="tab" data-toggle="tab">Contacts</a></li>
                                     <% } else { %>
                                         <li class="active"><a href="#customer" role="tab" data-toggle="customer">Raison Sociale</a></li>
                                     <% } %>

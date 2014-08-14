@@ -1,8 +1,71 @@
 <!--  ****************************  CONTACTS   ****************************   -->
 &nbsp;<br/>
 &nbsp;<br/>
-<div class="row">
-    CONTACTS
+<div class="row text-center">
+    <!-- Table with current person List -->
+    <% if (srv.Obj && srv.Obj.personList && srv.Obj.personList.length > 0) { %>
+        <input type="hidden" id="maxPerson" value="<%= srv.Obj.personList.length %>" />
+    <% } %>
+    <table id="persontab" class="stripe hover cell-border row-border nowrap" cellspacing="0" width="100%">
+        <thead>
+
+            <tr>
+                <th>#</th>
+                <th>Person</th>
+                <th>Contact</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% if (srv.Obj.personList && srv.Obj.personList.length > 0) { %>
+                <% for(var i = 0; i < srv.Obj.personList.length; i++) { %>
+                    <% var mainC = (srv.Obj.personList[i].personId == srv.Obj.personId); %>
+                    <tr>
+                        <td id="idPerson<%= i %>"><% if (mainC) { %><b><% } %><%= srv.Obj.personList[i].personId %><% if (mainC) { %></b><% } %></td>
+                        <td id="labelPerson<%= i %>"><% if (mainC) { %><b><% } %>
+                            <%= srv.Obj.personList[i].personGender ? srv.Obj.personList[i].personGender : "" %>
+                            <%= srv.Obj.personList[i].personLastname ? srv.Obj.personList[i].personLastname : "" %>
+                            <%= srv.Obj.personList[i].personFirstname ? srv.Obj.personList[i].personFirstname : "" %>
+                            <% if (mainC) { %></b> (<em> Principal </im>)<% } %>
+                        </td>
+                        <td>
+                            <% if (srv.Obj.personList[i].personContactTel || srv.Obj.personList[i].personContactMobile || srv.Obj.personList[i].personContactMail) { %>
+                                <% if (mainC) { %><b><% } %>
+                                <% if (srv.Obj.personList[i].personContactTel) { %>
+                                    <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/><span class="glyphicon glyphicon-earphone"></span> <%- srv.Obj.personList[i].personContactTel.replace(new RegExp(" ", 'g'), "&nbsp;") %><br/>
+                                <% } %>
+                                <% if (srv.Obj.personList[i].personContactMobile) { %>
+                                    <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/><span class="glyphicon glyphicon-phone"></span> <%- srv.Obj.personList[i].personContactMobile.replace(new RegExp(" ", 'g'), "&nbsp;") %><br/>
+                                <% } %>
+                                <% if (srv.Obj.personList[i].personContactMail) { %>
+                                    <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/><span class="glyphicon glyphicon-envelope"></span> <%- srv.Obj.personList[i].personContactMail.replace(new RegExp(" ", 'g'), "&nbsp;") %><br/>
+                                <% } %>
+                                <% if (mainC) { %></b><% } %>
+                            <% } %>
+
+                        </td>
+                        <td>
+                            <% if (!mainC) { %>
+                                <a id="updatePerson<%= i %>" href="#<%= i %>"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a id="delPerson<%= i %>" href="#<%= i %>"><span class="glyphicon glyphicon-remove text-danger"></span></a></td>
+                            <% } %>
+                    </tr>
+                <% } %>
+            <% } %>
+        </tbody>
+    </table>
+    &nbsp;<br/>
+    &nbsp;<br/>
+    <!-- Button to add a new person in the list -->
+    <div class="row text-center">
+        <button type="button" id="addPerson" class="btn btn-primary">Ajouter un Contact</button>
+        <button type="button" id="cancelBut" class="btn btn-default hide">Annuler</button>
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>
+    <!-- form hidden to add a new person -->
+    <% include customerForm_contactForm %>
 </div>
 &nbsp;<br/>
 &nbsp;<br/>

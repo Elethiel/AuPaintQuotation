@@ -105,7 +105,7 @@ Person.prototype.findById = function(db, param, next, callback) {
     if (param.personId && param.personId > 0) {
         //console.log("** START find PERSON " + data.personId);
         var personObj = {};
-        db.get("SELECT gender, firstname, lastname, note, address_id, contact_id  FROM person WHERE id = ?", [param.personId], function(err, row) {
+        db.get("SELECT id, gender, firstname, lastname, note, address_id, contact_id  FROM person WHERE id = ?", [param.personId], function(err, row) {
             if(err) {
                 console.log('SQL Error findPerson '  + util.inspect(err, false, null));
                 next(err);
@@ -161,12 +161,13 @@ Person.prototype.findAllByCustomerId = function(db, param, next, callback) {
             next(err);
         } else {
             if (rows) {
-                async.series( [ function() {
+                async.series( [ function(c) {
                     rows.forEach(function(row) {
                         findById(db, { personId: row.person_id }, next, function(personObj) {
                             personList.push(productObj);
                         });
                     });
+                    c();
                 }]  );
             }
             //console.log("return personList nb=" + personList.length);
@@ -175,38 +176,59 @@ Person.prototype.findAllByCustomerId = function(db, param, next, callback) {
     });
 };
 
+Person.prototype.delById = function(db, param, next, callback) {
+    if (param.personId && param.personId > 0) {
+        db.get("SELECT contact_id, address_id FROM person WHERE id = ?", [ param.personId ], function(err, row) {
+            if(err) {
+                console.log('SQL Error delete PersonById '+ util.inspect(err, false, null));
+                next(err);
+            } else {
+                if (row) {
+                    async.series( [
+                        function(c) {  contact.delById(db, { contactId: row.contact_id }, next, function(err) { if (err) { console.log("delete Contact from Person"); next(err); } else c(); } ) } ,
+                        function(c) {  address.delById(db, { addressId: row.address_id }, next, function(err) { if (err) { console.log("delete Address from Person"); next(err); } else c(); } ) } ,
+                        function(c) {  db.run("DELETE FROM Person WHERE id = ?",  [ param.personId ], function(err, row) { if (err) { console.log("delete Person by Id " + param.personId); next(err); } else c(); } ); }
+                    ] );
+                }
+                callback();
+            }
+        });
+    }
+};
+
 Person.prototype.delByCustomerId = function(db, param, next, callback) {
     if (param.customerId && param.customerId > 0) {
         // existing
+        var self = this;
         db.all("SELECT person_id FROM customer_person WHERE customer_id = ?", [ param.customerId ], function(err, rows) {
             if(err) {
                 console.log('SQL Error delete PersonByCustomerId '+ util.inspect(err, false, null));
                 next(err);
             } else {
-                if (rows) {
-                    async.series( [
-                        function() {
+                async.series( [
+                    function(c) {
+                        if (rows) {
                             rows.forEach(function(row) {
-                                console.log("Delete Person id = " + row.person_id);
-                                db.run("DELETE FROM Person WHERE id = ?",  [ row.person_id ], function(err, row) { if (err) next(err); } );
-                            });
-                        },
-                        function() {
-                            db.get("SELECT person_id FROM customer WHERE id = ?", [ param.customerId ], function(err, row) {
-                                if(err) {
-                                    console.log('SQL Error delete Person2ByCustomerId '+ util.inspect(err, false, null));
-                                    next(err);
-                                } else {
-                                    if (row) {
-                                        console.log("Delete Person id = " + row.person_id);
-                                        db.run("DELETE FROM Person WHERE id = ?",  [ row.person_id ], function(err, row) { if (err) next(err); } );
-                                    } else callback(); // no company to delete
-                                }
+                                self.delById(db, { personId: row.person_id }, next, function(err, row) { if (err) { console.log("Delete Person By CId"); next(err); } } );
                             });
                         }
-                    ]  );
-                    callback(); // deleted
-                } else callback(); // no person to delete
+                        c();
+                    },
+                    function(c) {
+                        db.get("SELECT person_id FROM customer WHERE id = ?", [ param.customerId ], function(err, row) {
+                            if(err) {
+                                console.log('SQL Error delete Person2ByCustomerId '+ util.inspect(err, false, null));
+                                next(err);
+                            } else {
+                                if (row) {
+                                    self.delById(db, { personId: row.person_id }, next, function(err, row) { if (err) { console.log("Delete Person By CId 2"); next(err); } } );
+                                }
+                                c();
+                            }
+                        });
+                    }
+                ]  );
+                callback(); // deleted
             }
         });
     } else callback(); // nothing to delete

@@ -1,0 +1,22 @@
+{
+    "sProcessing":      "Traitement en cours...",
+    "sSearch":          "Rechercher&nbsp;:",
+    "sLengthMenu":      "Afficher _MENU_ Contact",
+    "sInfo":            "_START_ &agrave; _END_ (Total: _TOTAL_ Contact)",
+    "sInfoEmpty":       "",
+    "sInfoFiltered":    "(filtr&eacute; sur _MAX_ Contact au total)",
+    "sInfoPostFix":     "",
+    "sLoadingRecords":  "Chargement en cours...",
+    "sZeroRecords":     "Aucun Contact &agrave; afficher",
+    "sEmptyTable":      "Pas de Contact",
+    "oPaginate": {
+        "sFirst":       "Premier",
+        "sPrevious":    "Pr&eacute;c&eacute;dent",
+        "sNext":        "Suivant",
+        "sLast":        "Dernier"
+    },
+    "oAria": {
+        "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+        "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+    }
+}

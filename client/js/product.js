@@ -95,6 +95,7 @@ var productInitTab = function () {
                 // update the content of popup before showing
                 popup.updateForDelete($("#labelProduct" + n).html(), "cette Prestation", "/productDel?productId=", $("#idProduct" + n).html());
                 popup.show();
+                return false;
             });
         }
     }

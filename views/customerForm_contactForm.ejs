@@ -1,0 +1,27 @@
+<div id="addPersonDiv" class="hide">
+    <form class="form-horizontal" id="customerForm" role="form" action="/customerUpdateContact" method="post"
+        data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+        data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+        data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+
+    <input type="hidden" name="ctcPersonId" id="ctcPersonId" value="">
+    
+    <p id="ctcPersonTitle" class="highlight">Contact</p>
+    <% var o = { index: "20", gender: 1, label: "Civilité", field: "ctcPersonGender", tooltip: "M. et Mr sont équivalents (Monsieur), Mme (Madame), Mlle n'est officiellement plus utilisable (Mademoiselle), et Autre permet de ne rien mettre en terme de civilité sur les factures (si vous n'avez par exemple qu'un prénom à mettre).", labelw: "4", inputw: "7", value: "" } %>
+    <% include form/inputSelectPersonGender %>
+    <% include form/inputSelect %>
+    <% var o = { index: "21", label: "Prénom", field: "ctcPersonFirstname", labelw: "4", inputw: "7", value: "" } %>
+    <% include form/inputText %>
+    <% var o = { index: "22", label: "Nom", field: "ctcPersonLastname", labelw: "4", inputw: "7", value: "" } %>
+    <% include form/inputText %>
+    &nbsp;<br/>
+    <p class="midlight">Contact de la personne</p>
+    <% var o = { index: "29", label: "Téléphone", field: "ctcPersonContactTel", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: "" } %>
+    <% include form/inputTel %>
+    <% var o = { index: "30", label: "Mobile", field: "ctcPersonContactMobile", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: "" } %>
+    <% include form/inputTel %>
+    <% var o = { index: "31", label: "Fax", field: "ctcPersonContactFax", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: "" } %>
+    <% include form/inputTel %>
+    <% var o = { index: "32", label: "Email", field: "ctcPersonContactMail", labelw: "4", inputw: "7", value: "" } %>
+    <% include form/inputMail %>
+</div>

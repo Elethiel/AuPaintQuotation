@@ -50,7 +50,7 @@ Customer.prototype.insertUpdate = function(db, param, next, callback) {
                                                     } else {
                                                         if (this.changes && this.changes > 0)    {
                                                             console.log("update Customer OK (" + this.changes + ") : " + param.customerId);
-                                                            callback({msg:"ok", customerId : this.changes});
+                                                            callback({msg:"ok", customerId : param.customerId});
                                                         } else {
                                                             console.log("update Customer NOK");
                                                             callback({msg:"nok", customerId: 0});
@@ -86,11 +86,11 @@ Customer.prototype.insertUpdate = function(db, param, next, callback) {
             }); // select company and person
 };
 
-Customer.prototype.findById = function( db, data, next, callback) {
-    if (data.customerId && data.customerId > 0) {
-        console.log("** START find Customer " + data.customerId);
+Customer.prototype.findById = function( db, param, next, callback) {
+    if (param.customerId && param.customerId > 0) {
+        console.log("** START find Customer " + param.customerId);
         var customerObj = {};
-        db.get("SELECT id, status as customerStatus, type, note, company_id, person_id FROM Customer WHERE id = ?", [data.customerId], function(err, row) {
+        db.get("SELECT id, status as customerStatus, type, note, company_id, person_id FROM Customer WHERE id = ?", [param.customerId], function(err, row) {
             if(err) {
                 console.log('SQL Error findCustomer '  + util.inspect(err, false, null));
                 next(err);
@@ -101,6 +101,7 @@ Customer.prototype.findById = function( db, data, next, callback) {
                         // fill the person object now
                         person.findById(db, { personId: row.person_id }, next, function(personObj) {
                             person.findAllByCustomerId(db, { customerId: row.id }, next, function(personList) {
+                                personList.push(personObj);
                                 lodash.assign(customerObj, { customerId: row.id, customerStatus: row.customerStatus, customerType: row.type, companyObj: companyObj, personObj: personObj, personList: personList });
                                 //console.log("** find Customer " + util.inspect(customerObj, false, null));
                                 callback(customerObj);
@@ -149,6 +150,7 @@ Customer.prototype.findAll = function( db, next, callback) {
 Customer.prototype.delById = function(db, param, next, callback) {
     if (param.customerId && param.customerId > 0) {
         // existing
+        console.log("** Start delete customer " + param.customerId);
         db.get("SELECT COUNT(id) as nb FROM invoice WHERE customer_id = ?",
                 [ param.TVAId],
                 function(err, row) {
@@ -166,17 +168,17 @@ Customer.prototype.delById = function(db, param, next, callback) {
                                 company.delByCustomerId(db, param, next, function() { // the same
                                     // 3. delete the customer itself
                                     db.run("DELETE FROM customer WHERE id = ?",
-                                        [ param.customerId],
+                                        [ param.customerId ],
                                         function (err, row) {
                                             if(err) {
                                                 console.log('SQL Error delete customer '+ util.inspect(err, false, null));
-                                               next(err);
+                                                next(err);
                                             } else {
                                                 if (this.changes && this.changes > 0)    {
                                                     console.log("delete Customer OK (" + this.changes + ") : " + param.customerId);
                                                     callback({msg:"ok", customerId : this.changes});
                                                 } else {
-                                                    console.log("delete Customer NOK");
+                                                    console.log("delete Customer NOK " + this.changes);
                                                     callback({msg:"nok", customerId: 0});
                                                 }
                                             }

@@ -2,6 +2,7 @@ var address = require("../model/addressObj");
 var contact = require("../model/contactObj");
 var lodash = require("lodash");
 var util = require('util');
+var async = require('async');
 var tools = require('../model/_tools');
 
 // db.run("CREATE TABLE company (id INTEGER PRIMARY KEY AUTOINCREMENT, legal TEXT, name TEXT, tva TEXT, siret TEXT, ape TEXT, address_id INT NOT NULL, contact_id INT NOT NULL)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'company'); } });
@@ -100,11 +101,11 @@ Company.prototype.insertUpdate = function(db, param, next, callback) {
             }); // select callback
 };
 
-Company.prototype.findById = function(db, data, next, callback) {
-    if (data.companyId && data.companyId > 0) {
-        //console.log("** START find COMPANY " + data.companyId);
+Company.prototype.findById = function(db, param, next, callback) {
+    if (param.companyId && param.companyId > 0) {
+        //console.log("** START find COMPANY " + param.companyId);
         var companyObj = {};
-        db.get("SELECT id, legal, name, tva, siret, ape, address_id, contact_id  FROM company WHERE id = ?", [data.companyId], function(err, row) {
+        db.get("SELECT id, legal, name, tva, siret, ape, address_id, contact_id  FROM company WHERE id = ?", [param.companyId], function(err, row) {
             if(err) {
                 console.log('SQL Error findCompany '  + util.inspect(err, false, null));
                 next(err);
@@ -144,7 +145,7 @@ Company.prototype.getFlatVersion = function(companyObj) {
 Company.prototype.getFlatVersionX = function(companyObj) {
     if (companyObj) {
         lodash.assign(companyObj, { companyAddressId: companyObj.addressObj.addressId, companyAddressURL: companyObj.addressObj.addressURL, companyAddressLine1: companyObj.addressObj.addressLine1, companyAddressLine2: companyObj.addressObj.addressLine2, companyAddressCP: companyObj.addressObj.addressCP, companyAddressCity: companyObj.addressObj.addressCity, companyAddressCountry: companyObj.addressObj.addressCountry });
-        lodash.assign(companyObj, { companyContactId: companyObj.contactObj.contactId, companycontactTel: companyObj.contactObj.contactTel, companycontactFax: companyObj.contactObj.contactFax, companycontactMobile: companyObj.contactObj.contactMobile, companycontactMail: companyObj.contactObj.contactMail });
+        lodash.assign(companyObj, { companyContactId: companyObj.contactObj.contactId, companyContactTel: companyObj.contactObj.contactTel, companyContactFax: companyObj.contactObj.contactFax, companyContactMobile: companyObj.contactObj.contactMobile, companyContactMail: companyObj.contactObj.contactMail });
         delete companyObj.addressObj;
         delete companyObj.contactObj;
 
@@ -152,19 +153,39 @@ Company.prototype.getFlatVersionX = function(companyObj) {
     return companyObj;
 };
 
+Company.prototype.delById = function(db, param, next, callback) {
+    if (param.companyId && param.companyId > 0) {
+        db.get("SELECT contact_id, address_id FROM Company WHERE id = ?", [ param.companyId ], function(err, row) {
+            if(err) {
+                console.log('SQL Error delete CompanyById '+ util.inspect(err, false, null));
+                next(err);
+            } else {
+                if (row) {
+                    async.series( [
+                        function(c) {  contact.delById(db, { contactId: row.contact_id }, next, function(err) { if (err) { console.log("delete Contact from Company"); next(err); } else c(); } ) } ,
+                        function(c) {  address.delById(db, { addressId: row.address_id }, next, function(err) { if (err) { console.log("delete Address from Company"); next(err); } else c(); } ) } ,
+                        function(c) {  db.run("DELETE FROM Company WHERE id = ?",  [ param.companyId ], function(err, row) { if (err) { console.log("delete Person by Id " + param.companyId); next(err); } else c(); } ); }
+                    ] );
+                }
+                callback();
+            }
+        });
+    }
+};
+
 Company.prototype.delByCustomerId = function(db, param, next, callback) {
     if (param.customerId && param.customerId > 0) {
         // existing
+        var self = this;
         db.get("SELECT company_id FROM customer WHERE id = ?", [ param.customerId ], function(err, row) {
             if(err) {
                 console.log('SQL Error delete CompanyByCustomerId '+ util.inspect(err, false, null));
                 next(err);
             } else {
                 if (row) {
-                    console.log("Delete Company id = " + row.company_id);
-                    db.run("DELETE FROM Company WHERE id = ?",  [ row.company_id ], function(err, row) { if (err) next(err); } );
-                    callback(); // deleted
-                } else callback(); // no company to delete
+                    self.delById(db, { companyId: row.company_id }, next, function(err, row) { if (err) { console.log("Delete Company By CId"); next(err); } } );
+                }
+                callback(); // deleted
             }
         });
     } else callback(); // nothing to delete

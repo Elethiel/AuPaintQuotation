@@ -191,6 +191,7 @@ var initTabs = function() {
                 // update the content of popup before showing
                 popup.updateForDelete($("#labelTVA" + n).html(), "cette TVA", "/tvaDel?TVAId=", $("#idTVA" + n).html());
                 popup.show();
+                return false;
             });
         }
     }
@@ -203,6 +204,7 @@ var initTabs = function() {
                 // update the content of popup before showing
                 popup.updateForDelete($("#labelGroupProduct" + n).html(), "cette Catégorie de Produit", "/groupProductDel?groupProductId=", $("#idGroupProduct" + n).html());
                 popup.show();
+                return false;
             });
         }
     }
@@ -215,6 +217,7 @@ var initTabs = function() {
                 // update the content of popup before showing
                 popup.updateForDelete($("#labelPayType" + n).html(), "ce Type de Paiement", "/payTypeDel?payTypeId=", $("#idPayType" + n).html());
                 popup.show();
+                return false;
             });
         }
     }
@@ -227,6 +230,7 @@ var initTabs = function() {
                 // update the content of popup before showing
                 popup.updateForDelete($("#labelPayCond" + n).html(), "cette Condition de Paiement", "/payCondDel?payCondId=", $("#idPayCond" + n).html());
                 popup.show();
+                return false;
             });
         }
     }

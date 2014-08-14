@@ -1,3 +1,3 @@
 git add --all
-git commit -m "Delete for Customer"
+git commit -m "Customer Contact"
 git push

@@ -22,7 +22,7 @@ Contact.prototype.insertUpdate = function(db, param, next, callback) {
                     else {
                         if (this.changes && this.changes > 0)    {
                             console.log("update CONTACT OK (" + this.changes + ") : " + param.contactId);
-                            callback({msg:"ok", contactId : this.changes});
+                            callback({msg:"ok", contactId : param.contactId});
                         }
                         else {
                             console.log("update CONTACT NOK");
@@ -70,6 +70,16 @@ Contact.prototype.findById = function( db, data, next, callback) {
                     callback(null);
                 }
             }
+        });
+    } else callback(null);
+};
+
+Contact.prototype.delById = function(db, param, next, callback) {
+    if (param.contactId && param.contactId > 0) {
+        db.run("DELETE FROM Contact WHERE id = ?",  [ param.contactId ], function(err, row) { 
+            if (err) { 
+                next(err); 
+            } else callback(null);
         });
     } else callback(null);
 };

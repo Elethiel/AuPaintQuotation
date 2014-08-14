@@ -53,11 +53,11 @@ Address.prototype.insertUpdate = function(db, param, next, callback) {
     }
 };
 
-Address.prototype.findById = function(db, data, next, callback) {
-    if (data.addressId && data.addressId > 0) {
-        //console.log("** START find ADDRESS " + data.addressId);
+Address.prototype.findById = function(db, param, next, callback) {
+    if (param.addressId && param.addressId > 0) {
+        //console.log("** START find ADDRESS " + param.addressId);
         var addressObj = {};
-        db.get("SELECT id, url, line1, line2, cp, city, country  FROM address WHERE id = ?", [data.addressId], function(err, row) {
+        db.get("SELECT id, url, line1, line2, cp, city, country  FROM address WHERE id = ?", [param.addressId], function(err, row) {
             if(err) {
                 console.log('SQL Error findAddress '  + util.inspect(err, false, null));
                 next(err);
@@ -70,6 +70,16 @@ Address.prototype.findById = function(db, data, next, callback) {
                     callback(null);
                 }
             }
+        });
+    } else callback(null);
+};
+
+Address.prototype.delById = function(db, param, next, callback) {
+    if (param.addressId && param.addressId > 0) {
+        db.run("DELETE FROM Address WHERE id = ?",  [ param.addressId ], function(err, row) { 
+            if (err) { 
+                next(err); 
+            } else callback(null);
         });
     } else callback(null);
 };

@@ -21,7 +21,7 @@ PayCond.prototype.insertUpdate = function(db, param, next, callback) {
                     } else {
                         if (this.changes && this.changes > 0)    {
                             console.log("update payCond OK (" + this.changes + ") : " + param.payCondId);
-                            callback({msg:"ok", payCondId : this.changes});
+                            callback({msg:"ok", payCondId : param.payCondId});
                         } else {
                             console.log("update payCond NOK");
                             callback({msg:"nok", payCondId: 0});

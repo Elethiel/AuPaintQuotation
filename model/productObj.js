@@ -34,7 +34,7 @@ Product.prototype.insertUpdate = function(db, param, next, callback) {
                                         } else {
                                             if (this.changes && this.changes > 0)    {
                                                 console.log("update Product OK (" + this.changes + ") : " + param.productId);
-                                                callback({msg:"ok", productId : this.changes});
+                                                callback({msg:"ok", productId : param.productId});
                                             } else {
                                                 console.log("update Product NOK");
                                                 callback({msg:"nok", productId: 0});

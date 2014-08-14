@@ -24,7 +24,7 @@ TVA.prototype.insertUpdate = function(db, param, next, callback) {
                     } else {
                         if (this.changes && this.changes > 0)    {
                             console.log("update TVA OK (" + this.changes + ") : " + param.TVAId);
-                            callback({msg:"ok", TVAId : this.changes});
+                            callback({msg:"ok", TVAId : param.TVAId});
                         } else {
                             console.log("update TVA NOK");
                             callback({msg:"nok", TVAId: 0});

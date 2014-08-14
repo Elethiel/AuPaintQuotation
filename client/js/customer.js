@@ -58,6 +58,7 @@ var customerInitTab = function () {
                 // update the content of popup before showing
                 popup.updateForDelete($("#labelCustomer" + n).html(), "ce Client", "/customerDel?customerId=", $("#idCustomer" + n).html());
                 popup.show();
+                return false;
             });
         }
     }
@@ -122,6 +123,84 @@ var customerValidator = function() {
     for (var i = 0; i < $("#maxpersonGenderList").val(); i++) {
         $("#optionpersonGender" + i).click(genderSelect);
     }
+
+    $("#persontab").dataTable( {
+                "jQueryUI":         true,
+                "language":         { "url": "./js/datatables_contact.lang" },
+                "dom":              '<T<"H"r<"#PersonHeader">>t<"F"i>',
+                "iDisplayLength":   -1,
+                "fnInitComplete":   function() { $("#PersonHeader").html("<b>Contacts</b>") },
+                "tableTools": {
+                                    "sSwfPath": "./libs/datatables/plugins/tabletools/swf/copy_csv_xls_pdf.swf",
+                                    "aButtons": [
+                                                    {
+                                                        "sExtends":    "collection",
+                                                        "sButtonText": "Export",
+                                                        "aButtons":    [ "xls", "pdf" ]
+                                                    }
+                                                ]
+                },
+                "order":            [[ 1, "asc" ]],
+                "columnDefs": [
+                    {
+                        "width": 20,
+                        "targets": [0]
+                    },
+                    {
+                        "sClass": "text-left",
+                        "targets": [1]
+                    },
+                    {
+                        "width": 250,
+                        "sClass": "text-left",
+                        "targets": [2]
+                    },
+                    {
+                        "width": 36,
+                        "targets": [3] ,
+                        "sortable": false,
+                        "searchable": false
+                    }
+                ]
+    } );
+    // update/delete for Contact
+    maxPerson = $("#maxPerson").val();
+    if (maxPerson && maxPerson > 0) {
+        for (var i = 0; i < maxPerson; i++) {
+            $("#delPerson" + i).click(function () {
+                var n = $( this ).attr('href').substring(1);
+                // update the content of popup before showing
+                popup.updateForDelete($("#labelPerson" + n).html(), "ce Contact", "/customerDelPerson?personId=", $("#idPerson" + n).html());
+                popup.show();
+                return false;
+            });
+        }
+    }
+    $("#cancelBut").click( function() {
+        $("#addPersonDiv").removeClass("show");
+        $("#addPersonDiv").hide();
+        $("#cancelBut").removeClass("show");
+        $("#cancelBut").hide();
+    });
+
+    // add a new contact
+    $("#addPerson").click( function() {
+        // need to clear all inputs of the form
+        $("#ctcPersonId").val("");
+        $("#ctcPersonGender").val("");
+        $("#seletctcPersonGender").html("Sélectionnez une Civilité");
+        $("#ctcPersonFirstname").val("");
+        $("#ctcPersonLastname").val("");
+        $("#ctcPersonContactTel").val("");
+        $("#ctcPersonContactMobile").val("");
+        $("#ctcPersonContactFax").val("");
+        $("#ctcPersonContactMail").val("");
+        $("#addPersonDiv").removeClass("hide");
+        $("#addPersonDiv").show();
+        $("#cancelBut").removeClass("hide");
+        $("#cancelBut").show();
+        return false;
+    });
 };
 
 var customerTypeSelect = function() {

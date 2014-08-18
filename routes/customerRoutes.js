@@ -14,6 +14,9 @@ module.exports = function(app) {
             req.param.pstatus = req.session.pstatus;
             delete req.session.pstatus;
         }
+        if (req.query.sub) {
+            req.param.subloc = req.query.sub;
+        }
         if (!req.param.subloc)  req.param.subloc = "customer";
         req.param.Obj = null;
         customer.findById(req.db, { customerId: req.query.customerId }, next, function(customerObj) {
@@ -36,10 +39,34 @@ module.exports = function(app) {
             if (ret.msg !== "ok") {
                 req.session.oldObj = req.body;
             }
-            res.redirect("/customer" + (id ? "?customerId=" + id : ""));
+            res.redirect("/customer?" + (id ? "customerId=" + id + "&" : "") + "sub=main");
         });
 
         // ---------------------------------------------------------------------------------------------
+    }).post("/customerUpdateContact", function(req, res, next) {
+        // ---------------------------------------------------------------------------------------------
+        // submit contact (process)
+        person.insertUpdate(req.db, {
+            personId: req.body.ctcPersonId,
+            personGender: req.body.ctcPersonGender,
+            personFirstname: req.body.ctcPersonFirstname,
+            personLastname: req.body.ctcPersonLastname,
+            personContactFace: req.body.ctcPersonContactFax,
+            personContactMail: req.body.ctcPersonContactMail,
+            personContactMobile: req.body.ctcPersonContactMobile,
+            personContactTel: req.body.ctcPersonContactTel
+            }, next, function (ret) {
+                if (ret.msg === "ok" && !req.body.ctcPersonId && req.body.customerId) {
+                    // need to link person and customer
+                    person.linkToCustomer(req.db, { personId: ret.personId, customerId: req.body.customerId }, next, function() {} );
+                }
+                req.session.pstatus = ret.msg === "ok" ? (req.body.ctcPersonId ? "upd-CON" : "new-CON") : ret.msg;
+                var id = req.body.customerId ? req.body.customerId : ret.customerId
+                if (ret.msg !== "ok") {
+                    req.session.oldObj = req.body;
+                }
+                res.redirect("/customer?" + (id ? "customerId=" + id + "&" : "") + "sub=contact");
+        });
     }).get("/customerDel", function(req, res, next) {
         // ---------------------------------------------------------------------------------------------
         // error from FORM (post)

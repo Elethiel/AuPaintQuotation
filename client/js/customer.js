@@ -167,11 +167,18 @@ var customerValidator = function() {
     maxPerson = $("#maxPerson").val();
     if (maxPerson && maxPerson > 0) {
         for (var i = 0; i < maxPerson; i++) {
+            // delete
             $("#delPerson" + i).click(function () {
                 var n = $( this ).attr('href').substring(1);
                 // update the content of popup before showing
                 popup.updateForDelete($("#labelPerson" + n).html(), "ce Contact", "/customerDelPerson?personId=", $("#idPerson" + n).html());
                 popup.show();
+                return false;
+            });
+            // update
+            $("#updatePerson" + i).click(function () {
+                var n = $( this ).attr('href').substring(1);
+                updatePerson(i);
                 return false;
             });
         }
@@ -201,6 +208,31 @@ var customerValidator = function() {
         $("#cancelBut").show();
         return false;
     });
+
+    // the add contact form
+    $("#contactForm").bootstrapValidator( { excluded: [],
+        fields: {
+                ctcPersonFirstname: {
+                        validators: {
+                            atLeastOne: { message: "Merci de remplir au moins l'un des deux champs !" }
+                        }
+                    },
+                ctcPersonLastname: {
+                        validators: {
+                            atLeastOne: { message: "Merci de remplir au moins l'un des deux champs !" }
+                        }
+                    }
+                }
+        });
+
+    // select box "person Gender"
+    for (var i = 0; i < $("#maxctcPersonGenderList").val(); i++) {
+        $("#optionctcPersonGender" + i).click(genderctcSelect);
+    }
+};
+
+var updatePerson = function(i) {
+    alert('Update Ze Contact ' + i);
 };
 
 var customerTypeSelect = function() {
@@ -233,6 +265,16 @@ var genderSelect = function() {
     $("#selectpersonGender").html($(this).html());
     $("#customerForm").bootstrapValidator("revalidateField", "personGender");
     $("#selectDroppersonGender").click();
+    return false;
+};
+
+var genderctcSelect = function() {
+    // retrieve "i"
+    var i = $(this).attr("id").substring("optionctcPersonGender".length);
+    $("#ctcPersonGender").val($("#optionvalctcPersonGender" + i).val());
+    $("#selectctcPersonGender").html($(this).html());
+    $("#contactForm").bootstrapValidator("revalidateField", "ctcPersonGender");
+    $("#selectDropctcPersonGender").click();
     return false;
 };
 

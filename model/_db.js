@@ -178,6 +178,11 @@ db.prototype.each = function(sql, params, callback) {
     return this.db.each(sql, params, callback);
 };
 
+
+db.prototype.each = function(sql, params, callback, complete) {
+    return this.db.each(sql, params, callback, complete);
+};
+
 db.prototype.get = function(sql, params, callback) {
     return this.db.get(sql, params, callback);
 };

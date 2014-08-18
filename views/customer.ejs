@@ -30,6 +30,10 @@
                                     <div class="form-group text-center">
                                         <% if (srv.pstatus === "upd-CUS") { %><span class="label label-success">Client bien mis à jour</span><% } %>
                                         <% if (srv.pstatus === "new-CUS") { %><span class="label label-success">Client bien ajouté</span><% } %>
+                                        <% if (srv.pstatus === "upd-CON") { %><span class="label label-success">Contact bien mis à jour</span><% } %>
+                                        <% if (srv.pstatus === "new-CON") { %><span class="label label-success">Contact bien ajouté</span><% } %>
+                                        <% if (srv.pstatus === "del-CON") { %><span class="label label-success">Contact bien supprimé</span><% } %>
+                                        <% if (srv.pstatus === "err-CON") { %><span class="label label-danger">Error lors de la suppression du Contact</span><% } %>
                                     </div>
                                     &nbsp;<br/>
                                 <% } %>

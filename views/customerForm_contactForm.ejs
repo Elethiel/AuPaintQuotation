@@ -5,10 +5,12 @@
         data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
 
     <input type="hidden" name="ctcPersonId" id="ctcPersonId" value="">
-    
+
     <% if (srv.Obj && srv.Obj.customerId) { %>
         <input type="hidden" name="customerId" id="customerId" value="<%= srv.Obj.customerId %>">
     <% } %>
+    <input type="hidden" name="ctcPersonContactId" id="ctcPersonContactId" value="">
+    <input type="hidden" name="ctcPersonAddressId" id="ctcPersonAddressId" value="">
 
     <p id="ctcPersonTitle" class="highlight">Contact</p>
     <% var o = { index: "50", gender: 1, label: "Civilité", field: "ctcPersonGender", tooltip: "M. et Mr sont équivalents (Monsieur), Mme (Madame), Mlle n'est officiellement plus utilisable (Mademoiselle), et Autre permet de ne rien mettre en terme de civilité sur les factures (si vous n'avez par exemple qu'un prénom à mettre).", labelw: "4", inputw: "7", value: "" } %>
@@ -28,6 +30,11 @@
     <% include form/inputTel %>
     <% var o = { index: "56", label: "Email", field: "ctcPersonContactMail", labelw: "4", inputw: "7", value: "" } %>
     <% include form/inputMail %>
+    &nbsp;<br/>
+    <% var o = { index: "57", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
+            items: [ { val: "1", lab: "Pas de traitement des données du formulaire" } ] } %>
+    <% include form/inputCheck %>
+
     &nbsp;<br/>
     <button type="submit" class="btn btn-primary">
         Enregistrer

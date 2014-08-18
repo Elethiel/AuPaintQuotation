@@ -18,7 +18,7 @@
         </thead>
 
         <tbody>
-            <% if (srv.Obj.personList && srv.Obj.personList.length > 0) { %>
+            <% if (srv.Obj && srv.Obj.personList && srv.Obj.personList.length > 0) { %>
                 <% for(var i = 0; i < srv.Obj.personList.length; i++) { %>
                     <% var mainC = (srv.Obj.personList[i].personId == srv.Obj.personId); %>
                     <tr>
@@ -48,8 +48,19 @@
                         <td>
                             <% if (!mainC) { %>
                                 <a id="updatePerson<%= i %>" href="#<%= i %>"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <a id="delPerson<%= i %>" href="#<%= i %>"><span class="glyphicon glyphicon-remove text-danger"></span></a></td>
+                                <a id="delPerson<%= i %>" href="#<%= i %>"><span class="glyphicon glyphicon-remove text-danger"></span></a>
                             <% } %>
+                            <input type="hidden" id="cPId<%= i %>" value="<%= srv.Obj.personList[i].personId ? srv.Obj.personList[i].personId : "" %>">
+                            <input type="hidden" id="cPAId<%= i %>" value="<%= srv.Obj.personList[i].personAddressId ? srv.Obj.personList[i].personAddressId : "" %>">
+                            <input type="hidden" id="cPCId<%= i %>" value="<%= srv.Obj.personList[i].personContactId ? srv.Obj.personList[i].personContactId : "" %>">
+                            <input type="hidden" id="cPGender<%= i %>" value="<%= srv.Obj.personList[i].personGender ? srv.Obj.personList[i].personGender : "" %>">
+                            <input type="hidden" id="cPFirstname<%= i %>" value="<%= srv.Obj.personList[i].personFirstname ? srv.Obj.personList[i].personFirstname : "" %>">
+                            <input type="hidden" id="cPLastname<%= i %>" value="<%= srv.Obj.personList[i].personLastname ? srv.Obj.personList[i].personLastname : "" %>">
+                            <input type="hidden" id="cPTel<%= i %>" value="<%= srv.Obj.personList[i].personContactTel ? srv.Obj.personList[i].personContactTel : "" %>">
+                            <input type="hidden" id="cPMobile<%= i %>" value="<%= srv.Obj.personList[i].personContactMobile ? srv.Obj.personList[i].personContactMobile : "" %>">
+                            <input type="hidden" id="cPMail<%= i %>" value="<%= srv.Obj.personList[i].personContactMail ? srv.Obj.personList[i].personContactMail : "" %>">
+                            <input type="hidden" id="cPFax<%= i %>" value="<%= srv.Obj.personList[i].ctcPersonContactFax ? srv.Obj.personList[i].ctcPersonContactFax : "" %>">
+                        </td>
                     </tr>
                 <% } %>
             <% } %>

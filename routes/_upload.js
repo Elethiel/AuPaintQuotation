@@ -1,4 +1,4 @@
-var lwip = require('lwip');
+var lwip = require("lwip");
 
 var imageAuth = [   /*"image/bmp",
                     "image/gif",*/
@@ -15,10 +15,10 @@ module.exports = function(file, width, height, callback) {
             ok = ok | (imageAuth[i] === file.mimetype)
         }
         if (!ok) {
-            console.log("Reject the file (" + file.type + ") " + file.originalname);
+            //console.log("Reject the file (" + file.type + ") " + file.originalname);
             callback("rej", null);
         } else {
-            console.log("Accept the file " + file.originalname);
+            //console.log("Accept the file " + file.originalname);
             var newPath = "/uploads/" + (new Date().getTime()) + "-" + file.originalname.replace(" ", "_").toLowerCase();
             // for the proper size to prevent big images
             lwip.open(file.path, function(err, image) {
@@ -32,12 +32,10 @@ module.exports = function(file, width, height, callback) {
                         else callback("nof", null);
                     });
                 } else {
-                    console.log("Issue while uploading the file " + util.inspect(err, false, null));
+                    //console.log("Issue while uploading the file " + util.inspect(err, false, null));
                     callback("nof", null);
                 }
             });
         }
-    } else {
-        callback("ok", null);
-    }
+    } else callback("ok", null);
 };

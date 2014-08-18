@@ -116,6 +116,10 @@ html, body {
 .black {
     color: #000;
 }
+.opacited {
+    opacity : 0.5;    
+    font-style: italic;
+}
 /* CSS for BOOTSTRAP */
 
 .form-group {

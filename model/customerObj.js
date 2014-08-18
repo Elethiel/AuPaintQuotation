@@ -25,41 +25,47 @@ Customer.prototype.insertUpdate = function(db, param, callback) {
                 else        {   param.companyId = null;
                                 param.personId = null; }
                 // main component (company or person for main contact of the customer)
-                company.insertUpdate(db, param, function(ret) {
-                    if (ret.msg === "ok") param.companyId = ret.companyId;
-                    else param.companyId = null; // optional
+                company.insertUpdate(db, param, function(err, ret) {
+                    if (err) callback(err);
+                    else {
+                        if (ret.msg === "ok") param.companyId = ret.companyId;
+                        else param.companyId = null; // optional
 
-                    person.insertUpdate(db, param, function(ret2) {
-                        if (ret2.msg === "ok") {
-                            param.personId = ret2.personId;
-                            if (param.customerId && param.customerId > 0) {
-                                // existing (update)
+                        person.insertUpdate(db, param, function(err, ret2) {
+                            if (err) callback(err);
+                            else {
+                                if (ret2.msg === "ok") {
+                                    param.personId = ret2.personId;
+                                    if (param.customerId && param.customerId > 0) {
+                                        // existing (update)
 
-                                db.run("UPDATE Customer SET status = ?, type = ?, note = ?, company_id = ?, person_id = ? WHERE id = ?",
-                                    [ param.customerStatus, param.customerType, param.customerNote, param.companyId, param.personId, param.customerId ],
-                                    function (err, row) {
-                                        if (err) callback(err);
-                                        else {
-                                            if (this.changes && this.changes > 0)   callback(null, {msg:"ok", customerId : param.customerId});
-                                            else                                    callback(null, {msg:"nok", customerId: 0});
-                                        }
+                                        db.run("UPDATE Customer SET status = ?, type = ?, note = ?, company_id = ?, person_id = ? WHERE id = ?",
+                                            [ param.customerStatus, param.customerType, param.customerNote, param.companyId, param.personId, param.customerId ],
+                                            function (err, row) {
+                                                if (err) callback(err);
+                                                else {
+                                                    if (this.changes && this.changes > 0)   callback(null, {msg:"ok", customerId : param.customerId});
+                                                    else                                    callback(null, {msg:"nok", customerId: 0});
+                                                }
+                                            }
+                                        ); // update
+                                    } else {
+                                        // new (insert)
+                                        db.run("INSERT INTO Customer (status, type, note, company_id, person_id) VALUES (?, ?, ?, ?, ?)",
+                                            [ param.customerStatus, param.customerType, param.customerNote, param.companyId, param.personId ],
+                                            function(err, row) {
+                                                if (err) callback(err);
+                                                else {
+                                                    if (this.lastID)    callback(null, {msg:"ok", customerId : this.lastID});
+                                                    else                callback(null, {msg:"nok", customerId: 0});
+                                                }
+                                            }
+                                        ); // insert
                                     }
-                                ); // update
-                            } else {
-                                // new (insert)
-                                db.run("INSERT INTO Customer (status, type, note, company_id, person_id) VALUES (?, ?, ?, ?, ?)",
-                                    [ param.customerStatus, param.customerType, param.customerNote, param.companyId, param.personId ],
-                                    function(err, row) {
-                                        if (err) callback(err);
-                                        else {
-                                            if (this.lastID)    callback(null, {msg:"ok", customerId : this.lastID});
-                                            else                callback(null, {msg:"nok", customerId: 0});
-                                        }
-                                    }
-                                ); // insert
+                                } else callback(null, {msg:"nok", customerId: -2}); // error on person
                             }
-                        } else callback(null, {msg:"nok", customerId: -2}); // error on person
-                    }); // insert update person
+                        }); // insert update person
+                    }
                 }); // insert update company
             }
         }
@@ -86,7 +92,7 @@ Customer.prototype.findById = function(db, param, callback) {
                                     person.findAllByCustomerId(db, { customerId: row.id }, function(err, personList) {
                                         if (err) callback(err);
                                         else {
-                                            personList.push(personObj); // add the main contact
+                                            personList.push(person.getFlatVersionX(personObj)); // add the main contact
                                             lodash.assign(customerObj, { customerId: row.id, customerStatus: row.customerStatus, customerType: row.type, companyObj: companyObj, personObj: personObj, personList: personList });
                                             //console.log("** find Customer " + util.inspect(customerObj, false, null));
                                             callback(null, customerObj);
@@ -115,13 +121,13 @@ Customer.prototype.getFlatVersion = function(customerObj) {
 
 Customer.prototype.findAll = function(db, callback) {
     var customerList = [];
-    db.all("SELECT c.id, c.type, cp.name, cpc.tel as companyContactTel, cpc.mobile as companyContactMobile, cpc.mail as companyContactMail, p.gender, p.firstname, p.lastname, pc.tel as personContactTel, pc.mobile as personContactMobile, pc.mail as personContactMail FROM Customer as c LEFT JOIN company as cp ON (cp.id = c.company_id) LEFT JOIN contact cpc ON (cp.contact_id = cpc.id) LEFT JOIN person as p ON (p.id = c.person_id) LEFT JOIN contact pc ON (p.contact_id = pc.id) ", [], function(err, rows) {
+    db.all("SELECT c.id, c.status as customerStatus, c.type, cp.name, cpc.tel as companyContactTel, cpc.mobile as companyContactMobile, cpc.mail as companyContactMail, p.gender, p.firstname, p.lastname, pc.tel as personContactTel, pc.mobile as personContactMobile, pc.mail as personContactMail FROM Customer as c LEFT JOIN company as cp ON (cp.id = c.company_id) LEFT JOIN contact cpc ON (cp.contact_id = cpc.id) LEFT JOIN person as p ON (p.id = c.person_id) LEFT JOIN contact pc ON (p.contact_id = pc.id) ", [], function(err, rows) {
         if (err) callback(err);
         else {
             if (rows)    {
                 rows.forEach(function(row) {
                     var customerObj = {};
-                    lodash.assign(customerObj, { customerId: row.id, customerType: row.type, companyName: row.name, companyContactTel: row.companyContactTel, companyContactMobile: row.companyContactMobile, companyContactMail: row.companyContactMail, personGender: row.gender, personFirstname: row.firstname, personLastname: row.lastname, personContactTel: row.personContactTel, personContactMobile: row.personContactMobile, personContactMail: row.personContactMail });
+                    lodash.assign(customerObj, { customerId: row.id, customerStatus: row.customerStatus, customerType: row.type, companyName: row.name, companyContactTel: row.companyContactTel, companyContactMobile: row.companyContactMobile, companyContactMail: row.companyContactMail, personGender: row.gender, personFirstname: row.firstname, personLastname: row.lastname, personContactTel: row.personContactTel, personContactMobile: row.personContactMobile, personContactMail: row.personContactMail });
                     customerList.push(customerObj);
                 });
             }
@@ -157,8 +163,8 @@ Customer.prototype.delById = function(db, param, callback) {
                                             function (err, row) {
                                                 if (err) callback(err);
                                                 else {
-                                                    if (this.changes && this.changes > 0)   callback(null, {msg:"ok", customerId : this.changes});
-                                                    else                                    callback(null, {msg:"nok", customerId: 0});
+                                                    if (this.changes && this.changes > 0)   callback(null, {msg:"ok"});
+                                                    else                                    callback(null, {msg:"nok"});
                                                 }
                                             }
                                         ); // customer deletion
@@ -171,7 +177,7 @@ Customer.prototype.delById = function(db, param, callback) {
             }
         ); // get related invoices
 
-    } else callback(null, {msg:"nok", customerId: 0});
+    } else callback(null, {msg:"nok"});
 };
 
 module.exports = new Customer();

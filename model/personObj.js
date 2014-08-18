@@ -127,8 +127,8 @@ Person.prototype.getFlatVersion = function(personObj) {
 
 Person.prototype.getFlatVersionX = function(personObj) {
     if (personObj) {
-        lodash.assign(personObj, { personAddressId: personObj.addressObj.addressId, personAddressURL: personObj.addressObj.addressURL, personAddressLine1: personObj.addressObj.addressLine1, personAddressLine2: personObj.addressObj.addressLine2, personAddressCP: personObj.addressObj.addressCP, personAddressCity: personObj.addressObj.addressCity, personAddressCountry: personObj.addressObj.addressCountry });
-        lodash.assign(personObj, { personContactId: personObj.contactObj.contactId, personContactTel: personObj.contactObj.contactTel, personContactFax: personObj.contactObj.contactFax, personContactMobile: personObj.contactObj.contactMobile, personContactMail: personObj.contactObj.contactMail });
+        if (personObj.addressObj) lodash.assign(personObj, { personAddressId: personObj.addressObj.addressId, personAddressURL: personObj.addressObj.addressURL, personAddressLine1: personObj.addressObj.addressLine1, personAddressLine2: personObj.addressObj.addressLine2, personAddressCP: personObj.addressObj.addressCP, personAddressCity: personObj.addressObj.addressCity, personAddressCountry: personObj.addressObj.addressCountry });
+        if (personObj.contactObj) lodash.assign(personObj, { personContactId: personObj.contactObj.contactId, personContactTel: personObj.contactObj.contactTel, personContactFax: personObj.contactObj.contactFax, personContactMobile: personObj.contactObj.contactMobile, personContactMail: personObj.contactObj.contactMail });
         delete personObj.addressObj;
         delete personObj.contactObj;
 
@@ -146,7 +146,7 @@ Person.prototype.findAllByCustomerId = function(db, param, callback) {
                 rows.forEach(function(row) {
                     seriesFns.push(function(c) {
                         self.findById(db, { personId: row.person_id }, function(err, personObj) {
-                            c(err, personObj);
+                            c(err, self.getFlatVersionX(personObj));
                         });
                     });
                 });
@@ -168,8 +168,8 @@ Person.prototype.delById = function(db, param, callback) {
             else {
                 if (row) {
                     async.series( [
-                        function(c) {  contact.delById(db, { contactId: row.contact_id }, function(err) c(err); } ) } ,
-                        function(c) {  address.delById(db, { addressId: row.address_id }, function(err) c(err); } ) } ,
+                        function(c) {  contact.delById(db, { contactId: row.contact_id }, function(err) { c(err); } ) } ,
+                        function(c) {  address.delById(db, { addressId: row.address_id }, function(err) { c(err); } ) } ,
                         function(c) {  db.run("DELETE FROM Person WHERE id = ?",  [ param.personId ], function(err, row) { c(err); } ); }
                     ], function(err) {
                         if (err) callback(err);
@@ -188,32 +188,56 @@ Person.prototype.delByCustomerId = function(db, param, callback) {
         db.all("SELECT person_id FROM customer_person WHERE customer_id = ?", [ param.customerId ], function(err, rows) {
             if (err) callback(err);
             else {
-                var seriesFns = [];
-                rows.forEach(function(row) {
-                    seriesFns.push(function(c) {
-                        self.delById(db, { personId: row.person_id }, function(err, row) {
-                            c(err, row);
+                if (rows) {
+                    var seriesFns = [];
+                    rows.forEach(function(row) {
+                        seriesFns.push(function(c) {
+                            self.delById(db, { personId: row.person_id }, function(err, row) {
+                                c(err, row);
+                            });
+                        });
+                        seriesFns.push(function(c) {
+                            db.run("DELETE FROM customer_person WHERE customer_id = ? AND person_id = ?", [ param.customerId, row.personId ], function(err, rows) {
+                                c(err, row);
+                            });
                         });
                     });
-                });
-                async.series(
-                    seriesFns,
-                    function(err, rows) {
-                        if (err) callback(err);
-                        else {
-                            db.get("SELECT person_id FROM customer WHERE id = ?", [ param.customerId ], function(err, row) {
-                                if (err) callback(err);
-                                else {
-                                    if (row) self.delById(db, { personId: row.person_id }, function(err, row) { callback(err); } );
-                                    else callback();
-                                }
-                            });
+                    async.series(
+                        seriesFns,
+                        function(err, rows) {
+                            if (err) callback(err);
+                            else {
+                                db.get("SELECT person_id FROM customer WHERE id = ?", [ param.customerId ], function(err, row) {
+                                    if (err) callback(err);
+                                    else {
+                                        if (row) self.delById(db, { personId: row.person_id }, function(err, row) { callback(err); } );
+                                        else callback();
+                                    }
+                                });
+                            }
                         }
-                    }
-                );
+                    );
+                } else callback();
             }
         });
     } else callback(); // nothing to delete
+};
+
+
+Person.prototype.delByCustomerIdAndId = function(db, param, callback) {
+    if (param.customerId && param.customerId > 0 && param.personId && param.personId > 0) {
+        // existing
+        var self = this;
+        db.run("DELETE FROM customer_person WHERE customer_id = ? AND person_id = ?", [ param.customerId, param.personId ], function(err, rows) {
+            if (err) callback(err);
+            else {
+                self.delById(db, { personId: param.personId }, function(err, row) {
+                    if (err) callback(err, {msg: "nok"});
+                    else callback(null, {msg: "ok"});
+                });
+            }
+        });
+    } else callback(null, {msg: "ok"}); // nothing to delete
 };
 
 Person.prototype.linkToCustomer = function(db, param, callback) {

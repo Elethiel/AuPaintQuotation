@@ -13,15 +13,18 @@ module.exports = function(app) {
     }).post("/in", function(req, res, next) {
         // ---------------------------------------------------------------------------------------------
         // SUBMIT login (process)
-        admin.logUser(req.db, [req.body.inputLogin, req.body.inputPass], function(row) {
-            if (row && row.msg === "nok") {
-                req.param.pstatus = "nok";
-                res.render("login", {srv:  req.param});
-            }
+        admin.logUser(req.db, [req.body.inputLogin, req.body.inputPass], function(err, row) {
+            if (err) next(err);
             else {
-                console.log("==> Login with "+row.username);
-                req.session.username = row.username;
-                res.redirect("/");
+                if (row && row.msg === "nok") {
+                    req.param.pstatus = "nok";
+                    res.render("login", {srv:  req.param});
+                }
+                else {
+                    //console.log("==> Login with "+row.username);
+                    req.session.username = row.username;
+                    res.redirect("/");
+                }
             }
         });
         // ---------------------------------------------------------------------------------------------

@@ -37,13 +37,14 @@
                                 &nbsp;<br/>
                                 <small class="help">Les clients peuvent être de simples contacts pour devis ou de vrais clients liés à une facture.<br/>Lorsqu'un devis devient une facture, le client "prospect" devient un client à part entière.</small><br/>
                                 &nbsp;<br/>
+                                <input type="checkbox" id="filterProspect" name="filterProspect"><span id="filterProspect"> Filtrer les prospects</span><br/>
+                                &nbsp;<br/>
                                 <div class="row">
                                     <% if (srv.customerList && srv.customerList.length > 0) { %>
                                         <input type="hidden" id="maxCustomer" value="<%= srv.customerList.length %>" />
                                     <% } %>
                                     <table id="customertab" class="stripe hover cell-border row-border nowrap" cellspacing="0" width="100%">
                                         <thead>
-
                                             <tr>
                                                 <th>#</th>
                                                 <th>Type</th>
@@ -56,8 +57,8 @@
                                         <tbody>
                                             <% if (srv.customerList && srv.customerList.length > 0) { %>
                                                 <% for(var i = 0; i < srv.customerList.length; i++) { %>
-                                                    <tr>
-                                                        <td id="idCustomer<%= i %>"><%= srv.customerList[i].customerId %></td>
+                                                    <tr class="<% if (srv.customerList[i].customerStatus != 1) { %>opacitedTR<% } %>">
+                                                        <td id="idCustomer<%= i %>" class="<% if (srv.customerList[i].customerStatus != 1) { %>opacited<% } %>"><%= srv.customerList[i].customerId %></td>
                                                         <td>
                                                             <% if (srv.customerList[i].customerType == -1) { %>
                                                                 <img src="/im/gl_group.png" title="Personne Morale" alt="Morale" border="0"/>
@@ -65,7 +66,7 @@
                                                                 <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/>
                                                             <% } %>
                                                         </td>
-                                                        <td id="labelCustomer<%= i %>">
+                                                        <td id="labelCustomer<%= i %>" class="<% if (srv.customerList[i].customerStatus != 1) { %>opacited<% } %>">
                                                             <% if (srv.customerList[i].customerType == -1) { %>
                                                                 <%= srv.customerList[i].companyName %>
                                                                 <% if (srv.customerList[i].personLastname || srv.customerList[i].personFirstname) { %>
@@ -82,7 +83,7 @@
                                                                 <%= srv.customerList[i].personFirstname ? srv.customerList[i].personFirstname : "" %>
                                                             <% } %>
                                                         </td>
-                                                        <td>
+                                                        <td class="<% if (srv.customerList[i].customerStatus != 1) { %>opacited<% } %>">
                                                             <% if (srv.customerList[i].companyContactTel || srv.customerList[i].companyContactMobile || srv.customerList[i].companyContactMail) { %>
                                                                 <% if (srv.customerList[i].companyContactTel) { %>
                                                                     <span class="glyphicon glyphicon-earphone"></span> <%- srv.customerList[i].companyContactTel.replace(new RegExp(" ", 'g'), "&nbsp;") %><br/>

@@ -62,6 +62,14 @@ var customerInitTab = function () {
             });
         }
     }
+
+    $("#filterProspect").click( function() {
+        if ($("#filterProspect").prop("checked")) {
+            $(".opacitedTR").hide();
+        } else {
+            $(".opacitedTR").show();
+        }
+    });
 };
 
 var customerValidator = function() {
@@ -72,6 +80,10 @@ var customerValidator = function() {
                 if ($("#personLastname").val() != "") return true;
             } else if ($field.attr("id") === "personLastname") {
                 if ($("#personFirstname").val() != "") return true;
+            } else if ($field.attr("id") === "ctcPersonLastname") {
+                if ($("#ctcPersonFirstname").val() != "") return true;
+            } else if ($field.attr("id") === "ctcPersonFirstname") {
+                if ($("#ctcPersonLastname").val() != "") return true;
             }
             return false;
         }
@@ -171,13 +183,13 @@ var customerValidator = function() {
             $("#delPerson" + i).click(function () {
                 var n = $( this ).attr('href').substring(1);
                 // update the content of popup before showing
-                popup.updateForDelete($("#labelPerson" + n).html(), "ce Contact", "/customerDelPerson?personId=", $("#idPerson" + n).html());
+                popup.updateForDelete($("#labelPerson" + n).html(), "ce Contact", "/customerDelPerson?customerId=" + $("#customerId").val() + "&personId=", $("#idPerson" + n).html());
                 popup.show();
                 return false;
             });
             // update
             $("#updatePerson" + i).click(function () {
-                var n = $( this ).attr('href').substring(1);
+                var i = $( this ).attr('href').substring(1);
                 updatePerson(i);
                 return false;
             });
@@ -195,9 +207,11 @@ var customerValidator = function() {
         // need to clear all inputs of the form
         $("#ctcPersonId").val("");
         $("#ctcPersonGender").val("");
-        $("#seletctcPersonGender").html("Sélectionnez une Civilité");
+        $("#selectctcPersonGender").html("Sélectionnez une Civilité");
         $("#ctcPersonFirstname").val("");
         $("#ctcPersonLastname").val("");
+        $("#ctcPersonAddressId").val("");
+        $("#ctcPersonContactId").val("");
         $("#ctcPersonContactTel").val("");
         $("#ctcPersonContactMobile").val("");
         $("#ctcPersonContactFax").val("");
@@ -232,7 +246,23 @@ var customerValidator = function() {
 };
 
 var updatePerson = function(i) {
-    alert('Update Ze Contact ' + i);
+    // need to clear all inputs of the form
+    $("#ctcPersonId").val($("#cPId" + i).val());
+    $("#ctcPersonGender").val($("#cPGender" + i).val());
+    $("#selectctcPersonGender").html($("#cPGender" + i).val());
+    $("#ctcPersonFirstname").val($("#cPFirstname" + i).val());
+    $("#ctcPersonLastname").val($("#cPLastname" + i).val());
+    $("#ctcPersonAddressId").val($("#cAId" + i).val());
+    $("#ctcPersonContactId").val($("#cCId" + i).val());
+    $("#ctcPersonContactTel").val($("#cPTel" + i).val());
+    $("#ctcPersonContactMobile").val($("#cPMobile" + i).val());
+    $("#ctcPersonContactFax").val($("#cPFax" + i).val());
+    $("#ctcPersonContactMail").val($("#cPMail" + i).val());
+    $("#addPersonDiv").removeClass("hide");
+    $("#addPersonDiv").show();
+    $("#cancelBut").removeClass("hide");
+    $("#cancelBut").show();
+    return false;
 };
 
 var customerTypeSelect = function() {

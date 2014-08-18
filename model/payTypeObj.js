@@ -74,7 +74,7 @@ PayType.prototype.findAll = function(db, callback) {
 PayType.prototype.delById = function(db, param, callback) {
     if (param.payTypeId && param.payTypeId > 0) {
         // existing
-        db.get("SELECT COUNT(id) as nb FROM invoice_paytype WHERE payType_id = ?",
+        db.get("SELECT COUNT(invoice_id) as nb FROM invoice_paytype WHERE payType_id = ?",
             [ param.payTypeId ],
             function(err, row) {
                 if (err) callback(err);

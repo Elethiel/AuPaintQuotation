@@ -7,9 +7,9 @@ var util = require("util");
 var PayCond = function() {};
 
 PayCond.prototype.insertUpdate = function(db, param, callback) {
-    
+
     if (!param.notstring) tools.manageString(param);
-    
+
     if (param.payCondId && param.payCondId > 0) {
         // existing (update)
         db.run("UPDATE payCondition SET label = ? WHERE id = ?",
@@ -43,7 +43,7 @@ PayCond.prototype.findById = function(db, param, callback) {
         var PayCondObj = {};
         db.get("SELECT id, label  FROM payCondition WHERE id = ?", [ param.payCondId ], function(err, row) {
             if (err) callback(err);
-            } else {
+            else {
                 if (row)    {
                     lodash.assign(PayCondObj, {payCondId: row.id, payCondLabel: row.label });
                     callback(null, PayCondObj);

@@ -1,3 +1,3 @@
 git add --all
-git commit -m "end of Customer management with contacts"
+git commit -m "start of Quotation (Customer Part)"
 git push

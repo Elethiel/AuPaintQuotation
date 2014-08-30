@@ -94,6 +94,22 @@ Customer.prototype.findById = function(db, param, callback) {
                                         else {
                                             personList.push(person.getFlatVersionX(personObj)); // add the main contact
                                             lodash.assign(customerObj, { customerId: row.id, customerStatus: row.customerStatus, customerType: row.type, companyObj: companyObj, personObj: personObj, personList: personList });
+                                            // the display
+                                            customerObj.displayName = "";
+                                            if (row.type == -1) {
+                                                customerObj.displayName = companyObj.companyName;
+                                                if (personObj.personLastname || personObj.personFirstname) {
+                                                    customerObj.displayName += ' ( <em class="text-small">';
+                                                    customerObj.displayName += personObj.personGender ? personObj.personGender : "";
+                                                    customerObj.displayName += personObj.personLastname ? personObj.personLastname : "";
+                                                    customerObj.displayName += personObj.personFirstname ? personObj.personFirstname : "";
+                                                    customerObj.displayName += '</em> )';
+                                                }
+                                            } else {
+                                                customerObj.displayName += personObj.personGender ? personObj.personGender : "";
+                                                customerObj.displayName += personObj.personLastname ? personObj.personLastname : "";
+                                                customerObj.displayName += personObj.personFirstname ? personObj.personFirstname : "";
+                                            }
                                             //console.log("** find Customer " + util.inspect(customerObj, false, null));
                                             callback(null, customerObj);
                                         }
@@ -128,6 +144,22 @@ Customer.prototype.findAll = function(db, callback) {
                 rows.forEach(function(row) {
                     var customerObj = {};
                     lodash.assign(customerObj, { customerId: row.id, customerStatus: row.customerStatus, customerType: row.type, companyName: row.name, companyContactTel: row.companyContactTel, companyContactMobile: row.companyContactMobile, companyContactMail: row.companyContactMail, personGender: row.gender, personFirstname: row.firstname, personLastname: row.lastname, personContactTel: row.personContactTel, personContactMobile: row.personContactMobile, personContactMail: row.personContactMail });
+                    // the display
+                    customerObj.displayName = "";
+                    if (row.type == -1) {
+                        customerObj.displayName = customerObj.companyName;
+                        if (customerObj.personLastname || customerObj.personFirstname) {
+                            customerObj.displayName += ' ( <em class="text-small">';
+                            customerObj.displayName += customerObj.personGender ? customerObj.personGender + " " : "";
+                            customerObj.displayName += customerObj.personLastname ? customerObj.personLastname + " " : "";
+                            customerObj.displayName += customerObj.personFirstname ? customerObj.personFirstname + " " : "";
+                            customerObj.displayName += '</em> )';
+                        }
+                    } else {
+                        customerObj.displayName += customerObj.personGender ? customerObj.personGender + " " : "";
+                        customerObj.displayName += customerObj.personLastname ? customerObj.personLastname + " " : "";
+                        customerObj.displayName += customerObj.personFirstname ? customerObj.personFirstname + " " : "";
+                    }
                     customerList.push(customerObj);
                 });
             }

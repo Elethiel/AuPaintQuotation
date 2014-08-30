@@ -27,6 +27,8 @@
     <% var o = { index: "1", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
             items: [ { val: "1", lab: "Pas de traitement des données du formulaire" } ] } %>
     <% include form/inputCheck %>
+    <% var o = { index: "2", symbol: "%", label: "Pourcentage pour Acompte", tooltip: "Permet de calculer automatiquement l'acompte demandé lors d'un devis", placeholder:"xx.xx", field: "payCondTVA", labelw: "4", inputw: "4", value: (srv.Obj ? srv.Obj.TVAPercent : srv.Obj) } %>
+    <% include form/inputNum %>
     
     &nbsp;<br/>
     <div class="form-group text-right p15LR">

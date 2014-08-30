@@ -14,7 +14,7 @@ var initTVA = function() {
                                                         "aButtons":    [ "xls", "pdf" ]
                                                     }
                                                 ]
-                }, 
+                },
                 "order":            [[ 2, "asc" ]],
                 "columnDefs": [
                     {
@@ -40,7 +40,7 @@ var initTVA = function() {
                     }
                 ]
     } );
-    
+
     $('#addTVA').click( function() {
         window.location.href='/tva';
     });
@@ -62,7 +62,7 @@ var initGroupProduct = function() {
                                                         "aButtons":    [ "xls", "pdf" ]
                                                     }
                                                 ]
-                }, 
+                },
                 "order":            [[ 2, "asc" ]],
                 "columnDefs": [
                     {
@@ -89,7 +89,7 @@ var initGroupProduct = function() {
                     }
                 ]
     } );
-    
+
     $('#addGroupProduct').click( function() {
         window.location.href='/groupProduct';
     });
@@ -111,7 +111,7 @@ var initPayType = function() {
                                                         "aButtons":    [ "xls", "pdf" ]
                                                     }
                                                 ]
-                }, 
+                },
                 "order":            [[ 1, "asc" ]],
                 "columnDefs": [
                     {
@@ -130,7 +130,7 @@ var initPayType = function() {
                     }
                 ]
     } );
-    
+
     $('#addPayType').click( function() {
         window.location.href='/paytype';
     });
@@ -152,7 +152,7 @@ var initPayCond = function() {
                                                         "aButtons":    [ "xls", "pdf" ]
                                                     }
                                                 ]
-                }, 
+                },
                 "order":            [[ 1, "asc" ]],
                 "columnDefs": [
                     {
@@ -164,14 +164,21 @@ var initPayCond = function() {
                         "targets": [1]
                     },
                     {
+                        "sClass": "text-right",
+                        "render": function ( data, type, row ) {
+                            return data ? numeral(data).divide(100).format('0.00%') : "";
+                        },
+                        "targets": [2]
+                    },
+                    {
                         "width": 36,
-                        "targets": [2],
+                        "targets": [3],
                         "sortable": false,
                         "searchable": false
                     }
                 ]
     } );
-    
+
     $('#addPayCond').click( function() {
         window.location.href='/paycond';
     });

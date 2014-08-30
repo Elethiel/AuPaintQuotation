@@ -1,0 +1,52 @@
+<!-- the chosen one -->
+<div class="form-group text-center">
+    <input type="hidden" name="quotationSelectedCustomerId" id="quotationSelectedCustomerId" value=0 />
+    <label for="quotationSelectedCustomer" class="col-sm-4 control-label">
+        Client Choisi
+    </label>
+    <div class="col-sm-7 text-left">
+        <div class="input-group">
+            <span class="form-control" id="quotationSelectedCustomer"></span>
+            <span class="input-group-addon"><a href="#" class="hide" id="unselectCust"><span class="red glyphicon glyphicon-remove-sign"></span></a></span>
+        </div>
+    </div>
+</div>
+&nbsp;<br/>
+
+<!-- the list -->
+<div class="row text-center">
+    <% if (srv.customerList && srv.customerList.length > 0) { %>
+        <input type="hidden" id="maxCustomer" value="<%= srv.customerList.length %>" />
+    <% } %>
+    <table id="customerexisttab" class="stripe hover cell-border row-border nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Client</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% if (srv.customerList && srv.customerList.length > 0) { %>
+                <% for(var i = 0; i < srv.customerList.length; i++) { %>
+                    <tr class="<% if (srv.customerList[i].customerStatus != 1) { %>opacitedTR<% } %>">
+                        <td id="idCustomer<%= i %>" class="<% if (srv.customerList[i].customerStatus != 1) { %>opacited<% } %>"><%= srv.customerList[i].customerId %></td>
+                        <td>
+                            <% if (srv.customerList[i].customerType == -1) { %>
+                                <img src="/im/gl_group.png" title="Personne Morale" alt="Morale" border="0"/>
+                            <% } else { %>
+                                <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/>
+                            <% } %>
+                        </td>
+                        <td id="labelCustomer<%= i %>" class="<% if (srv.customerList[i].customerStatus != 1) { %>opacited<% } %>">
+                            <%- srv.customerList[i].displayName %>
+                        </td>
+                        <td><a href="#<%= i %>" id="selectCust<%= i %>" data-placement="bottom" data-tooltipsmall="Sélectionner ce Client"><span class="glyphicon glyphicon-new-window"></span></a></td>
+                    </tr>
+                <% } %>
+            <% } %>
+        </tbody>
+    </table>
+</div>

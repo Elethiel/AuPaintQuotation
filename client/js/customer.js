@@ -3,7 +3,7 @@ var customerInitTab = function () {
     $("#customertab").dataTable( {
                 "jQueryUI":         true,
                 "language":         { "url": "./js/datatables_customer.lang" },
-                "dom":              '<T<"H"r<"#CustomerHeader">>t<"F"i>',
+                "dom":              '<T<"H"r<"#CustomerHeader">f>t<"F"i>',
                 "iDisplayLength":   -1,
                 "fnInitComplete":   function() { $("#CustomerHeader").html("<b>Clients</b>") },
                 "tableTools": {
@@ -309,10 +309,10 @@ var genderctcSelect = function() {
 };
 
 var clickOnMoral = function() {
-    $("#companyArea").removeClass("hidden");
+    $("#companyArea").removeClass("hide");
     $("#companyArea").show();
     $("#personTitle").html("Contact Principal");
-    $("#personArea").removeClass("hidden");
+    $("#personArea").removeClass("hide");
     $("#personArea").show();
 };
 
@@ -320,6 +320,6 @@ var clickOnPhysical = function() {
     $("#companyArea").removeClass("show");
     $("#companyArea").hide();
     $("#personTitle").html("Personne Physique");
-    $("#personArea").removeClass("hidden");
+    $("#personArea").removeClass("hide");
     $("#personArea").show();
 };

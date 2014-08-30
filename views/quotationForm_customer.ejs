@@ -1,0 +1,20 @@
+<!--  ****************************  CUSTOMER   ****************************   -->
+
+    &nbsp;<br/>
+    &nbsp;<br/>
+    <div class="highlight">
+    <% var o = { index: "1", label: "Client", tooltip: "Vous pouvez choisir un client existant, ou en créer un pour l'occasion", field: "quotationCustomerNew", labelw: "4", inputw: "3", value: 1,
+            items: [ { val: "-1", lab: "Nouveau client" }, { val: "1", lab: "Client existant" } ] } %>
+    <% include form/inputRadio %>
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>
+    <div id="existingCustomerDiv" class="show">
+        <% include quotationForm_customerexists %>
+    </div>
+    <div id="newCustomerDiv" class="hide">
+        NEW
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>
+</form>

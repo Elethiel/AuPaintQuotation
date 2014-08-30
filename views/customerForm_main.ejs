@@ -21,10 +21,10 @@
     <% var o = { index: "3", label: "Note sur le Client", tooltip: "Note interne pour vous.", field: "customerNote", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.customerNote : srv.Obj) } %>
     <% include form/inputTextarea %>
     &nbsp;<br/>
-    <div id="companyArea" class="<% if (srv.Obj && srv.Obj.customerType) { %><% if (srv.Obj.customerType == 1) { %>hidden<% } else if (srv.Obj.customerType == -1) { %>show<% }%><% } else { %>hidden<% } %>">
+    <div id="companyArea" class="<% if (srv.Obj && srv.Obj.customerType) { %><% if (srv.Obj.customerType == 1) { %>hide<% } else if (srv.Obj.customerType == -1) { %>show<% }%><% } else { %>hide<% } %>">
         <% include customerForm_company %>
     </div>
-    <div id="personArea" class="<% if (srv.Obj && srv.Obj.customerType) { %><% if (srv.Obj.customerType == 1) { %>show<% } else if (srv.Obj.customerType == -1) { %>show<% }%><% } else { %>hidden<% } %>">
+    <div id="personArea" class="<% if (srv.Obj && srv.Obj.customerType) { %><% if (srv.Obj.customerType == 1) { %>show<% } else if (srv.Obj.customerType == -1) { %>show<% }%><% } else { %>hide<% } %>">
         <% include customerForm_person %>
     </div>
     &nbsp;<br/>

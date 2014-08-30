@@ -67,21 +67,7 @@
                                                             <% } %>
                                                         </td>
                                                         <td id="labelCustomer<%= i %>" class="<% if (srv.customerList[i].customerStatus != 1) { %>opacited<% } %>">
-                                                            <% if (srv.customerList[i].customerType == -1) { %>
-                                                                <%= srv.customerList[i].companyName %>
-                                                                <% if (srv.customerList[i].personLastname || srv.customerList[i].personFirstname) { %>
-                                                                    ( <em class="text-small">
-                                                                    <%= srv.customerList[i].personGender ? srv.customerList[i].personGender : "" %>
-                                                                    <%= srv.customerList[i].personLastname ? srv.customerList[i].personLastname : "" %>
-                                                                    <%= srv.customerList[i].personFirstname ? srv.customerList[i].personFirstname : "" %>
-                                                                     </em>
-                                                                    )
-                                                                <% } %>
-                                                            <% } else { %>
-                                                                <%= srv.customerList[i].personGender ? srv.customerList[i].personGender : "" %>
-                                                                <%= srv.customerList[i].personLastname ? srv.customerList[i].personLastname : "" %>
-                                                                <%= srv.customerList[i].personFirstname ? srv.customerList[i].personFirstname : "" %>
-                                                            <% } %>
+                                                            <%- srv.customerList[i].displayName %>
                                                         </td>
                                                         <td class="<% if (srv.customerList[i].customerStatus != 1) { %>opacited<% } %>">
                                                             <% if (srv.customerList[i].companyContactTel || srv.customerList[i].companyContactMobile || srv.customerList[i].companyContactMail) { %>

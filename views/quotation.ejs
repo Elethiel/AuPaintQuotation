@@ -1,0 +1,76 @@
+<% include _doc %>
+<html lang="en">
+    <head>
+        <% include _header %>
+        <% include _css %>
+
+        <% include _js %>
+
+
+        <script type="text/javascript" src="/js/quotation.js"></script>
+        <script type="text/javascript" src="/js/customer.js"></script>
+    </head>
+    <body>
+        <% include _menu %>
+        <div class="wrapper">
+            <div class="background"></div>
+                <div class="container">
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 text-center center">
+                            <div class="well">
+                                <button type="button" id="backButMain" class="btn btn-default">Retour</button>
+                                <% if (srv.Obj) { %>
+                                    <legend><h1>Modifier un<% if (srv.type && srv.type == -1) { %> Devis<% } else { %>e Facture<% } %></h1></legend>
+                                <% } else { %>
+                                    <legend><h1>Ajouter un<% if (srv.type && srv.type == -1) { %> Devis<% } else { %>e Facture<% } %></h1></legend>
+                                <% }%>
+                                <% if (srv.type && srv.type == -1) { %>
+                                    <small class="help">Un Devis est une proposition de services au client, qui a une durée de validité limitée. Il est possible de modifier le Devis pour générer un historique, et de le transformer en Facture. Les devis historisés deviendront alors le passé de la Facture.</small><br/>
+                                <% } else { %>
+                                    <small class="help">Une Facture est un Devis qui a été validée, ou une Facture directe issue d'un accord avec le client. Les devis qui ont servis de bases à la facture serviront d'historique à celle-ci.</small><br/>
+                                <% } %>
+                                &nbsp;<br/>
+                                <form class="form-horizontal" id="quotationForm" role="form" action="/quotationUpdate" method="post"
+                                    data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                                    data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                                    data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-pills nav-wizard nav-justified" role="tablist">
+                                        <li <% if (srv.subloc != "" && srv.subloc === "customer") { %>class="active"<% } %>><a href="#customer" role="tab" id="tab0" data-toggle="tab">Client <span id="checkCustOk" class="backclean glyphicon glyphicon-ok green <% if (srv.Obj && srv.Obj.customerId) { %><% } else { %>hide<% } %>"></span><span id="checkCustNok" class="backclean glyphicon glyphicon-remove red <% if (srv.Obj && srv.Obj.customerId) { %>hide<% } else { %><% } %>"></span></a><div class="nav-arrow"></div></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "presta") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#presta" role="tab" data-toggle="tab">Prestations</a><div class="nav-arrow"></div></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "payment") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#payment" role="tab" data-toggle="tab">Paiements</a><div class="nav-arrow"></div></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "data") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#data" role="tab" data-toggle="tab">Infos et Doc</a></li>
+                                    </ul>
+                                    <!-- Tab panes -->
+                                    <div class="tab-content text-left">
+                                        <div class="tab-pane fade<% if (!(srv.Obj && srv.Obj.quotationId) || (srv.subloc != "" && srv.subloc === "customer")) { %> in active<% } %>" id="customer">
+                                            <% include quotationForm_customer %>
+                                        </div>
+                                        <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "presta") { %> in active<% } %>" id="presta">
+
+                                        </div>
+                                        <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "payment") { %> in active<% } %>" id="payment">
+
+                                        </div>
+                                        <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "data") { %> in active<% } %>" id="data">
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% include _footer %>
+        <% include _popup %>
+
+        <script type="text/javascript">
+            $(document).ready(quotationValidator);
+        </script>
+    </body>
+</html>>

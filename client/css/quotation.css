@@ -71,6 +71,14 @@ html, body {
     border-radius: 5px;
 }
 
+.highlight .glyphicon-info-sign {
+    color: #fff;
+}
+
+.highlight .glyphicon-info-sign:hover {
+    color: #ccf;
+}
+
 
 .midlight {
     margin-left: 50px;
@@ -83,11 +91,18 @@ html, body {
     padding-bottom: 1px;
     border-radius: 10px;
 }
+.midfield {
+    background: #B2DBFF;
+    color: #327BCA;
+}
 .help {
     font-style: italic;
 }
 .text-small {
     font-size: 12px;
+}
+.text-big {
+    font-size: 16px;
 }
 .btn {
     font-weight: bold;
@@ -116,8 +131,13 @@ html, body {
 .black {
     color: #000;
 }
+li.active > a > .backclean {
+    background-color: #EEE;
+    border-radius: 5px;
+}
+
 .opacited {
-    opacity : 0.5;    
+    opacity : 0.5;
     font-style: italic;
 }
 /* CSS for BOOTSTRAP */
@@ -160,7 +180,7 @@ html, body {
     border-radius(4px);
 }
 .tooltip-inner {
-    max-width: 400px !important; 
+    max-width: 400px !important;
 }
 /* CSS for DATATABLES */
 table.dataTable.stripe tbody tr.odd {

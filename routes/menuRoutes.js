@@ -53,8 +53,16 @@ module.exports = function(app) {
     }).get("/quotationMenu", function(req, res, next) {
         // ---------------------------------------------------------------------------------------------
         // manage Quotation and Invoices
+        req.param.quotationList = [];
+        // success from FROM (post)
+        if (req.session.pstatus && req.session.pstatus !== "") {
+            req.param.pstatus = req.session.pstatus;
+            req.param.pstatusvar = req.session.pstatusvar;
+            delete req.session.pstatus;
+            delete req.session.pstatusvar;
+        }
         req.param.loc = "quotation";
-        res.render("welcome", {srv:  req.param});
+        res.render("quotationMenu", {srv: req.param});
         // ---------------------------------------------------------------------------------------------
     });
 };

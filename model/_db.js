@@ -38,7 +38,7 @@ db.prototype.init = function() {
                     },
                 function(callback) {
                         console.log("Creating TABLE payCondition.");
-                        db.run("CREATE TABLE payCondition (id INTEGER PRIMARY KEY AUTOINCREMENT, label TEXT NOT NULL)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'payCondition'); } });
+                        db.run("CREATE TABLE payCondition (id INTEGER PRIMARY KEY AUTOINCREMENT, label TEXT NOT NULL, tva REAL)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'payCondition'); } });
                     },
                 function(callback) {
                         console.log("Creating TABLE address.");
@@ -90,7 +90,7 @@ db.prototype.init = function() {
                     },
                 function(callback) {
                         console.log("Creating TABLE invoice.");
-                        db.run("CREATE TABLE invoice (id INTEGER PRIMARY KEY AUTOINCREMENT, type BOOLEAN, customer_id INT, ref TEXT, version INT, creationDt DATE, updateDt DATE, endValidityDt DATE, invoiceStatus TEXT,  globalDiscount REAL, deposite REAL, internalNote TEXT, customerNote TEXT, payCond_id INT)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'invoice'); } });
+                        db.run("CREATE TABLE invoice (id INTEGER PRIMARY KEY AUTOINCREMENT, type BOOLEAN, customer_id INT, ref TEXT, version INT, creationDt DATE, updateDt DATE, endValidityDt DATE, invoiceStatus TEXT,  globalDiscount REAL, deposite REAL, internalNote TEXT, customerNote TEXT, payCond_id INT, parent_id INT)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'invoice'); } });
                     },
                 function(callback) {
                         console.log("Creating INDEX ON invoice.");
@@ -141,6 +141,14 @@ db.prototype.init = function() {
                         db.run("CREATE INDEX IX_ownerCustomer ON owner_customer (owner_id, customer_id)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'index on owner_customer'); } });
                     },
                 function(callback) {
+                        console.log("Creating TABLE doc.");
+                        db.run("CREATE TABLE doc (id INTEGER PRIMARY KEY AUTOINCREMENT, invoice_id INT, url TEXT)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'doc'); } });
+                    },
+                function(callback) {
+                        console.log("Creating INDEX ON doc.");
+                        db.run("CREATE INDEX IX_docInvoice ON doc (invoice_id)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'index on doc'); } });
+                    },
+                function(callback) {
                         console.log("Fill tables.");
                         db.run("INSERT INTO admin (name, login, pass) VALUES ('Mr Admin', 'admin', 'admin')", function(err) { if (err) return callback(err, ''); });
                         db.run("INSERT INTO tva (label, percent) VALUES ('TVA 10%', 10.00)", function(err) { if (err) return callback(err, ''); } );
@@ -148,8 +156,8 @@ db.prototype.init = function() {
                         db.run("INSERT INTO payType (label) VALUES ('CB')", function(err) { if (err) return callback(err, ''); } );
                         db.run("INSERT INTO payType (label) VALUES ('Chèque')", function(err) { if (err) return callback(err, ''); } );
                         db.run("INSERT INTO payType (label) VALUES ('Liquide')", function(err) { if (err) return callback(err, ''); } );
-                        db.run("INSERT INTO payCondition (label) VALUES ('20% d''acompte à la commande, le solde à réception de facture')", function(err) { if (err) return callback(err, ''); } );
-                        db.run("INSERT INTO payCondition (label) VALUES ('Paiement en fin de mois')", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'filled'); } });
+                        db.run("INSERT INTO payCondition (label, tva) VALUES ('20% d''acompte à la commande, le solde à réception de facture', 20.00)", function(err) { if (err) return callback(err, ''); } );
+                        db.run("INSERT INTO payCondition (label, tva) VALUES ('Paiement en fin de mois', 0.00)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'filled'); } });
                     }
             ] ,
             function(err, res) {

@@ -8,7 +8,7 @@ a[data-tooltipsmall]::before, a[data-tooltipsmall]::after {
 }
 a[data-tooltipsmall]::before {
     /*
-   * using data-tooltipsmall instead of title so we 
+   * using data-tooltipsmall instead of title so we
    * don't have the real tooltip overlapping
    */
     content: attr(data-tooltipsmall);
@@ -83,8 +83,8 @@ a[data-tooltipsmall][data-placement="top"]::after {
     z-index: 2000;
 }
 a[data-tooltipsmall][data-placement="bottom"]::after {
-    border-bottom-color: #000;
     border-top: none;
+    border-bottom-color: #000;
     top: 100%;
     left: 0px;
     margin-top: 4px;
@@ -100,7 +100,7 @@ a[data-tooltip]::before, a[data-tooltip]::after {
 }
 a[data-tooltip]::before {
     /*
-   * using data-tooltip instead of title so we 
+   * using data-tooltip instead of title so we
    * don't have the real tooltip overlapping
    */
     content: attr(data-tooltip);

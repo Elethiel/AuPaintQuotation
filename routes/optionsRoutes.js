@@ -366,10 +366,8 @@ module.exports = function(app) {
                 if (st === "rej" || st === "nok" || st === "nof") {
                     req.session.pstatus = st;
                     if (req.files.groupProductIconFile)  fs.unlink(req.files.groupProductIconFile.path);
-                    if (ret.msg !== "ok") {
-                        req.session.oldObj = req.body;
-                        req.session.oldObj.groupProductIcon = req.body.groupProductIcon;
-                    }
+                    req.session.oldObj = req.body;
+                    req.session.oldObj.groupProductIcon = req.body.groupProductIcon;
                     res.redirect("/groupProduct" + (req.body.groupProductId ? "?groupProductId=" + req.body.groupProductId : ""));
                 } else if (st === "ok") {
                     if (path) req.body.groupProductIcon = path;

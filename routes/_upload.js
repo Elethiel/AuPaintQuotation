@@ -1,4 +1,5 @@
 var lwip = require("lwip");
+var util = require("util");
 
 var imageAuth = [   /*"image/bmp",
                     "image/gif",*/

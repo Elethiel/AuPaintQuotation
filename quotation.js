@@ -49,6 +49,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(uploader({ dest: "./client/uploads/"}))
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(session({ store: new sqlstore, secret: "keyboard cat", cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, saveUninitialized: true, resave: true}));
 app.use(function(req, res, next) { req.db = db; next(); });
 app.use(express.static(path.resolve(__dirname, "client")));

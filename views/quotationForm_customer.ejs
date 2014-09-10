@@ -2,19 +2,63 @@
 
     &nbsp;<br/>
     &nbsp;<br/>
-    <div class="highlight">
-    <% var o = { index: "1", label: "Client", tooltip: "Vous pouvez choisir un client existant, ou en créer un pour l'occasion", field: "quotationCustomerNew", labelw: "4", inputw: "3", value: 1,
-            items: [ { val: "-1", lab: "Nouveau client" }, { val: "1", lab: "Client existant" } ] } %>
-    <% include form/inputRadio %>
+    <!-- the chosen one -->
+    <div class="form-group text-center">
+        <label for="quotationSelectedCustomer" class="col-sm-3 control-label">
+            Client Choisi
+        </label>
+        <div class="col-sm-7 text-left">
+            <div class="input-group">
+                <span class="form-control" id="quotationSelectedCustomer"></span>
+                <span class="input-group-addon"><a href="#" class="hide" id="unselectCust"><span class="red glyphicon glyphicon-remove-sign"></span></a></span>
+            </div>
+        </div>
     </div>
     &nbsp;<br/>
     &nbsp;<br/>
-    <div id="existingCustomerDiv" class="show">
-        <% include quotationForm_customerexists %>
-    </div>
-    <div id="newCustomerDiv" class="hide">
-        NEW
+    <!-- the new button -->
+
+    <div class="form-group">
+        <div class="col-sm-7 text-right labelfree">Ajouter un nouveau client à ce<% if (srv.type && srv.type == -1) { %> devis<% } else { %>tte facture<% } %> ...</div>
+        <div class="col-sm-3 text-left"><button type="button" id="addNewCust" class="btn btn-primary">Nouveau</button></div>
     </div>
     &nbsp;<br/>
     &nbsp;<br/>
-</form>
+    <div class="text-center">
+        ... ou un client déjà existant en base :
+    </div>
+    &nbsp;<br/>
+    <!-- the list -->
+    <div class="row text-center w80p">
+        <table id="customerexisttab" class="stripe hover cell-border row-border nowrap" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Client</th>
+                    <th>Sélectionner</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% if (srv.customerList && srv.customerList.length > 0) { %>
+                    <% for(var i = 0; i < srv.customerList.length; i++) { %>
+                        <tr class="<% if (srv.customerList[i].customerStatus != 1) { %>opacitedTR<% } %>">
+                            <td>
+                                <% if (srv.customerList[i].customerType == -1) { %>
+                                    <img src="/im/gl_group.png" title="Personne Morale" alt="Morale" border="0"/>
+                                <% } else { %>
+                                    <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/>
+                                <% } %>
+                            </td>
+                            <td class="<% if (srv.customerList[i].customerStatus != 1) { %>opacited<% } %>">
+                                <%- srv.customerList[i].displayName %>
+                            </td>
+                            <td><a href="#<%= i %>" id="selectCust<%= i %>" data-placement="bottom" data-tooltipsmall="Sélectionner ce Client"><span class="glyphicon glyphicon-new-window"></span></a></td>
+                        </tr>
+                    <% } %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>

@@ -1,0 +1,95 @@
+<div id="popupContentNewCust" class="hide">
+    <div class="form-horizontal" >
+        <form id="popupForm" role="form" class="form-horizontal" method="post"
+            data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+            data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+            data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+            <!-- quotation means Prospect, Invoice means customer -->
+            <a id="popupTop" />
+            <input type="hidden" id="quotationCustomerStatus" name="quotationCustomerStatus" value="<% if (srv.type && srv.type == -1) { %>-1<% } else {%>1<% } %>" />
+
+            &nbsp;<br/>
+            <% var o = { index: "2", label: "Type de Client", tooltip: "Détermine si le client est un professionnel ou un particulier.", field: "quotationCustomerType", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationCustomerType : srv.Obj) } %>
+            <% include form/inputSelectCustomerType %>
+            <% include form/inputSelect %>
+
+            &nbsp;<br/>
+            <div id="companyArea" class="<% if (srv.Obj && srv.Obj.quotationCustomerType) { %><% if (srv.Obj.quotationCustomerType == 1) { %>hide<% } else if (srv.Obj.quotationCustomerType == -1) { %>show<% }%><% } else { %>hide<% } %>">
+                <p class="highlight">Personne Morale</p>
+
+                <% var o = { index: "3", gender: 1, label: "Forme Juridique", field: "quotationCompanyLegal", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationCompanyLegal : srv.Obj) } %>
+                <% include form/inputSelectLegal %>
+                <% include form/inputSelect %>
+
+                <% var o = { index: "4", label: "Dénomination", empty: "Le nom de la société est obligatoire !", field: "quotationCompanyName", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationCompanyName : srv.Obj) } %>
+                <% include form/inputText %>
+                &nbsp;<br/>
+                <p class="midlight">Coordonnées (Morale)</p>
+                <% var o = { index: "5", label: "Adresse", field: "quotationCompanyAddressLine1", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationCompanyAddressLine1 : srv.Obj) } %>
+                <% include form/inputText %>
+                <% var o = { index: "6", label: "", field: "quotationCompanyAddressLine2", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationCompanyAddressLine2 : srv.Obj) } %>
+                <% include form/inputText %>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <% var o = { index: "7", label: "CP", field: "quotationCompanyAddressCP", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.quotationCompanyAddressCP : srv.Obj) } %>
+                        <% include form/inputText %>
+                    </div>
+                    <div class="col-sm-6">
+                        <% var o = { index: "8", label: "Ville", field: "quotationCompanyAddressCity", labelw: "2", inputw: "8", value: (srv.Obj ? srv.Obj.quotationCompanyAddressCity : srv.Obj) } %>
+                        <% include form/inputText %>
+                    </div>
+                </div>
+                <% var o = { index: "9", label: "Pays", field: "quotationCompanyAddressCountry", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationCompanyAddressCountry : srv.Obj) } %>
+                <% include form/inputText %>
+                &nbsp;<br/>
+                <p class="midlight">Contact (Morale)</p>
+                <% var o = { index: "10", label: "Téléphone", field: "quotationCompanyContactTel", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationCompanyContactTel : srv.Obj) } %>
+                <% include form/inputTel %>
+                <% var o = { index: "11", label: "Mobile", field: "quotationCompanyContactMobile", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationCompanyContactMobile : srv.Obj) } %>
+                <% include form/inputTel %>
+                <% var o = { index: "12", label: "Email", field: "quotationCompanyContactMail", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationCompanyContactMail : srv.Obj) } %>
+                <% include form/inputMail %>
+                &nbsp;<br/>
+            </div>
+            <div id="personArea" class="<% if (srv.Obj && srv.Obj.quotationCustomerType) { %><% if (srv.Obj.quotationCustomerType == 1) { %>show<% } else if (srv.Obj.quotationCustomerType == -1) { %>show<% }%><% } else { %>hide<% } %>">
+                <p id="quotationPersonTitle" class="highlight"><% if (srv.Obj && srv.Obj.quotationCustomerType) { %><% if (srv.Obj.quotationCustomerType == -1) { %>Contact Principal<% } else if (srv.Obj.quotationCustomerType == 1) { %>Personne Physique<% }%><% } else { %>Contact Principal<% } %></p>
+                <% var o = { index: "13", gender: 1, label: "Civilité", field: "quotationPersonGender", tooltip: "M. et Mr sont équivalents (Monsieur), Mme (Madame), Mlle n'est officiellement plus utilisable (Mademoiselle), et Autre permet de ne rien mettre en terme de civilité sur les factures (si vous n'avez par exemple qu'un prénom à mettre).", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationPersonGender : srv.Obj) } %>
+                <% include form/inputSelectPersonGender %>
+                <% include form/inputSelect %>
+                <% var o = { index: "14", label: "Prénom", field: "quotationPersonFirstname", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationPersonFirstname : srv.Obj) } %>
+                <% include form/inputText %>
+                <% var o = { index: "15", label: "Nom", field: "quotationPersonLastname", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationPersonLastname : srv.Obj) } %>
+                <% include form/inputText %>
+                &nbsp;<br/>
+                <p class="midlight">Coordonnées de la personne</p>
+                <% var o = { index: "16", label: "Adresse", field: "quotationPersonAddressLine1", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationPersonAddressLine1 : srv.Obj) } %>
+                <% include form/inputText %>
+                <% var o = { index: "17", label: "", field: "quotationPersonAddressLine2", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationPersonAddressLine2 : srv.Obj) } %>
+                <% include form/inputText %>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <% var o = { index: "18", label: "CP", field: "quotationPersonAddressCP", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.quotationPersonAddressCP : srv.Obj) } %>
+                        <% include form/inputText %>
+                    </div>
+                    <div class="col-sm-6">
+                        <% var o = { index: "19", label: "Ville", field: "quotationPersonAddressCity", labelw: "2", inputw: "8", value: (srv.Obj ? srv.Obj.quotationPersonAddressCity : srv.Obj) } %>
+                        <% include form/inputText %>
+                    </div>
+                </div>
+                <% var o = { index: "20", label: "Pays", field: "quotationPersonAddressCountry", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationPersonAddressCountry : srv.Obj) } %>
+                <% include form/inputText %>
+                &nbsp;<br/>
+                <p class="midlight">Contact de la personne</p>
+                <% var o = { index: "21", label: "Téléphone", field: "quotationPersonContactTel", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationPersonContactTel : srv.Obj) } %>
+                <% include form/inputTel %>
+                <% var o = { index: "22", label: "Mobile", field: "quotationPersonContactMobile", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationPersonContactMobile : srv.Obj) } %>
+                <% include form/inputTel %>
+                <% var o = { index: "24", label: "Email", field: "quotationPersonContactMail", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.quotationPersonContactMail : srv.Obj) } %>
+                <% include form/inputMail %>
+            </div>
+        </form>
+    </div>
+
+    &nbsp;<br/>
+    &nbsp;<br/>
+</div>

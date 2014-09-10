@@ -86,7 +86,7 @@ db.prototype.init = function() {
                     },
                 function(callback) {
                         console.log("Creating TABLE presta.");
-                        db.run("CREATE TABLE presta (id INTEGER PRIMARY KEY AUTOINCREMENT, product_id INT, quantity INT, discount REAL)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'presta'); } });
+                        db.run("CREATE TABLE presta (id INTEGER PRIMARY KEY AUTOINCREMENT, product_id INT, quantity INT, discount REAL, freefield TEXT, ord INT)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'presta'); } });
                     },
                 function(callback) {
                         console.log("Creating TABLE invoice.");

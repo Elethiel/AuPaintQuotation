@@ -9,6 +9,7 @@
 
         <script type="text/javascript" src="/js/quotation.js"></script>
         <script type="text/javascript" src="/js/customer.js"></script>
+        <script type="text/javascript" src="/js/product.js"></script>
     </head>
     <body>
         <% include _menu %>
@@ -31,15 +32,15 @@
                                     <small class="help">Une Facture est un Devis qui a été validée, ou une Facture directe issue d'un accord avec le client. Les devis qui ont servis de bases à la facture serviront d'historique à celle-ci.</small><br/>
                                 <% } %>
                                 &nbsp;<br/>
-                                <form class="form-horizontal" id="quotationForm" role="form" action="/quotationUpdate" method="post"
+                                <form class="form-horizontal" id="quotationForm" role="form" action=""
                                     data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
                                     data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
                                     data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
 
                                     <!-- Nav tabs -->
                                     <ul class="nav nav-pills nav-wizard nav-justified" role="tablist">
-                                        <li <% if (srv.subloc != "" && srv.subloc === "customer") { %>class="active"<% } %>><a href="#customer" role="tab" id="tab0" data-toggle="tab">Client <span id="checkCustOk" class="backclean glyphicon glyphicon-ok green <% if (srv.Obj && srv.Obj.customerId) { %><% } else { %>hide<% } %>"></span><span id="checkCustNok" class="backclean glyphicon glyphicon-remove red <% if (srv.Obj && srv.Obj.customerId) { %>hide<% } else { %><% } %>"></span></a><div class="nav-arrow"></div></li>
-                                        <li <% if (srv.subloc != "" && srv.subloc === "presta") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#presta" role="tab" data-toggle="tab">Prestations</a><div class="nav-arrow"></div></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "customer") { %>class="active"<% } %>><a href="#customer" role="tab" id="tab0" data-toggle="tab">Client <span id="checkCustOk" class="backclean glyphicon glyphicon-ok green <% if (srv.Obj && srv.Obj.quotationCustomerId) { %><% } else { %>hide<% } %>"></span><span id="checkCustNok" class="backclean glyphicon glyphicon-remove red <% if (srv.Obj && srv.Obj.quotationCustomerId) { %>hide<% } else { %><% } %>"></span></a><div class="nav-arrow"></div></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "presta") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#presta" role="tab" data-toggle="tab">Prestations <span id="checkPrestaOk" class="backclean glyphicon glyphicon-ok green <% if (srv.Obj && srv.Obj.quotationPrestaList && srv.Ovj.quotationPrestaList.length > 0) { %><% } else { %>hide<% } %>"></span><span id="checkPrestaNok" class="backclean glyphicon glyphicon-remove red <% if (srv.Obj && srv.Obj.quotationPrestaList && srv.Ovj.quotationPrestaList.length > 0) { %>hide<% } else { %><% } %>"></span></a><div class="nav-arrow"></div></li>
                                         <li <% if (srv.subloc != "" && srv.subloc === "payment") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#payment" role="tab" data-toggle="tab">Paiements</a><div class="nav-arrow"></div></li>
                                         <li <% if (srv.subloc != "" && srv.subloc === "data") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#data" role="tab" data-toggle="tab">Infos et Doc</a></li>
                                     </ul>
@@ -49,7 +50,7 @@
                                             <% include quotationForm_customer %>
                                         </div>
                                         <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "presta") { %> in active<% } %>" id="presta">
-
+                                            <% include quotationForm_prestation %>
                                         </div>
                                         <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "payment") { %> in active<% } %>" id="payment">
 
@@ -65,11 +66,17 @@
                 </div>
             </div>
         </div>
+        <!-- hidden div for content -->
+        <% include quotationForm_customernew %>
 
         <% include _footer %>
         <% include _popup %>
 
         <script type="text/javascript">
+            var quotationObj = <%- JSON.stringify(srv.quotationObj) %>;
+            var customerList = <%- JSON.stringify(srv.customerList) %>;
+            var productList = <%- JSON.stringify(srv.productList) %>;
+            var customerNew = {};
             $(document).ready(quotationValidator);
         </script>
     </body>

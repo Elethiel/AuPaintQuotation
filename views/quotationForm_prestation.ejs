@@ -1,0 +1,124 @@
+&nbsp;<br/>
+&nbsp;<br/>
+
+<div class="row midlight"><small class="help">Vous pouvez ajouter des lignes à votre <% if (srv.type && srv.type == -1) { %>Devis<% } else { %>Facture<% } %></small></div>
+
+&nbsp;<br/>
+
+<!-- List of current Presta -->
+<div class="row">
+    <table id="prestatab" class="table table-bordered table-striped table-condensed table-hover" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Désignation</th>
+                <th>PU (HT)</th>
+                <th>Qté</th>
+                <th>TVA</th>
+                <th>Montant (TTC)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (srv.quotationPrestaList && srv.quotationPrestaList.length > 0) { %>
+            <% } else { %>
+                <tr>
+                    <td colspan="6" class="text-center"><i>Aucune Prestation enregistrée</i></td>
+                </tr>
+            <% } %>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Code</th>
+                <th>Désignation</th>
+                <th>PU (HT)</th>
+                <th>Qté</th>
+                <th>TVA</th>
+                <th>Montant (TTC)</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+&nbsp;<br/>
+<div class="row midlight"><small class="help">Choisissez d'ajouter des données techniques (sous total, champ libre)</small></div>
+&nbsp;<br/>
+
+<!-- technical action (add sub-total, add white line, add custom lines) -->
+<div class="row text-center">
+    <div class="form-group">
+        <div class="col-sm-8 text-right labelfree">Ajouter une ligne vide</div>
+        <div class="col-sm-3 text-left"><button type="button" id="addEmpty" class="btn btn-primary">Ligne Vide</button></div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-8 text-right labelfree">Ajouter une ligne avec un commentaire</div>
+        <div class="col-sm-3 text-left"><button type="button" id="addComm" class="btn btn-primary">Commentaire</button></div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-8 col-sm-offset-3"><input type="text" class="form-control" id="comm" value="" placeholder="votre commentaire ici" /></div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-8 text-right labelfree">Ajouter un sous-Total</div>
+        <div class="col-sm-3 text-left"><button type="button" id="addST" class="btn btn-primary">S/T</button></div>
+    </div>
+</div>
+
+&nbsp;<br/>
+<div class="row midlight"><small class="help">Choisissez d'ajouter une Prestation existante</small></div>
+&nbsp;<br/>
+
+<!-- Table with Products -->
+<div class="row text-center">
+    <% if (srv.productList && srv.productList.length > 0) { %>
+        <input type="hidden" id="maxCustomer" value="<%= srv.productList.length %>" />
+    <% } %>
+    <table id="producttab" class="stripe hover cell-border row-border nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Code</th>
+                <th>Catégorie</th>
+                <th>Prestation</th>
+                <th>Coût</th>
+                <th>Prix TTC</th>
+                <th>Unité</th>
+                <th>TVA</th>
+                <th>&nbsp;</th>
+                <th>TVA</th>
+                <th>fOk</th>
+                <th>fNull</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% if (srv.productList && srv.productList.length > 0) { %>
+                <% for(var i = 0; i < srv.productList.length; i++) { %>
+                    <tr>
+                        <td id="idProduct<%= i %>"><%= srv.productList[i].productId %></td>
+                        <td><%= srv.productList[i].productCode %></td>
+                        <td>
+                            <% if (srv.productList[i].groupProductIcon) { %>
+                                <a href="#" data-placement="bottom"  title="<%= srv.productList[i].groupProductLabel %>"
+                                data-tooltipsmall="<%= srv.productList[i].groupProductLabel.replace("\"","\\\"") %>">
+                                <img src="<%= srv.productList[i].groupProductIcon %>" />
+                            <% } else { %>
+                                <%= srv.productList[i].groupProductLabel %>
+                            <% } %>
+                        </td>
+                        <td id="labelProduct<%= i %>"><%= srv.productList[i].productLabel %></td>
+                        <td><%= srv.productList[i].productPaid %></td>
+                        <td><%= srv.productList[i].productTTC %></td>
+                        <td><%= srv.productList[i].productUnit %></td>
+                        <td><%= srv.productList[i].TVALabel %></td>
+                        <td> X </td>
+                        <td><%= srv.productList[i].TVAPercent %></td>
+                        <td><% if (srv.session.ownerObj && srv.session.ownerObj.ownerFactorOk) { %><%= srv.session.ownerObj.ownerFactorOk %><% } %></td>
+                        <td><% if (srv.session.ownerObj && srv.session.ownerObj.ownerFactorNull) { %><%= srv.session.ownerObj.ownerFactorNull %><% } %></td>
+                    </tr>
+                <% } %>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+&nbsp;<br/>
+&nbsp;<br/>

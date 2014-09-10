@@ -122,6 +122,12 @@ html, body {
     padding-bottom: 5px;
 }
 
+.w80p {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .green {
     color: #0A0;
 }
@@ -173,6 +179,9 @@ li.active > a > .backclean {
 .groupProductDropDown {
     width: 300px;
 }
+.labelfree {
+    padding: 6px 12px;
+}
 /* Add a tab container class, for a border around the entire tabset */
 .nav-tabs-container {
     padding: 3px;
@@ -182,6 +191,13 @@ li.active > a > .backclean {
 .tooltip-inner {
     max-width: 400px !important;
 }
+.table > THEAD > TR {
+    background-color: #ddf;
+}
+.table > TFOOT > TR {
+    background-color: #ddf;
+}
+
 /* CSS for DATATABLES */
 table.dataTable.stripe tbody tr.odd {
     background-color: #E9E9FF !important;

@@ -49,6 +49,16 @@ module.exports = function(app) {
             }
         });
         // ---------------------------------------------------------------------------------------------
+    }).post("/productQuotation", function(req, res, next) {
+        // ---------------------------------------------------------------------------------------------
+        // submit product (process) from Popup in Quotation
+        product.insertUpdate(req.db, req.body, function(err, ret) {
+            if (err) next(err);
+            else {
+                res.render("quotationUpdate", {srv: (ret.msg === "ok"), id: ret.productId });
+            }
+        });
+        // ---------------------------------------------------------------------------------------------
     }).get("/productDel", function(req, res, next) {
         // ---------------------------------------------------------------------------------------------
         // error from FORM (post)

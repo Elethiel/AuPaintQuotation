@@ -30,6 +30,11 @@ body {
 html, body {
     height: 100%;
 }
+
+.popsuperup {
+    z-index: 201 !important;
+}
+
 .footerContent {
     margin: -100px auto;
 }
@@ -95,6 +100,17 @@ html, body {
     background: #B2DBFF;
     color: #327BCA;
 }
+.grayfield {
+    background: #C2CBCF;
+    color: #327BCA;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-radius: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
 .help {
     font-style: italic;
 }
@@ -103,6 +119,9 @@ html, body {
 }
 .text-big {
     font-size: 16px;
+}
+.text-verybig {
+    font-size: 20px;
 }
 .btn {
     font-weight: bold;
@@ -134,6 +153,9 @@ html, body {
 .red {
     color: #A00;
 }
+.blue {
+    color: #428BCA;
+}
 .black {
     color: #000;
 }
@@ -146,6 +168,32 @@ li.active > a > .backclean {
     opacity : 0.5;
     font-style: italic;
 }
+
+.tag {
+    background-color: #3071A9;
+    margin: 5px;
+    padding: 0 8px;
+    border: 1px solid #285E8E;
+    text-align: center;
+    vertical-align: middle;
+    -moz-border-radius: 16px;
+    -webkit-border-radius: 16px;
+    border-radius: 16px;
+    line-height: 1.5em;
+    cursor: default;
+    white-space: nowrap;
+    float: left;
+    color: #FFFFFF;
+}
+
+.modalmask {
+    display: block !important;
+    position: fixed !important;
+    background-color: #333;
+    opacity: 0.5;
+    z-index: 200;
+}
+
 /* CSS for BOOTSTRAP */
 
 .form-group {
@@ -177,10 +225,20 @@ li.active > a > .backclean {
     background-color: #DDD;
 }
 .groupProductDropDown {
-    width: 300px;
+    min-width: 300px;
 }
 .labelfree {
     padding: 6px 12px;
+}
+tbody tr.evenCondensed {
+    background-color: #F3F3FF !important;
+}
+tbody tr.evenCondensed > td, tbody tr.oddCondensed > td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 2px;
+    font-size: 11px;
 }
 /* Add a tab container class, for a border around the entire tabset */
 .nav-tabs-container {
@@ -197,6 +255,9 @@ li.active > a > .backclean {
 .table > TFOOT > TR {
     background-color: #ddf;
 }
+.navbar-fixed-top {
+    z-index: 9999 !important;
+}
 
 /* CSS for DATATABLES */
 table.dataTable.stripe tbody tr.odd {
@@ -207,7 +268,14 @@ table.dataTable.stripe tbody tr.even {
     background-color: #F3F3FF !important;
 }
 
+table.compact tbody td {
+    padding: 2px 4px !important;
+}
+
 /* export menu not visible */
 div.DTTT_container {
   z-index: 2001 !important;
+}
+.ui-front {
+    z-index: 200;
 }

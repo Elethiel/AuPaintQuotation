@@ -38,25 +38,27 @@
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu groupProductDropDown" role="menu">
-                <% for(var i = 0; i < srv.groupProductList.length; i++) { %>
-                    <li>
-                        <input id="optionGroupId<%= i %>" type="hidden" value="<%= srv.groupProductList[i].groupProductId %>" />
-                        <input id="TVAPercent<%= i %>" type="hidden" value="<% if (srv.groupProductList[i].TVAPercent) { %><%= srv.groupProductList[i].TVAPercent %><% } %>" />
-                        <a href="#" id="optionGroup<%= i %>">
-                            <table class='nothing' border='0'>
-                                <tr>
-                                    <td width='80' class='text-center'>
-                                        <% if (srv.groupProductList[i].groupProductIcon) { %>
-                                            <img src="<%= srv.groupProductList[i].groupProductIcon %>" border="0" />
-                                        <% } %>
-                                    </td>
-                                    <td class='text-left'>
-                                        <%= srv.groupProductList[i].groupProductLabel %> ( <%= srv.groupProductList[i].TVALabel %> )
-                                    </td>
-                                </tr>
-                            </table>
-                        </a>
-                    </li>
+                <% if (srv.groupProductList) { %>
+                    <% for(var i = 0; i < srv.groupProductList.length; i++) { %>
+                        <li>
+                            <input id="optionGroupId<%= i %>" type="hidden" value="<%= srv.groupProductList[i].groupProductId %>" />
+                            <input id="TVAPercent<%= i %>" type="hidden" value="<% if (srv.groupProductList[i].TVAPercent) { %><%= srv.groupProductList[i].TVAPercent %><% } %>" />
+                            <a href="#" id="optionGroup<%= i %>">
+                                <table class='nothing' border='0'>
+                                    <tr>
+                                        <td width='80' class='text-center'>
+                                            <% if (srv.groupProductList[i].groupProductIcon) { %>
+                                                <img src="<%= srv.groupProductList[i].groupProductIcon %>" border="0" />
+                                            <% } %>
+                                        </td>
+                                        <td class='text-left'>
+                                            <%= srv.groupProductList[i].groupProductLabel %> ( <%= srv.groupProductList[i].TVALabel %> )
+                                        </td>
+                                    </tr>
+                                </table>
+                            </a>
+                        </li>
+                    <% } %>
                 <% } %>
             </ul>
         </div>

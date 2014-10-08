@@ -23,7 +23,7 @@ var productInitTab = function () {
                         "targets": 0
                     },
                     {
-                        "sClass": "text-left",
+                        "className": "text-left",
                         "targets": [1, 2]
                     },
                     {
@@ -35,7 +35,7 @@ var productInitTab = function () {
                         "targets": [2]
                     },
                     {
-                        "sClass": "text-left text-small",
+                        "className": "text-left text-small",
                         "render": function ( data, type, row ) {
                             return getProfitIm(row[5], row[4], row[9], row[10], row[11]) + " &nbsp; " + data + (row[6] != "" ? " (/" + row[6] + ")" :"");
                         },
@@ -46,7 +46,7 @@ var productInitTab = function () {
                         "render": function ( data, type, row ) {
                             return numeral(data).format('0.00') + "&nbsp;€";
                         },
-                        "sClass": "text-right",
+                        "className": "text-right",
                         "targets": [4]
                     },
                     {
@@ -61,7 +61,7 @@ var productInitTab = function () {
                                     "'> " +
                                     " <span class='glyphicon glyphicon-info-sign'></span></a> ";
                         },
-                        "sClass": "text-right",
+                        "className": "text-right",
                         "targets": [5]
                     },
                     {
@@ -71,7 +71,7 @@ var productInitTab = function () {
                     },
                     {
                         "width": 80,
-                        "sClass": "text-center",
+                        "className": "text-center",
                         "targets": [7]
                     },
                     {
@@ -126,7 +126,7 @@ var getProfitIm = function(ttc, paid, tva, ffok, ffnull) {
         case "ok" :     return '<a href="#" data-tooltipsmall="Très Rentable (' + formatFactor(getProfitFactor(ht, ttc, paid)) + ')" data-placement="bottom"><span id="factorok" class="glyphicon glyphicon-thumbs-up green"></span></a>'; break;
         case "n" :      return '<a href="#" data-tooltipsmall="Rentable (' + formatFactor(getProfitFactor(ht, ttc, paid)) + ')" data-placement="bottom"><span id="factornull" class="glyphicon glyphicon-hand-right black"></span></a>'; break;
         case "nok" :    return '<a href="#" data-tooltipsmall="Peu ou pas Rentable (' + formatFactor(getProfitFactor(ht, ttc, paid)) + ')" data-placement="bottom"><span id="factornok" class="glyphicon glyphicon-thumbs-down red"></span></a>'; break;
-        default: 
+        default:
     }
 };
 
@@ -170,7 +170,7 @@ var checkProfit = function() {
                 case "ok" :     $("#factorok").show(); break;
                 case "n" :      $("#factornull").show(); break;
                 case "nok" :    $("#factornok").show(); break;
-                default: 
+                default:
             }
             $("#profit").show();
         } else $("#profit").hide();
@@ -210,7 +210,7 @@ var productPriceUpdate = function(mode) {
     // retrieve Price fields
     var ttc = unformat($("#productTTC").val());
     var ht = unformat($("#productHT").val());
-    
+
     // retrieve TVA
     var tva = $("#groupProductTVAPercent");
     if (tva.val() != "") {

@@ -1,6 +1,7 @@
 var tools = require("../model/_tools");
 var lodash = require("lodash");
 var util = require("util");
+var async = require("async");
 
 // db.run("CREATE TABLE payType (id INTEGER PRIMARY KEY AUTOINCREMENT, label TEXT NOT NULL)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'payType'); } });
 
@@ -71,6 +72,33 @@ PayType.prototype.findAll = function(db, callback) {
     });
 };
 
+PayType.prototype.findAllByQuotationId = function( db, param, callback ) {
+    var self = this;
+    db.all("SELECT payType_id FROM invoice_paytype WHERE invoice_id = ?", [ param.quotationId ], function(err, rows) {
+        if (err) callback(err);
+        else {
+            if (rows) {
+                var seriesFns = [];
+                rows.forEach(function(row) {
+                    seriesFns.push(function(c) {
+                        self.findById(db, { payTypeId: row.payType_id }, function(err, payTypeObj) {
+                            c(err, payTypeObj);
+                        });
+                    });
+                });
+                async.series(seriesFns,
+                    function(err, payTypeList) {
+                        if (err) callback(err, []);
+                        else callback(null, payTypeList);
+                    }
+                );
+            } else {
+                callback(null, []);
+            }
+        }
+    });
+};
+
 PayType.prototype.delById = function(db, param, callback) {
     if (param.payTypeId && param.payTypeId > 0) {
         // existing
@@ -107,6 +135,19 @@ PayType.prototype.delById = function(db, param, callback) {
                 }
             }
         ); // get related incoices
+    } else callback(null, {msg:"nok", payTypeId: 0});
+};
+
+PayType.prototype.delByQuotationId = function(db, param, callback) {
+    if (param.quotationId && param.quotationId > 0) {
+        // existing
+        db.run("DELETE FROM invoice_paytype WHERE invoice_id = ?",
+            [ param.quotationId ],
+            function(err, row) {
+                if (err) callback(err);
+                else callback(null, {msg:"ok", payTypeId: 0});
+            }
+        ); // paycond deletion
     } else callback(null, {msg:"nok", payTypeId: 0});
 };
 

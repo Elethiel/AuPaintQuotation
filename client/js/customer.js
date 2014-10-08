@@ -28,12 +28,12 @@ var customerInitTab = function () {
                         "targets": [1]
                     },
                     {
-                        "sClass": "text-left",
+                        "className": "text-left",
                         "targets": [2]
                     },
                     {
                         "width": 250,
-                        "sClass": "text-left",
+                        "className": "text-left",
                         "targets": [3]
                     },
                     {
@@ -159,12 +159,12 @@ var customerValidator = function() {
                         "targets": [0]
                     },
                     {
-                        "sClass": "text-left",
+                        "className": "text-left",
                         "targets": [1]
                     },
                     {
                         "width": 250,
-                        "sClass": "text-left",
+                        "className": "text-left",
                         "targets": [2]
                     },
                     {

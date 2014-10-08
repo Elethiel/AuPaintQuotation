@@ -1,0 +1,32 @@
+<div id="popupContentNewPresta" class="hide">
+    <div class="form-horizontal" >
+        <form id="popupForm2" role="form" class="form-horizontal" method="post"
+            data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+            data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+            data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+            <!-- quotation means Prospect, Invoice means customer -->
+            <a id="popupTop2" />
+            
+            <% var o = { index: "1", label: "Catégorie", tooltip: "N'apparait pas au client. Il s'agit d'un classement interne.", field: "groupProductId", labelw: "4", inputw: "7", value: null, TVAPercent: null } %>
+            <% include form/productGroup %>
+            &nbsp;<br/>
+            <% var o = { index: "2", label: "CODE", placeholder:"Un Code unique", tooltip: "Le code apparaîtra sur les devis/factures des clients\ncomme référence unique pour une prestation donnée. (ex: P01, R2b, ...)", field: "productCode", labelw: "4", inputw: "7", value: null } %>
+            <% include form/inputText %>
+            <% var o = { index: "3", label: "Libellé", placeholder:"Description synthétique de la prestation", empty: "Le libellé de la Prestation est obligatoire !", tooltip: "Le libellé est ce qui apparaîtra sur le devis/la facture pour le client (ex: 1 repas adulte, Paintball: 100 billes, 1 animateur (/h), 1 animateur (/jour),...)\nAttention car un texte trop grand déformera les devis et facture !\nRestez synthétique !", field: "productLabel", labelw: "4", inputw: "7", value: null } %>
+            <% include form/inputText %>
+            <% var o = { index: "4", symbol: "€", label: "Coût interne", placeholder:"xx.xx", tooltip: "Permet de calculer les marges sur les ventes.", field: "productPaid", labelw: "4", inputw: "5", value: null } %>
+            <% include form/inputNum %>
+            &nbsp;<br/>
+            <% var o = { index: "5", symbol: "€", addon: "down", label: "Prix de Vente (TTC)", empty:"Le prix de vente est obligatoire !", placeholder:"xx.xx", tooltip: "Il s'agit du prix client affiché sur le devis en TTC.\nLe prix HT est calculé automatiquement selon la TVA en cours sur cette prestation si vous modifiez celui-ci. Inversement, il sera mis à jour automatiquement si vous modifiez le prix HT.", field: "productTTC", labelw: "4", inputw: "5", value: null } %>
+            <% include form/inputNum %>
+            <% var o = { index: "6", symbol: "€", addon: "up", label: "Prix de Vente (HT)", placeholder:"xx.xx", tooltip: "Il s'agit du prix client affiché sur le devis en HT.\nLe prix TTC est calculé automatiquement selon la TVA en cours sur cette prestation si vous modifiez celui-ci. Inversement, il sera mis à jour automatiquement si vous modifiez le prix TTC.", field: "productHT", labelw: "4", inputw: "5", value: null } %>
+            <% include form/inputNum %>
+            <% var o = { index: "7", label: "Unité", placeholder:"heure, jour, minute, pièce, unité, forfait semaine...", tooltip: "Il s'agit de ce que représente l'unité de temps pour la prestation :\nEst-ce une prestation à la minute ? à l'heure ? à la journée ? à l'unité/la pièce ?\nLe but est de pouvoir avoir une prestation Animateur (/min), une autre Animateur (/heure) de façon à adapter les tarifs selon les besoins du clients", field: "productUnit", labelw: "4", inputw: "7", value: null } %>
+            <% include form/inputText %>
+            &nbsp;<br/>
+        </form>
+    </div>
+
+    &nbsp;<br/>
+    &nbsp;<br/>
+</div>

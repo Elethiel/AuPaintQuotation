@@ -2,6 +2,7 @@ var groupProduct = require("../model/groupProductObj");
 var tools = require("../model/_tools");
 var lodash = require("lodash");
 var util = require("util");
+var lwip = require("lwip");
 
 // db.run("CREATE TABLE product (id INTEGER PRIMARY KEY AUTOINCREMENT, group_id INT, label TEXT, code TEXT, ttc REAL, unit TEXT, paid REAL)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'product'); } });
 
@@ -36,7 +37,7 @@ Product.prototype.insertUpdate = function(db, param, callback) {
                     }
                 }
             }
-        ); // cehck unicity
+        ); // check unicity
     } else {
         // new (insert)
         // 1. check unicity of code
@@ -107,6 +108,14 @@ Product.prototype.findAll = function(db, callback) {
                 rows.forEach(function(row) {
                     var productObj = {};
                     lodash.assign(productObj, {productId: row.id, productLabel: row.label, productCode: row.code, productTTC: row.ttc, productUnit: row.unit, productPaid: row.paid, groupProductId: row.groupProductId, groupProductLabel: row.groupProductLabel, groupProductIcon: row.groupProductIcon, TVAId: row.TVAId, TVALabel: row.TVALabel, TVAPercent: row.TVAPercent });
+                    if (productObj.groupProductIcon) {
+                        lwip.open("./client" + productObj.groupProductIcon, function(err, image) {
+                            if (!err) {
+                                productObj.groupProductIconW = image.width();
+                                productObj.groupProductIconH = image.height();
+                            }
+                        });
+                    }
                     productList.push(productObj);
                 });
             }

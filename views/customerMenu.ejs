@@ -26,10 +26,11 @@
                                         <% if (srv.pstatus === "new-CUS") { %><span class="label label-success">Client bien ajouté</span><% } %>
                                         <% if (srv.pstatus === "del-CUS") { %><span class="label label-success">Client bien supprimé</span><% } %>
                                         <% if (srv.pstatus === "err-CUS") { %><span class="label label-danger">Error lors de la suppression du Client</span><% } %>
+                                        <% if (srv.pstatus === "rej-CUS") { %><span class="label label-danger">Impossible de supprimer ce Client ! Il est utilisé sur <b><%= srv.pstatusvar %></b> Devis/Facture(s)</span><% } %>
                                      </div>
                                     &nbsp;<br/>
                                 <% } %>
-                                <!--  ****************************  PRODUCT   ****************************   -->
+                                <!--  ****************************  CUSTOMER   ****************************   -->
 
                                 <div class="row text-center">
                                     <button type="button" id="addCustomer" class="btn btn-primary">Ajouter un Client</button>

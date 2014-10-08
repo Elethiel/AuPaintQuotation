@@ -20,15 +20,15 @@ Owner.prototype.isOwnerExist = function(db, callback) {
 };
 
 Owner.prototype.insertUpdate = function(db, param, callback) {
-    
+
     if (!param.notstring) tools.manageString(param);
-    
+
     //console.log("** START insertUpdate OWNER");
-    
+
     param.addressCountry = "France";
     // ensure company of the owner, get the id if exists
-    db.get("SELECT company_id FROM owner WHERE id = ?", 
-        [ param.ownerId ], 
+    db.get("SELECT company_id FROM owner WHERE id = ?",
+        [ param.ownerId ],
         function(err, row) {
             if (err) callback(err);
             else {
@@ -42,8 +42,8 @@ Owner.prototype.insertUpdate = function(db, param, callback) {
                             // ensure Owner itself
                             if (param.ownerId && param.ownerId > 0) {
                                 // existing (update)
-                                db.run("UPDATE owner SET company_id = ?, fiscalDt = ?, defaultValidity = ?, logo = ?, bigLogo = ?, factorok = ?, factornull = ? WHERE id = ?",
-                                    [ companyId, param.ownerFiscalDt, param.ownerDefaultValidity, param.ownerLogo, param.ownerBigLogo, param.ownerFactorOk, param.ownerFactorNull, param.ownerId ],
+                                db.run("UPDATE owner SET company_id = ?, fiscalDt = ?, defaultValidity = ?, logo = ?, bigLogo = ?, factorok = ?, factornull = ?, pattern = ? WHERE id = ?",
+                                    [ companyId, param.ownerFiscalDt, param.ownerDefaultValidity, param.ownerLogo, param.ownerBigLogo, param.ownerFactorOk, param.ownerFactorNull, param.ownerPattern, param.ownerId ],
                                     function(err, row) {
                                         if (err) callback(err);
                                         else {
@@ -54,8 +54,8 @@ Owner.prototype.insertUpdate = function(db, param, callback) {
                                 ); // update callback
                             } else {
                                 // new (insert)
-                                db.run("INSERT INTO owner (company_id, fiscalDt, defaultValidity, logo, bigLogo, factorok, factornull) VALUES(?, ?, ?, ?, ?, ?, ?)",
-                                    [ companyId, param.ownerFiscalDt, param.ownerDefaultValidity, param.ownerLogo, param.ownerBigLogo, param.ownerFactorOk, param.ownerFactorNull ],
+                                db.run("INSERT INTO owner (company_id, fiscalDt, defaultValidity, logo, bigLogo, factorok, factornull, pattern) VALUES(?, ?, ?, ?, ?, ?, ?)",
+                                    [ companyId, param.ownerFiscalDt, param.ownerDefaultValidity, param.ownerLogo, param.ownerBigLogo, param.ownerFactorOk, param.ownerFactorNull, param.ownerPattern ],
                                     function(err, row) {
                                         if (err) callback(err);
                                         else {
@@ -76,9 +76,9 @@ Owner.prototype.insertUpdate = function(db, param, callback) {
 Owner.prototype.findById = function(db, param, callback) {
     if (param && param.ownerId && param.ownerId > 0) {
         //console.log("** START find OWNER " + param.ownerId);
-        
+
         var ownerObj = {};
-        db.get("SELECT id, company_id, fiscalDt, defaultValidity, logo, bigLogo, factorok, factornull FROM owner WHERE id = ?", [ param.ownerId ], function(err, row) {
+        db.get("SELECT id, company_id, fiscalDt, defaultValidity, logo, bigLogo, factorok, factornull, pattern FROM owner WHERE id = ?", [ param.ownerId ], function(err, row) {
             if (err) callback(err);
             else {
                 if (row) {
@@ -94,7 +94,7 @@ Owner.prototype.findById = function(db, param, callback) {
                                                 function(all, group1, group2) {
                                                     return(group2);
                                                 });
-                            lodash.assign(ownerObj, {ownerId: row.id, ownerClean: ownerClean, ownerRender: ownerRender, companyObj: companyObj, ownerFiscalDt: row.fiscalDt, ownerDefaultValidity: row.defaultValidity, ownerLogo: row.logo, ownerBigLogo: row.bigLogo, ownerFactorOk: row.factorok, ownerFactorNull: row.factornull });
+                            lodash.assign(ownerObj, {ownerId: row.id, ownerClean: ownerClean, ownerRender: ownerRender, companyObj: companyObj, ownerFiscalDt: row.fiscalDt, ownerDefaultValidity: row.defaultValidity, ownerLogo: row.logo, ownerBigLogo: row.bigLogo, ownerFactorOk: row.factorok, ownerFactorNull: row.factornull, ownerPattern: row.pattern });
                             callback(null, ownerObj);
                         }
                     });
@@ -108,6 +108,73 @@ Owner.prototype.getFlatVersion = function(ownerObj) {
     lodash.assign(ownerObj, company.getFlatVersion(ownerObj.companyObj));
     delete ownerObj.companyObj;
     return ownerObj;
+};
+
+Owner.prototype.getCalculatedPattern = function(db, pattern, callback) {
+    if ( pattern != "" ) {
+        // $yy$ = current year (or iso year if week)
+        // $mm$ = current month
+        // $ss$ = current week
+        // $dd$ = current day
+        // # = uniq ID
+        var patternRender = tools.trim(pattern);
+        var month = "00" + (new Date().getMonth() + 1);
+        month = month.substr(month.length - 2);
+        patternRender = patternRender.replace(/\$mm\$/gi, month);
+        var day = "00" + (new Date().getDate());
+        day = day.substr(day.length - 2);
+        patternRender = patternRender.replace(/\$dd\$/gi, day);
+        if (!patternRender.match(/\$ss\$/gi)) {
+            patternRender = patternRender.replace(/\$yy\$/gi, new Date().getFullYear());
+        } else {
+            patternRender = patternRender.replace(/\$ss\$/gi, new Date().getWeek());
+            patternRender = patternRender.replace(/\$yy\$/gi, new Date().getWeekYear());
+        }
+
+        // manage the uniq id (from server side, we need to look in database)
+        var p = "";
+        var pp = ""
+        if (patternRender.match(/######/gi)) {
+            p = "000000";
+            pp = "______";
+            patternRender = patternRender.replace(/######/gi, pp);
+        } else if (patternRender.match(/#####/gi)) {
+            p = "00000";
+            pp = "_____";
+            patternRender = patternRender.replace(/#####/gi, pp);
+        } else if (patternRender.match(/####/gi)) {
+            p = "0000";
+            pp = "____";
+            patternRender = patternRender.replace(/####/gi, pp);
+        } else if (patternRender.match(/###/gi)) {
+            p = "000";
+            pp = "___";
+            patternRender = patternRender.replace(/###/gi, pp);
+        } else if (patternRender.match(/##/gi)) {
+            p = "00";
+            pp = "__";
+            patternRender = patternRender.replace(/##/gi, pp);
+        } else if (patternRender.match(/#/gi)) {
+            p = "0";
+            pp = "_";
+            patternRender = patternRender.replace(/#/gi, pp);
+        }
+
+        db.get("SELECT MAX(CAST(SUBSTR(ref, INSTR('" + patternRender + "', '" + pp + "'), " + p.length + ") AS INT)) + 1 as pat FROM invoice WHERE ref LIKE '" + patternRender + "'", [], function(err, row) {
+            if (err) callback(err);
+            else {
+                var n = p;
+                if (row && row.pat) {
+                    n += row.pat;
+                } else {
+                    n += 1;
+                }
+                patternRender = patternRender.replace(pp, n.substr(n.length - pp.length, n.length));
+                callback(null, patternRender);
+            }
+        } );
+
+    }
 };
 
 module.exports = new Owner();

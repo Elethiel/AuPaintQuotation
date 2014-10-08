@@ -12,7 +12,7 @@ Customer.prototype.insertUpdate = function(db, param, callback) {
     var objType = null;
     var objParam = [];
 
-    if (!param.notstring) tools.manageString(param);
+    if (!param.notstring && param) tools.manageString(param);
 
     // check companyId, personId
     db.get("SELECT company_id, person_id FROM Customer WHERE id = ?",
@@ -100,14 +100,14 @@ Customer.prototype.findById = function(db, param, callback) {
                                                 customerObj.displayName = companyObj.companyName;
                                                 if (personObj.personLastname || personObj.personFirstname) {
                                                     customerObj.displayName += ' ( <em class="text-small">';
-                                                    customerObj.displayName += personObj.personGender ? personObj.personGender : "";
-                                                    customerObj.displayName += personObj.personLastname ? personObj.personLastname : "";
+                                                    customerObj.displayName += personObj.personGender ? personObj.personGender + " " : "";
+                                                    customerObj.displayName += personObj.personLastname ? personObj.personLastname + " " : "";
                                                     customerObj.displayName += personObj.personFirstname ? personObj.personFirstname : "";
                                                     customerObj.displayName += '</em> )';
                                                 }
                                             } else {
-                                                customerObj.displayName += personObj.personGender ? personObj.personGender : "";
-                                                customerObj.displayName += personObj.personLastname ? personObj.personLastname : "";
+                                                customerObj.displayName += personObj.personGender ? personObj.personGender + " " : "";
+                                                customerObj.displayName += personObj.personLastname ? personObj.personLastname + " " : "";
                                                 customerObj.displayName += personObj.personFirstname ? personObj.personFirstname : "";
                                             }
                                             //console.log("** find Customer " + util.inspect(customerObj, false, null));
@@ -173,13 +173,13 @@ Customer.prototype.delById = function(db, param, callback) {
         // existing
         // console.log("** Start delete customer " + param.customerId);
         db.get("SELECT COUNT(id) as nb FROM invoice WHERE customer_id = ?",
-            [ param.TVAId ],
+            [ param.customerId ],
             function(err, row) {
                 if (err) callback(err);
                 else {
                     if (row && row.nb > 0) {
                         //console.log("Functional Error Customer : already used by " + row.nb + " Invoices");
-                        callback(null, {msg:"rej", CustomerNb : row.nb});
+                        callback(null, {msg:"rej", customerNb : row.nb});
                     } else {
                         // 1. delete all persons linked to customer
                         person.delByCustomerId(db, param, function(err) { // don't care if something has been deleted...

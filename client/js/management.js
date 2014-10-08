@@ -22,14 +22,14 @@ var initTVA = function() {
                         "targets":  [0]
                     },
                     {
-                        "sClass": "text-right",
+                        "className": "text-right",
                         "render": function ( data, type, row ) {
                             return numeral(data).divide(100).format('0.00%');
                         },
                         "targets": [2]
                     },
                     {
-                        "sClass": "text-left",
+                        "className": "text-left",
                         "targets": [1]
                     },
                     {
@@ -75,7 +75,7 @@ var initGroupProduct = function() {
                         "targets": [1]
                     },
                     {
-                        "sClass": "text-left",
+                        "className": "text-left",
                         "render": function ( data, type, row ) {
                             return "<table class='nothing' border='0'><tr><td width='80' class='text-center'>" + row[1] + "</td><td class='text-left'>" + data + "</td></tr></table>";
                         },
@@ -119,7 +119,7 @@ var initPayType = function() {
                         "targets": [0]
                     },
                     {
-                        "sClass": "text-left",
+                        "className": "text-left",
                         "targets": [1]
                     },
                     {
@@ -160,11 +160,11 @@ var initPayCond = function() {
                         "targets": [0]
                     },
                     {
-                        "sClass": "text-left",
+                        "className": "text-left",
                         "targets": [1]
                     },
                     {
-                        "sClass": "text-right",
+                        "className": "text-right",
                         "render": function ( data, type, row ) {
                             return data ? numeral(data).divide(100).format('0.00%') : "";
                         },

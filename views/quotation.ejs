@@ -18,10 +18,10 @@
                 <div class="container">
                     <div class="row">&nbsp;</div>
                     <div class="row">
-                        <div class="col-md-10 col-md-offset-1 text-center center">
+                        <div class="col-md-12 text-center center">
                             <div class="well">
                                 <button type="button" id="backButMain" class="btn btn-default">Retour</button>
-                                <% if (srv.Obj) { %>
+                                <% if (srv.Obj && srv.Obj.quotationId) { %>
                                     <legend><h1>Modifier un<% if (srv.type && srv.type == -1) { %> Devis<% } else { %>e Facture<% } %></h1></legend>
                                 <% } else { %>
                                     <legend><h1>Ajouter un<% if (srv.type && srv.type == -1) { %> Devis<% } else { %>e Facture<% } %></h1></legend>
@@ -32,17 +32,24 @@
                                     <small class="help">Une Facture est un Devis qui a été validée, ou une Facture directe issue d'un accord avec le client. Les devis qui ont servis de bases à la facture serviront d'historique à celle-ci.</small><br/>
                                 <% } %>
                                 &nbsp;<br/>
+
+                                <button type="button" id="confirmQuotation" class="btn btn-danger">&nbsp; &nbsp; VALIDER &nbsp; &nbsp;</button><br/>
+
+                                &nbsp;<br/>
+
                                 <form class="form-horizontal" id="quotationForm" role="form" action=""
                                     data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
                                     data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
                                     data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
 
+                                    <input type="hidden" name="quotationType" id="quotationType" value="<%= srv.type %>" />
+
                                     <!-- Nav tabs -->
                                     <ul class="nav nav-pills nav-wizard nav-justified" role="tablist">
-                                        <li <% if (srv.subloc != "" && srv.subloc === "customer") { %>class="active"<% } %>><a href="#customer" role="tab" id="tab0" data-toggle="tab">Client <span id="checkCustOk" class="backclean glyphicon glyphicon-ok green <% if (srv.Obj && srv.Obj.quotationCustomerId) { %><% } else { %>hide<% } %>"></span><span id="checkCustNok" class="backclean glyphicon glyphicon-remove red <% if (srv.Obj && srv.Obj.quotationCustomerId) { %>hide<% } else { %><% } %>"></span></a><div class="nav-arrow"></div></li>
-                                        <li <% if (srv.subloc != "" && srv.subloc === "presta") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#presta" role="tab" data-toggle="tab">Prestations <span id="checkPrestaOk" class="backclean glyphicon glyphicon-ok green <% if (srv.Obj && srv.Obj.quotationPrestaList && srv.Ovj.quotationPrestaList.length > 0) { %><% } else { %>hide<% } %>"></span><span id="checkPrestaNok" class="backclean glyphicon glyphicon-remove red <% if (srv.Obj && srv.Obj.quotationPrestaList && srv.Ovj.quotationPrestaList.length > 0) { %>hide<% } else { %><% } %>"></span></a><div class="nav-arrow"></div></li>
-                                        <li <% if (srv.subloc != "" && srv.subloc === "payment") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#payment" role="tab" data-toggle="tab">Paiements</a><div class="nav-arrow"></div></li>
-                                        <li <% if (srv.subloc != "" && srv.subloc === "data") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#data" role="tab" data-toggle="tab">Infos et Doc</a></li>
+                                        <li <% if (!(srv.Obj && srv.Obj.quotationId) || (srv.subloc != "" && srv.subloc === "customer")) { %>class="active"<% } %>><a href="#customer" role="tab" id="tab0" data-toggle="tab">Client <span id="checkCustOk" class="backclean glyphicon glyphicon-ok green <% if (srv.Obj && srv.Obj.quotationCustomerId) { %><% } else { %>hide<% } %>"></span><span id="checkCustNok" class="backclean glyphicon glyphicon-remove red <% if (srv.Obj && srv.Obj.quotationCustomerId) { %>hide<% } else { %><% } %>"></span></a><div class="nav-arrow"></div></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "presta") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#presta" role="tab" data-toggle="tab">Prestations <span id="checkPrestaOk" class="backclean glyphicon glyphicon-ok green <% if (srv.Obj && srv.Obj.quotationPrestaList && srv.Obj.quotationPrestaList.length > 0) { %><% } else { %>hide<% } %>"></span><span id="checkPrestaNok" class="backclean glyphicon glyphicon-remove red <% if (srv.Obj && srv.Obj.quotationPrestaList && srv.Obj.quotationPrestaList.length > 0) { %>hide<% } else { %><% } %>"></span></a><div class="nav-arrow"></div></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "payment") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#payment" role="tab" data-toggle="tab">Paiements <span id="checkPaymentOk" class="backclean glyphicon glyphicon-ok green <% if (srv.Obj && srv.Obj.PayCondObj && srv.Obj.quotationPayTypeList && srv.Obj.quotationPayTypeList.length > 0) { %><% } else { %>hide<% } %>"></span><span id="checkPaymentNok" class="backclean glyphicon glyphicon-remove red <% if (srv.Obj && srv.Obj.PayCondObj && srv.Obj.quotationPayTypeList && srv.Obj.quotationPayTypeList.length > 0) { %>hide<% } else { %><% } %>"></span></a><div class="nav-arrow"></div></li>
+                                        <li <% if (srv.subloc != "" && srv.subloc === "data") { %>class="active"<% } %>><div class="nav-wedge"></div><a id="tab1" href="#data" role="tab" data-toggle="tab">Infos et Doc <span id="checkDataOk" class="backclean glyphicon glyphicon-ok green <% if (srv.Obj && srv.Obj.quotationRef && srv.Obj.quotationRef != "") { %><% } else { %>hide<% } %>"></span><span id="checDataNok" class="backclean glyphicon glyphicon-remove red <% if (srv.Obj && srv.Obj.quotationRef && srv.Obj.quotationRef != "") { %>hide<% } else { %><% } %>"></span></a></li>
                                     </ul>
                                     <!-- Tab panes -->
                                     <div class="tab-content text-left">
@@ -53,10 +60,10 @@
                                             <% include quotationForm_prestation %>
                                         </div>
                                         <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "payment") { %> in active<% } %>" id="payment">
-
+                                            <% include quotationForm_payment %>
                                         </div>
                                         <div class="tab-pane fade<% if (srv.subloc != "" && srv.subloc === "data") { %> in active<% } %>" id="data">
-
+                                            <% include quotationForm_data %>
                                         </div>
                                     </div>
                                 </form>
@@ -68,14 +75,20 @@
         </div>
         <!-- hidden div for content -->
         <% include quotationForm_customernew %>
+        <% include quotationForm_prestanew %>
 
         <% include _footer %>
         <% include _popup %>
 
         <script type="text/javascript">
-            var quotationObj = <%- JSON.stringify(srv.quotationObj) %>;
+            var quotationObj = <%- JSON.stringify(srv.Obj) %>;
             var customerList = <%- JSON.stringify(srv.customerList) %>;
             var productList = <%- JSON.stringify(srv.productList) %>;
+            var payCondList = <%- JSON.stringify(srv.payCondList) %>;
+            var payTypeList = <%- JSON.stringify(srv.payTypeList) %>;
+            var groupProductList = <%- JSON.stringify(srv.groupProductList) %>;
+            var ownerFactorOk = <%= srv.session.ownerObj ? srv.session.ownerObj.ownerFactorOk : "" %>;
+            var ownerFactorNull = <%= srv.session.ownerObj ? srv.session.ownerObj.ownerFactorNull : "" %>;
             var customerNew = {};
             $(document).ready(quotationValidator);
         </script>

@@ -1,5 +1,6 @@
 var product = require("../model/productObj");
 var customer = require("../model/customerObj");
+var quotation = require("../model/quotationObj");
 var util = require("util");
 
 module.exports = function(app) {
@@ -57,12 +58,16 @@ module.exports = function(app) {
         // success from FROM (post)
         if (req.session.pstatus && req.session.pstatus !== "") {
             req.param.pstatus = req.session.pstatus;
-            req.param.pstatusvar = req.session.pstatusvar;
             delete req.session.pstatus;
-            delete req.session.pstatusvar;
         }
-        req.param.loc = "quotation";
-        res.render("quotationMenu", {srv: req.param});
+        quotation.findAll(req.db, function(err, quotationList) {
+            if (err) next(err);
+            else {
+                if (quotationList) req.param.quotationList = quotationList;
+                req.param.loc = "quotation";
+                res.render("quotationMenu", {srv: req.param});
+            }
+        });
         // ---------------------------------------------------------------------------------------------
     });
 };

@@ -1,0 +1,140 @@
+&nbsp;<br/>
+&nbsp;<br/>
+
+    <!-- Quotation Reference -->
+    <div class="form-group text-center">
+        <label for="quotationRef" class="col-sm-4 control-label">
+            Référence
+        </label>
+        <div class="col-sm-4">
+            <input type='text' class="form-control" <% if (srv.Obj && srv.Obj.isAlreadyStarted) { %>disabled<% } %> tabindex="40" id="quotationRef" value="<% if (srv.Obj && srv.Obj.quotationRef) { %><%= srv.Obj.quotationRef %><% } %>">
+        </div>
+        <label for="quotationVersion" class="col-sm-2 control-label">
+            Version
+        </label>
+        <div class="col-sm-1">
+            <input type='text' class="form-control text-center" disabled tabindex="-1" id="quotationVersion" value="<% if (srv.Obj && srv.Obj.quotationVersion) { %><%= srv.Obj.quotationVersion %><% } %>">
+        </div>
+    </div>
+    <!-- Creation Date (date of the quotation/invoice) -->
+    <!-- free field because a quotation could have a starting date "after the week end" -->
+    <!-- and an invoice launched after a date for fiscal reason -->
+    <div class="form-group text-center">
+        <label for="quotationCreationDt" class="col-sm-4 control-label">
+            Date de valeur de <% if (srv.type && srv.type == -1) { %>ce Devis<% } else { %>cette Facture<% } %>
+            <a href="#" data-placement="bottom" tabindex="-1"
+                data-tooltip="Date qui sera présente sur les documents et sera la date à partir de laquelle le document aura de la valeur. Permet de préparer les documents en avance.">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        </label>
+        <div class="col-sm-4">
+            <div class="control-label" style="text-align: left !important;">
+                <div class="input-append date" id="quotationCreationDt" data-date="" data-date-format="dd-mm-yyyy">
+                    <input class="span2 text-center" id="quotationCreationDtInput" size="16" type="text" value="">
+                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <label for="quotationCreationDt" class="col-sm-4 control-label">
+            Date de la denière modification
+            <a href="#" data-placement="bottom" tabindex="-1"
+                data-tooltip="Date des modifications dans le système">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        </label>
+        <div class="col-sm-4">
+            <span class="form-control text-center" id="quotationUpdateDt" disabled></span>
+        </div>
+    </div>
+    <% if (srv.type && srv.type == -1) { %>
+        <div class="form-group text-center">
+            <label for="quotationEndValidityDt" class="col-sm-4 control-label">
+                Date de fin de valeur de ce Devis
+                <a href="#" data-placement="bottom" tabindex="-1"
+                    data-tooltip="Date qui arrêtera la validité du devis. Par défaut on ajoute un certain nombre de jours à la date de départ, à voir dans les options.">
+                <span class="glyphicon glyphicon-info-sign"></span></a>
+            </label>
+            <div class="col-sm-4">
+                <div class="control-label" style="text-align: left !important;">
+                    <div class="input-append date" id="quotationEndValidityDt" data-date="" data-date-format="dd-mm-yyyy">
+                        <input class="span2 text-center" id="quotationEndValidityDtInput" size="16" type="text" value="">
+                        <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
+    &nbsp;<br/>
+    <div class="form-group text-center">
+        <label for="quotationStatus" class="col-sm-4 control-label">
+            Status
+            <a href="#" data-placement="bottom" tabindex="-1"
+                data-tooltip="Status précalculé en fonction de la globalité des donneés">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        </label>
+        <div class="col-sm-4">
+            <span class="form-control text-center" id="quotationStatus" disabled></span>
+        </div>
+    </div>
+    &nbsp;<br/>
+    <div class="form-group">
+        <label for="quotationCustomerNote" class="col-sm-4 control-label">
+            Note ajoutée sur <% if (srv.type && srv.type == -1) { %>le Devis<% } else { %>la Facture<% } %>
+            <a href="#" data-placement="bottom" tabindex="-1"
+                data-tooltip="Cette note sera ajoutée en haut de page sur <% if (srv.type && srv.type == -1) { %>le Devis<% } else { %>la Facture<% } %>">
+                <span class="glyphicon glyphicon-info-sign"></span></a>
+        </label>
+        <div class="col-sm-7">
+            <textarea tabindex="43" class="form-control" name="quotationCustomerNote" id="quotationCustomerNote" rows="4" ><% if (srv.Obj.quotationCustomerNote) { %><%= srv.Obj.quotationCustomerNote %><% } %></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="quotationInternalNote" class="col-sm-4 control-label">
+            Note interne
+            <a href="#" data-placement="bottom" tabindex="-1"
+                data-tooltip="Cette note n'apparaîtra jamais au client,
+                et reste uniquement pour vous">
+                <span class="glyphicon glyphicon-info-sign"></span></a>
+        </label>
+        <div class="col-sm-7">
+            <textarea tabindex="44" class="form-control" name="quotationInternalNote" id="quotationInternalNote" rows="3" ><% if (srv.Obj.quotationInternalNote) { %><%= srv.Obj.quotationInternalNote %><% } %></textarea>
+        </div>
+    </div>
+    &nbsp;<br/>
+    <div class="row midlight"><small class="help">Documents et Historique</small></div>
+    &nbsp;<br/>
+    <!-- List of current Docs & History -->
+    <div class="row">
+        <table id="historytab" class="stripe hover cell-border row-border nowrap dataTable no-footer" cellspacing="0" style="width: 60% !important" >
+            <thead class="fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-tl ui-corner-tr">
+                <tr>
+                    <th>Version</th>
+                    <th>Date</th>
+                    <th>MAJ</th>
+                    <th>DOC</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (srv.Obj && srv.Obj.quotationDocList &&  srv.Obj.quotationDocList.length == 0) { %>
+                    <tr class="evenCondensed">
+                        <td colspan="5" class="text-center"><i>Aucun Document</i></td>
+                    </tr>
+                <% } else { %>
+                    <% for(var i = 0; i < srv.Obj.quotationDocList.length; i++) { %>
+
+                    <% } %>
+                <% } %>
+            </tbody>
+            <tfoot class="fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-tl ui-corner-tr">
+                <tr>
+                    <th>Version</th>
+                    <th>Date</th>
+                    <th>MAJ</th>
+                    <th>DOC</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+&nbsp;<br/>
+&nbsp;<br/>

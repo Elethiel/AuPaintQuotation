@@ -9,8 +9,9 @@
         </label>
         <div class="col-sm-7 text-left">
             <div class="input-group">
-                <span class="form-control" id="quotationSelectedCustomer"></span>
-                <span class="input-group-addon"><a href="#" class="hide" id="unselectCust"><span class="red glyphicon glyphicon-remove-sign"></span></a></span>
+                <span class="form-control <% if (srv.Obj && srv.Obj.customerObj) { %>midfield<% } %>" id="quotationSelectedCustomer"><% if (srv.Obj && srv.Obj.customerObj) { %><b><%- srv.Obj.customerObj.displayName %><%= srv.Obj.customerObj.customerId ? "" : " (***)" %> </b><% } %></span>
+                <% if (srv.Obj && !srv.Obj.isAlreadyStarted) { %><span class="input-group-addon"><a href="#" class="hide" id="unselectCust"><span class="red glyphicon glyphicon-remove-sign"></span></a></span>
+                <% } else { %><span class="input-group-addon"></span><% } %>
             </div>
         </div>
     </div>
@@ -18,8 +19,10 @@
     &nbsp;<br/>
     <!-- the new button -->
 
+<% if (srv.Obj && !srv.Obj.isAlreadyStarted) { %>
+
     <div class="form-group">
-        <div class="col-sm-7 text-right labelfree">Ajouter un nouveau client à ce<% if (srv.type && srv.type == -1) { %> devis<% } else { %>tte facture<% } %> ...</div>
+        <div class="col-sm-7 text-right labelfree">Ajouter un nouveau client pour ce<% if (srv.type && srv.type == -1) { %> devis<% } else { %>tte facture<% } %> ...</div>
         <div class="col-sm-3 text-left"><button type="button" id="addNewCust" class="btn btn-primary">Nouveau</button></div>
     </div>
     &nbsp;<br/>
@@ -30,7 +33,7 @@
     &nbsp;<br/>
     <!-- the list -->
     <div class="row text-center w80p">
-        <table id="customerexisttab" class="stripe hover cell-border row-border nowrap" cellspacing="0" width="100%">
+        <table id="customerexisttab" class="stripe hover cell-border row-border nowrap compact" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th>Type</th>
@@ -45,20 +48,25 @@
                         <tr class="<% if (srv.customerList[i].customerStatus != 1) { %>opacitedTR<% } %>">
                             <td>
                                 <% if (srv.customerList[i].customerType == -1) { %>
-                                    <img src="/im/gl_group.png" title="Personne Morale" alt="Morale" border="0"/>
+                                    <img src="/im/gl_group.png" width="17" height="11" title="Personne Morale" alt="Morale" border="0"/>
                                 <% } else { %>
-                                    <img src="/im/gl_user.png" title="Personne" alt="Personne" border="0"/>
+                                    <img src="/im/gl_user.png" width="12" height="11" title="Personne" alt="Personne" border="0"/>
                                 <% } %>
                             </td>
                             <td class="<% if (srv.customerList[i].customerStatus != 1) { %>opacited<% } %>">
                                 <%- srv.customerList[i].displayName %>
                             </td>
-                            <td><a href="#<%= i %>" id="selectCust<%= i %>" data-placement="bottom" data-tooltipsmall="Sélectionner ce Client"><span class="glyphicon glyphicon-new-window"></span></a></td>
+                            <td><a href="#<%= i %>" id="selectCust<%= i %>" data-placement="left" data-tooltipsmall="Sélectionner ce Client"><span class="glyphicon glyphicon-new-window"></span></a></td>
                         </tr>
                     <% } %>
                 <% } %>
             </tbody>
         </table>
     </div>
+<% }  else { %>
+    <div class="row text-center">
+        <small class="help">On ne change pas le client d'<% if (srv.type && srv.type == -1) { %>un devis<% } else { %>une facture<% } %> en cours</small>
+    </div>
+<% } %>
     &nbsp;<br/>
     &nbsp;<br/>

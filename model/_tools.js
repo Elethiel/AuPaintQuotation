@@ -9,7 +9,8 @@ Tools.prototype.manageString = function(param) {
     if (param.personGender && param.personGender == "-") param.personGender = " ";
 
     // numeric fields
-    var numFields = [   "productTTC", "productPaid", "TVAPercent", "ownerFactorOk", "ownerFactorNull" ];
+    var numFields = [   "productTTC", "productPaid", "TVAPercent", "ownerFactorOk", "ownerFactorNull", 
+                        "quotationGlobalDiscount", "quotationRealDeposite", "paymentAmount" ];
     // fields to UpperCase
     var uppFields = [   "personLastname", "companyAddressCity", "personAddressCity", "addressCity", "addressCountry",
                         "companyAddressCountry", "personAddressCountry" ];
@@ -22,30 +23,35 @@ Tools.prototype.manageString = function(param) {
                         "contactFax", "companyContactFax", "personContactFax", "companyTVA",
                         "contactMobile", "companyContactMobile", "personContactMobile", "companySiret",
                         "contactMail", "companyContactMail", "personContactMail", "companyAPE", "customerNote",
-                        "groupProductLabel", "payCondLabel", "payTypeLabel", "productLabel", "productCode", "productUnit", "TVALabel" ];
+                        "groupProductLabel", "payCondLabel", "payTypeLabel", "productLabel", "productCode", "productUnit", "TVALabel",
+                        "quotationInternalNote", "quotationRef", "quotationCustomerNote" ];
 
     // numeric
     for (var num in numFields) {
         var v = numFields[num];
-        if (param[v]) param[v] = this.trim(param[v]).replace(",",".");
+        //console.log(" on traite N["+num+"] = "+v+" = " + param[v]);
+        if (param[v]) param[v] = this.trim("" + param[v]).replace(",",".");
     }
 
     // Upper
     for (var up in uppFields) {
         var v = uppFields[up];
-        if (param[v]) param[v] = this.trim(param[v]).toUpperCase();
+        //console.log(" on traite U["+up+"] = "+v+" = " + param[v]);
+        if (param[v]) param[v] = this.trim("" + param[v]).toUpperCase();
     }
 
     // Capitalize
     for (var cap in capFields) {
         var v = capFields[cap];
-        if (param[v]) param[v] = this.capitalize(this.trim(param[v]));
+        //console.log(" on traite C["+cap+"] = "+v+" = " + param[v]);
+        if (param[v]) param[v] = this.capitalize("" + this.trim(param[v]));
     }
 
     // Trim
     for (var tr in trimFields) {
         var v = trimFields[tr];
-        if (param[v]) param[v] = this.trim(param[v]);
+        //console.log(" on traite T["+tr+"] = "+v+" = " + param[v]);
+        if (param[v]) param[v] = this.trim("" + param[v]);
     }
 };
 
@@ -69,7 +75,29 @@ Tools.prototype.capitalize = function(s) {
 };
 
 Tools.prototype.trim = function (s) {
-    return s.replace(/^\s+|\s+$/g, '');
+    if (s == null) return "";
+    else if (s == "") return "";
+    else return s.replace(/^\s+|\s+$/g, '');
+};
+
+Date.prototype.format = function (mask, utc) {
+    return dateFormat(this, mask, utc);
+};
+Date.prototype.getWeek = function() {
+    var date = new Date(this.getTime());
+    date.setHours(0, 0, 0, 0);
+    // Thursday in current week decides the year.
+    date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+    // January 4 is always in week 1.
+    var week1 = new Date(date.getFullYear(), 0, 4);
+    // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+    return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+};
+// Returns the four-digit year corresponding to the ISO week of the date.
+Date.prototype.getWeekYear = function() {
+    var date = new Date(this.getTime());
+    date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+    return date.getFullYear();
 };
 
 module.exports = new Tools();

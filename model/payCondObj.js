@@ -45,7 +45,7 @@ PayCond.prototype.findById = function(db, param, callback) {
             if (err) callback(err);
             else {
                 if (row)    {
-                    lodash.assign(PayCondObj, {payCondId: row.id, payCondLabel: row.label, payCondTVA: row.tva });
+                    lodash.assign(PayCondObj, { payCondId: row.id, payCondLabel: row.label, payCondTVA: row.tva });
                     callback(null, PayCondObj);
                 } else callback();
             }
@@ -61,7 +61,7 @@ PayCond.prototype.findAll = function(db, callback) {
             if (rows) {
                 rows.forEach(function(row) {
                     var PayCondObj = {};
-                    lodash.assign(PayCondObj, {payCondId: row.id, payCondLabel: row.label, payCondTVA: row.tva });
+                    lodash.assign(PayCondObj, { payCondId: row.id, payCondLabel: row.label, payCondTVA: row.tva });
                     PayCondList.push(PayCondObj);
                 });
             }

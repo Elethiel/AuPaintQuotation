@@ -1,0 +1,276 @@
+&nbsp;<br/>
+&nbsp;<br/>
+
+<div class="row midlight"><small class="help">Résumé d<% if (srv.type && srv.type == -1) { %>u Devis<% } else { %>e la Facture<% } %> et paiements</small></div>
+&nbsp;<br/>
+
+    <!-- Total from Quotation -->
+    <div class="form-group text-center">
+        <label for="quotationTotalTTC" class="col-sm-5 control-label">
+            Total (TTC)
+        </label>
+        <div class="col-sm-3 text-right">
+            <div class="input-group">
+                <span class="form-control" id="quotationTotalTTC" disabled></span>
+                <span class="input-group-addon glyphicon glyphicon-euro"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <div class="col-sm-3 text-left col-sm-offset-5" id="TVATTC">
+        </div>
+    </div>
+    &nbsp;<br/>
+
+    <!-- Global Discount -->
+    <div class="form-group text-center">
+        <label for="quotationGlobalDiscount" class="col-sm-5 control-label">
+            Remise Globale
+        </label>
+        <div class="col-sm-3 text-right">
+            <div class="input-group">
+                <input type='text' class="form-control text-right" <% if (srv.Obj && srv.Obj.isAlreadyStarted) { %>disabled<% } %> tabindex="30" id="quotationGlobalDiscount" value="<% if (srv.Obj && srv.Obj.quotationGlobalDiscount) { %><%= srv.Obj.quotationGlobalDiscount %><% } %>">
+                <span class="input-group-addon glyphicon glyphicon-euro"></span>
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <a href="#" data-placement="bottom" tabindex="-1"
+                data-tooltip="Met à jour automatiquement la remise en %.">
+                <img src="/im/down.png" border="0" class="inputrefresh" /></a>
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <label for="quotationGlobalDiscountPercent" class="col-sm-5 control-label">
+
+        </label>
+        <div class="col-sm-3 text-right">
+            <div class="input-group">
+                <input type='text' class="form-control text-right" tabindex="31" <% if (srv.Obj && srv.Obj.isAlreadyStarted) { %>disabled<% } %> id="quotationGlobalDiscountPercent" value="<% if (srv.Obj && srv.Obj.quotationGlobalDiscountPercent) { %><%= srv.Obj.quotationGlobalDiscountPercent %><% } %>">
+                <span class="input-group-addon"><b style="font-size: 15px">%</b></span>
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <a href="#" data-placement="bottom" tabindex="-1"
+                data-tooltip="Met à jour automatiquement la remise en €.">
+                <img src="/im/up.png" border="0" class="inputrefresh" /></a>
+        </div>
+    </div>
+
+    &nbsp;<br/>
+
+    <!-- Total to PAID -->
+    <div class="form-group text-center">
+        <label for="quotationTotalToPaid" class="col-sm-5 control-label">
+            Total à Payer
+        </label>
+        <div class="col-sm-3 text-right">
+            <div class="input-group">
+                <span class="form-control" id="quotationTotalToPaid" disabled></span>
+                <span class="input-group-addon glyphicon glyphicon-euro"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <div class="col-sm-3 text-left col-sm-offset-5" id="TVATOPAID">
+        </div>
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>
+    <div class="form-group text-left">
+        <label for="quotationPayCond" class="col-sm-5 control-label">Conditions de Paiement</label>
+        <% if (srv.Obj && !srv.Obj.isAlreadyStarted) { %>
+            <div class="col-sm-7">
+                <div class="btn-group">
+                    <button id="selectquotationPayCond" type="button" class="selbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=-1>
+                        <% if (srv.Obj && srv.Obj.payCondObj) { %>
+                            <%= srv.Obj.payCondObj.payCondLabel %>
+                        <% } else { %>Sélectionnez une Condition de Paiement<% } %>
+                    </button>
+                    <button id="selectDropquotationPayCond" type="button" class="selectdropbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=32>
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu groupProductDropDown" role="menu">
+                        <% for(var i = 0; i < srv.payCondList.length; i++) { %>
+                            <li>
+                                <a href="#<%= srv.payCondList[i].payCondId %>" id="optionquotationPayCond<%= i %>"><%= srv.payCondList[i].payCondLabel %></a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="col-sm-7 control-label" style="text-align: left !important">
+                <% if (srv.Obj && srv.Obj.payCondObj) { %>
+                    <%= srv.Obj.payCondObj.payCondLabel %>
+                <% } else { %>Pas de condition particulière<% } %>
+            </div>
+        <% } %>
+    </div>
+    &nbsp;<br/>
+    <!-- Accepted payment type -->
+    <div class="form-group text-center">
+        <label for="quotationPayTypeList" class="col-sm-5 control-label">
+            Type(s) de Paiement accepté(s)
+        </label>
+        <div class="col-sm-7 text-left">
+            <span id="quotationPayTypeList"></span>
+        </div>
+    </div>
+    <% if (srv.Obj && !srv.Obj.isAlreadyStarted) { %>
+        <div class="form-group text-left">
+            <label for="quotationPayType" class="col-sm-5 control-label"></label>
+            <div class="col-sm-6">
+                <div class="btn-group">
+                    <button id="selectquotationPayType" type="button" class="selbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=-1>
+                        Sélectionnez un Type de Paiement
+                    </button>
+                    <button id="selectDropquotationPayType" type="button" class="selectdropbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=33>
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu groupProductDropDown" role="menu">
+                        <% for(var i = 0; i < srv.payTypeList.length; i++) { %>
+                            <li>
+                                <a href="#<%= srv.payTypeList[i].payTypeId %>" id="optionquotationPayType<%= i %>" ><%= srv.payTypeList[i].payTypeLabel %></a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </div>
+                <button type="button" id="addPayType" class="btn btn-primary">Ajouter</button>
+            </div>
+        </div>
+    <% } %>
+    &nbsp;<br/>
+    <div class="row midlight"><small class="help">Info relatives à la facture et aux paiements</small></div>
+    &nbsp;<br/>
+    <!-- Forseen deposite -->
+    <div class="form-group text-center">
+        <label for="quotationDepositeForseen" class="col-sm-5 control-label">
+            Acompte prévisionnel
+            <a href="#" data-placement="bottom" tabindex="-1"
+                data-tooltip="Précalculé à partir des Conditions de Paiments">
+            <span class="glyphicon glyphicon-info-sign"></span></a>
+        </label>
+        <div class="col-sm-3 text-right">
+            <div class="input-group">
+                <span class="form-control" id="quotationDepositeForseen" disabled></span>
+                <span class="input-group-addon glyphicon glyphicon-euro"></span>
+            </div>
+        </div>
+    </div>
+    &nbsp;<br/>
+
+    <% if (srv.type && srv.type == 1) { %>
+        <!-- this part is only for invoices -->
+
+        <!-- Real Deposite that have been received -->
+        <div class="form-group text-center">
+            <label for="quotationRealDeposite" class="col-sm-5 control-label">
+                Acompte réellement perçu
+            </label>
+            <div class="col-sm-3 text-right">
+                <div class="input-group">
+                    <input type='text' class="form-control text-right" tabindex="34" id="quotationRealDeposite" value="<% if (srv.Obj && srv.Obj.quotationRealDeposite) { %><%= srv.Obj.quotationRealDeposite %><% } %>">
+                    <span class="input-group-addon glyphicon glyphicon-euro"></span>
+                </div>
+            </div>
+        </div>
+        <!-- Total to PAID after deposite -->
+        <div class="form-group text-center">
+            <label for="quotationRemainingDepositeTotal" class="col-sm-5 control-label">
+                Reste à Payer (après acompte)
+            </label>
+            <div class="col-sm-3 text-right">
+                <div class="input-group">
+                    <span class="form-control" id="quotationRemainingDepositeTotal" disabled></span>
+                    <span class="input-group-addon glyphicon glyphicon-euro"></span>
+                </div>
+            </div>
+        </div>
+        &nbsp;<br/>
+        &nbsp;<br/>
+        &nbsp;<br/>
+        <div class="row text-center grayfield">
+            <div class="row inputrefresh">
+                <div class="col-sm-4 col-sm-offset-2 text-center">
+                    <div class="input-append date" id="paymentDate" data-date="" data-date-format="dd-mm-yyyy">
+                        <input class="span2 text-center" id="paymentDateInput" size="16" type="text" value="">
+                        <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row inputrefresh">
+                <div class="col-sm-4 col-sm-offset-2 text-center">
+                    <input type="hidden" id="paymentPayTypeSelect" value="">
+                    <div class="btn-group">
+                        <button id="selectpaymentPayType" type="button" class="selbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=-1>
+                            Paiement
+                        </button>
+                        <button id="selectDroppaymentPayType" type="button" class="selectdropbox btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex=35>
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu groupProductDropDown" role="menu">
+                            <% for(var i = 0; i < srv.payTypeList.length; i++) { %>
+                                <li>
+                                    <a href="#<%= srv.payTypeList[i].payTypeId %>" id="optionpaymentPayType<%= i %>" ><%= srv.payTypeList[i].payTypeLabel %></a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-2 control-label">
+                    <button type="button" id="addPayment" class="btn btn-primary">Ajouter Paiement</button>
+                </div>
+            </div>
+            <div class="row inputrefresh">
+                <div class="col-sm-2 col-sm-offset-3 control-label text-center">
+                    <div class="input-group">
+                        <input type='text' class="form-control text-right" tabindex="36" id="paymentAmount" value="" placeholder="0,00" >
+                        <span class="input-group-addon glyphicon glyphicon-euro"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        &nbsp;<br/>
+        <div class="text-center text-verybig blue"><span class="glyphicon glyphicon-arrow-down"></span></div>
+        &nbsp;<br/>
+        <!-- List of current Payments -->
+        <div class="row">
+            <table id="paymenttab" class="stripe hover cell-border row-border nowrap dataTable no-footer" cellspacing="0" style="width: 60% !important" >
+                <thead class="fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-tl ui-corner-tr">
+                    <tr>
+                        <th>Date</th>
+                        <th>Payment</th>
+                        <th>Type</th>
+                        <th>Total Restant dû (avant)</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (srv.Obj && srv.Obj.quotationPaymentList &&  srv.Obj.quotationPaymentList.length == 0) { %>
+                        <tr class="evenCondensed">
+                            <td colspan="5" class="text-center"><i>Aucun Paiement en cours</i></td>
+                        </tr>
+                        <tr class="oddCondensed">
+                            <td colspan="3" class="text-right"><b>TOTAL restant dû après tous les paiements :</b> </td><td class='text-right' id='REMAININGTOTAL'></td><td>&nbsp;</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+                <tfoot class="fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-tl ui-corner-tr">
+                    <tr>
+                        <th>Date</th>
+                        <th>Payment</th>
+                        <th>Type</th>
+                        <th>Total Restant dû (avant)</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    <% } %>
+        <div id="pop"></div>
+
+&nbsp;<br/>
+&nbsp;<br/>

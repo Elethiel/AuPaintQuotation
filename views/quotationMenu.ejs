@@ -20,6 +20,15 @@
                             <div class="well">
                                 <legend><h1>Devis et Factures</h1></legend>
                                 &nbsp;<br/>
+                                <% if (srv.pstatus != "") { %>
+                                    <div class="form-group text-center">
+                                        <% if (srv.pstatus === "upd-QUO") { %><span class="label label-success">Devis/Facture bien mis à jour</span><% } %>
+                                        <% if (srv.pstatus === "new-QUO") { %><span class="label label-success">Devis/Facture bien ajouté</span><% } %>
+                                        <% if (srv.pstatus === "del-QUO") { %><span class="label label-success">Devis/Facture bien supprimé</span><% } %>
+                                        <% if (srv.pstatus === "err-QUO") { %><span class="label label-danger">Error lors de la suppression du Devis/Facture</span><% } %>
+                                     </div>
+                                    &nbsp;<br/>
+                                <% } %>
                                 <div class="row text-center">
                                     <button type="button" id="addQuotation" class="btn btn-warning">Ajouter un Devis</button>
                                     <button type="button" id="addInvoice" class="btn btn-success">Ajouter une Facture</button>
@@ -27,7 +36,73 @@
                                 &nbsp;<br/>
                                 <small class="help">Les devis et Facture sont très similaire, si ce n'est qu'un devis peut être abandonné, et qu'un facture <b>doit</b> recevoir des paiements.</small><br/>
                                 &nbsp;<br/>
+                                &nbsp;<br/>
+                                <input type="checkbox" id="filterQuotation" name="filterQuotation"><span id="filterQuotation"> Filtrer les devis</span><br/>
+                                <input type="checkbox" id="filterInvoice" name="filterInvoice"><span id="filterInvoice"> Filtrer les factures</span><br/>
+                                &nbsp;<br/>
+                                <div class="row">
+                                    <table id="quotationtab" class="stripe hover cell-border row-border nowrap" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Client</th>
+                                                <th>Référence (Version)</th>
+                                                <th>Date</th>
+                                                <th>Date Maj</th>
+                                                <th>Date de Fin</th>
+                                                <th>Status</th>
+                                                <th>Total</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                        </thead>
 
+                                        <tbody>
+                                            <% if (srv.quotationList && srv.quotationList.length > 0) { %>
+                                                <% for(var i = 0; i < srv.quotationList.length; i++) { %>
+                                                    <tr class="<% if (srv.quotationList[i].quotationType != 1) { %>opacitedTR<% } else { %>notopacitedTR<% } %>">
+                                                        <td id="quotationId<%= i %>">
+                                                            <%= srv.quotationList[i].quotationId %>
+                                                        </td>
+                                                        <td class="<% if (srv.quotationList[i].quotationType != 1) { %>opacited<% } %>">
+                                                            <% if (srv.quotationList[i].customerObj) { %>
+                                                                <% if (srv.quotationList[i].customerObj.customerType == -1) { %>
+                                                                    <img src="/im/gl_group.png" width="17" height="11" title="Personne Morale" alt="Morale" border="0"/>
+                                                                <% } else { %>
+                                                                    <img src="/im/gl_user.png" width="12" height="11" title="Personne" alt="Personne" border="0"/>
+                                                                <% } %>
+                                                                <%- srv.quotationList[i].customerObj.displayName %>
+                                                            <% } %>
+                                                        </td>
+                                                        <td class="<% if (srv.quotationList[i].quotationType != 1) { %>opacited<% } %>">
+                                                            <%= srv.quotationList[i].quotationRef %> ( <%= srv.quotationList[i].quotationVersion %> )
+                                                        </td>
+                                                        <td class="<% if (srv.quotationList[i].quotationType != 1) { %>opacited<% } %>">
+                                                            <%= srv.quotationList[i].quotationCreationDt %>
+                                                        </td>
+                                                        <td class="<% if (srv.quotationList[i].quotationType != 1) { %>opacited<% } %>">
+                                                            <%= srv.quotationList[i].quotationUpdateDt %>
+                                                        </td>
+                                                        <td class="<% if (srv.quotationList[i].quotationType != 1) { %>opacited<% } %>">
+                                                            <% if (srv.quotationList[i].quotationType == -1 && srv.quotationList[i].quotationEndValidityDt) { %>
+                                                                <%= srv.quotationList[i].quotationEndValidityDt %>
+                                                            <% } %>
+                                                        </td>
+                                                        <td class="<% if (srv.quotationList[i].quotationType != 1) { %>opacited<% } %>">
+                                                            <%- srv.quotationList[i].quotationStatus %>
+                                                        </td>
+                                                        <td class="<% if (srv.quotationList[i].quotationType != 1) { %>opacited<% } %>">
+                                                            <%= i %>
+                                                        </td>
+                                                        <td><a href="/quotation?quotationId=<%= srv.quotationList[i].quotationId %>"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                            <a id="delQuotation<%= i %>" href="#<%= i %>"><span class="glyphicon glyphicon-remove text-danger"></span></a></td>
+                                                    </tr>
+                                                <% } %>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                &nbsp;<br/>
                             </div>
                         </div>
                     </div>
@@ -39,6 +114,7 @@
         <% include _popup %>
 
         <script type="text/javascript">
+            var quotationList = <%- JSON.stringify(srv.quotationList) %>;
             $(document).ready(quotationInitTab());
         </script>
     </body>

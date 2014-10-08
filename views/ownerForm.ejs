@@ -21,7 +21,7 @@
     <% var o = { index: "2", gender: 1, label: "Forme Juridique", field: "companyLegal", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyLegal : srv.Obj) } %>
     <% include form/inputSelectLegal %>
     <% include form/inputSelect %>
-    
+
     <% var o = { index: "3", label: "Dénomination", empty: "Le nom de la société est obligatoire", field: "companyName", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyName : srv.Obj) } %>
     <% include form/inputText %>
     <% var o = { index: "4", label: "Dénomination (Rendu)", field: "rendered", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerRender : srv.Obj) } %>
@@ -79,23 +79,34 @@
     <% include form/inputMail %>
     &nbsp;<br/>
     <p class="highlight">Paramètres</p>
-    <% var o = { index: "18", label: "Durée de validité d'un devis par défaut (en jours)", tooltip: "Il s'agit bien d'une valeur « par défaut » qui pourra être changée pour chaque devis individuellement.", field: "ownerDefaultValidity", labelw: "8", inputw: "3", value: (srv.Obj ? srv.Obj.ownerDefaultValidity : srv.Obj) } %>
+    <% var o = { index: "18", label: "Pattern", placeholder:"$yy$-$ss$-####-APS", tooltip: "Le pattern peut contenir quelques codes :\n $yy$ = l'année en cours\n $mm$ = le mois en cours\n $ss$ = le numéro de semaine\n $dd$ = le jour\n # = chaque # représente un nombre unique (ex: ### = 001, 002, 003...)\n une série par pattern et jusqu'à 6 chiffres max", field: "ownerPattern", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerPattern : srv.Obj) } %>
+    <% include form/inputText %>
+    <div class="form-group text-center">
+        <label for="ownerPatternRender" class="col-sm-4 control-label">
+            Exemple
+        </label>
+        <div class="col-sm-7">
+            <div class="form-control text-left" id="ownerPatternRender"></div>
+        </div>
+    </div>
+    &nbsp;<br/>
+    <% var o = { index: "19", label: "Validité d'un devis par défaut (en jours)", tooltip: "Il s'agit bien d'une valeur « par défaut » qui pourra être changée pour chaque devis individuellement.", field: "ownerDefaultValidity", labelw: "7", inputw: "4", value: (srv.Obj ? srv.Obj.ownerDefaultValidity : srv.Obj) } %>
     <% include form/inputInt %>
     &nbsp;<br/>
-    <% var o = { index: "19", label: "Logo (JPG)", tooltip: "Le logo sera utilisé dans le menu.\nVider le champ pour ne plus utiliser d'image.", field: "ownerLogo", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerLogo : srv.Obj) } %>
+    <% var o = { index: "20", label: "Logo (JPG)", tooltip: "Le logo sera utilisé dans le menu.\nVider le champ pour ne plus utiliser d'image.", field: "ownerLogo", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerLogo : srv.Obj) } %>
     <% include form/inputImg %>
     &nbsp;<br/>
-    <% var o = { index: "20", label: "Grand Logo (JPG)", tooltip: "Le Grand Logo sera utilisé en icône d'application, sur les devis et en fond d'application.\nVider le champ pour ne plus utiliser d'image.", field: "ownerBigLogo", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerBigLogo : srv.Obj) } %>
+    <% var o = { index: "21", label: "Grand Logo (JPG)", tooltip: "Le Grand Logo sera utilisé en icône d'application, sur les devis et en fond d'application.\nVider le champ pour ne plus utiliser d'image.", field: "ownerBigLogo", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerBigLogo : srv.Obj) } %>
     <% include form/inputImg %>
     &nbsp;<br/>
-    <% var o = { index: "21", symbol: "%", addon: "ok", label: "Facteur Rentabilité", placeholder:"xx.xx", tooltip: "Ce facteur permet de savoir à partir de quand une prestation est rentable.\nPar exemple un produit acheté 1€ et vendu(ht) 2€ aura une rentabilité de +100%.", field: "ownerFactorOk", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFactorOk : srv.Obj) } %>
+    <% var o = { index: "22", symbol: "%", addon: "ok", label: "Facteur Rentabilité", placeholder:"xx.xx", tooltip: "Ce facteur permet de savoir à partir de quand une prestation est rentable.\nPar exemple un produit acheté 1€ et vendu(ht) 2€ aura une rentabilité de +100%.", field: "ownerFactorOk", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFactorOk : srv.Obj) } %>
     <% include form/inputNum %>
-    <% var o = { index: "22", symbol: "%", addon: "null", label: "Facteur Limite", placeholder:"xx.xx", tooltip: "Ce facteur permet de savoir à partir de quand une prestation reste viable.\nPar exemple un produit acheté 1€ et vendu(ht) 2€ aura une rentabilité de +100%.", field: "ownerFactorNull", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFactorNull : srv.Obj) } %>
+    <% var o = { index: "23", symbol: "%", addon: "null", label: "Facteur Limite", placeholder:"xx.xx", tooltip: "Ce facteur permet de savoir à partir de quand une prestation reste viable.\nPar exemple un produit acheté 1€ et vendu(ht) 2€ aura une rentabilité de +100%.", field: "ownerFactorNull", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFactorNull : srv.Obj) } %>
     <% include form/inputNum %>
-    <% var o = { index: "23", symbol: "%", addon: "nok", label: "Facteur Défavorable", tooltip: "En dessous du facteur limite, on considère une prestation à la limite de la perte.", field: "ownerFactorNok", labelw: "4", inputw: "5" } %>
+    <% var o = { index: "24", symbol: "%", addon: "nok", label: "Facteur Défavorable", tooltip: "En dessous du facteur limite, on considère une prestation à la limite de la perte.", field: "ownerFactorNok", labelw: "4", inputw: "5" } %>
     <% include form/inputNum %>
     &nbsp;<br/>
-    <% var o = { index: "1", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
+    <% var o = { index: "25", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
             items: [ { val: "1", lab: "Pas de traitement des données du formulaire" } ] } %>
     <% include form/inputCheck %>
     &nbsp;<br/>

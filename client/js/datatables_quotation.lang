@@ -1,0 +1,22 @@
+{
+    "sProcessing":      "Traitement en cours...",
+    "sSearch":          "Rechercher&nbsp;:",
+    "sLengthMenu":      "Afficher _MENU_ Devis/Facture",
+    "sInfo":            "_START_ &agrave; _END_ (Total: _TOTAL_ Devis/Facture)",
+    "sInfoEmpty":       "",
+    "sInfoFiltered":    "(filtr&eacute; sur _MAX_ Devis/Facture au total)",
+    "sInfoPostFix":     "",
+    "sLoadingRecords":  "Chargement en cours...",
+    "sZeroRecords":     "Aucun Devis/Facture &agrave; afficher",
+    "sEmptyTable":      "Pas de Devis ou Facture",
+    "oPaginate": {
+        "sFirst":       "Premier",
+        "sPrevious":    "Pr&eacute;c&eacute;dent",
+        "sNext":        "Suivant",
+        "sLast":        "Dernier"
+    },
+    "oAria": {
+        "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+        "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+    }
+}

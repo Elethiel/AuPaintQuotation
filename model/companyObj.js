@@ -138,15 +138,13 @@ Company.prototype.getFlatVersionX = function(companyObj) {
 Company.prototype.delById = function(db, param, callback) {
     if (param.companyId && param.companyId > 0) {
         db.get("SELECT contact_id, address_id FROM Company WHERE id = ?", [ param.companyId ], function(err, row) {
-            if (err) callback(err);
+            if (err || !row) callback(err);
             else {
-                if (row) {
-                    async.series( [
-                        function(c) {  contact.delById(db, { contactId: row.contact_id }, function(err) { c(err); } ) } ,
-                        function(c) {  address.delById(db, { addressId: row.address_id }, function(err) { c(err); } ) } ,
-                        function(c) {  db.run("DELETE FROM Company WHERE id = ?",  [ param.companyId ], function(err, row) { c(err); } ); }
-                    ], function(err) { callback(err); } );
-                } else callback();
+                async.series( [
+                    function(c) {  contact.delById(db, { contactId: row.contact_id }, function(err) { c(err); } ) } ,
+                    function(c) {  address.delById(db, { addressId: row.address_id }, function(err) { c(err); } ) } ,
+                    function(c) {  db.run("DELETE FROM Company WHERE id = ?",  [ param.companyId ], function(err, row) { c(err); } ); }
+                ], function(err) { callback(err); } );
             }
         });
     }
@@ -160,7 +158,7 @@ Company.prototype.delByCustomerId = function(db, param, callback) {
             if (err) callback(err);
             else {
                 if (row) self.delById(db, { companyId: row.company_id }, function(err, row) { if (err) callback(err); } );
-                else callback(); // deleted
+                callback(); // deleted
             }
         });
     } else callback(); // nothing to delete

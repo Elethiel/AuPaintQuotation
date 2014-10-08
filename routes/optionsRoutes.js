@@ -9,7 +9,7 @@ var lodash = require("lodash");
 var fs = require("fs");
 
 var maxForLogo = [200, 400];
-var maxForIcon = [32, 64];
+var maxForIcon = [32, 48];
 
 module.exports = function(app) {
     app.get("/ownerMenu", function(req, res, next) {

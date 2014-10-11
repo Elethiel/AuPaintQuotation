@@ -182,6 +182,7 @@ Quotation.prototype.findById = function(db, param, callback) {
     if (param.quotationId && param.quotationId > 0) {
         // console.log("** START find Quotation " + param.quotationId);
         var quotationObj = {};
+        var self = this;
         db.get("SELECT id, type, customer_id, ref, version, creationDt, updateDt, endValidityDt, invoiceStatus, globalDiscount, deposite, internalNote, customerNote, payCond_id, parent_id FROM  invoice WHERE id = ?", [ param.quotationId ], function(err, row) {
             if (err) callback(err);
             else {
@@ -206,26 +207,29 @@ Quotation.prototype.findById = function(db, param, callback) {
                                                     paytype.findAllByQuotationId(db, { quotationId: row.id }, function(err, payTypeList) {
                                                         if (err) callback(err);
                                                         else {
-                                                            // find all doc related to this quotation
-                                                            doc.findAllByQuotationId(db, { quotationId: row.id }, function(err, docList) {
-                                                                if (err) callback(err);
-                                                                else {
-                                                                    // ok now build the quotationObj completely
-                                                                    // before calculation
-                                                                    var quotationObj = {};
-                                                                    lodash.assign(quotationObj, { quotationId: row.id, quotationType: row.type, customerId: row.customer_id, quotationRef: row.ref, quotationVersion: row.version, quotationCreationDt: new Date(row.creationDt), quotationUpdateDt: new Date(row.updateDt), quotationEndValidityDt: new Date(row.endValidityDt), quotationStatus: row.invoiceStatus, quotationGlobalDiscount: row.globalDiscount, quotationRealDeposite: row.deposite, quotationInternalNote: row.internalNote, quotationCustomerNote: row.customerNote, quotationParentId: row.parent_id });
-                                                                    quotationObj.customerObj = customerObj;
-                                                                    quotationObj.payCondObj = payCondObj;
-                                                                    quotationObj.quotationPrestaList = prestaList;
-                                                                    quotationObj.quotationPaymentList = paymentList;
-                                                                    quotationObj.quotationPayTypeList = payTypeList;
-                                                                    quotationObj.quotationDocList = docList;
+                                                            // find all parents for doc
+                                                            self.findParentByQuotationId(db, { quotationId: row.id, pList: [ row.id ] }, function(err, pList) {
+                                                                // find all doc related to this quotation
+                                                                doc.findAllByQuotationIds(db, { quotationIds: pList }, function(err, docList) {
+                                                                    if (err) callback(err);
+                                                                    else {
+                                                                        // ok now build the quotationObj completely
+                                                                        // before calculation
+                                                                        var quotationObj = {};
+                                                                        lodash.assign(quotationObj, { quotationId: row.id, quotationType: row.type, customerId: row.customer_id, quotationRef: row.ref, quotationVersion: row.version, quotationCreationDt: new Date(row.creationDt), quotationUpdateDt: new Date(row.updateDt), quotationEndValidityDt: new Date(row.endValidityDt), quotationStatus: row.invoiceStatus, quotationGlobalDiscount: row.globalDiscount, quotationRealDeposite: row.deposite, quotationInternalNote: row.internalNote, quotationCustomerNote: row.customerNote, quotationParentId: row.parent_id });
+                                                                        quotationObj.customerObj = customerObj;
+                                                                        quotationObj.payCondObj = payCondObj;
+                                                                        quotationObj.quotationPrestaList = prestaList;
+                                                                        quotationObj.quotationPaymentList = paymentList;
+                                                                        quotationObj.quotationPayTypeList = payTypeList;
+                                                                        quotationObj.quotationDocList = docList;
 
-                                                                    //console.log("PT:\n" + util.inspect(payTypeList, false, null));
+                                                                        //console.log("PT:\n" + util.inspect(payTypeList, false, null));
 
-                                                                    callback(null, quotationObj);
-                                                                }
-                                                            }); // doc list
+                                                                        callback(null, quotationObj);
+                                                                    }
+                                                                }); // doc list
+                                                            }); // parent list
                                                         }
                                                     }); // paytype list
                                                 }
@@ -242,18 +246,61 @@ Quotation.prototype.findById = function(db, param, callback) {
     } else callback();
 };
 
+Quotation.prototype.findParentByQuotationId = function(db, param, callback) {
+    if (param.quotationId && param.quotationId > 0) {
+        if (!param.pList) param.pList = [];
+        var self = this;
+        db.get("SELECT id FROM invoice WHERE parent_id = ?", [ param.quotationId ], function(err, row) {
+            if (row && row.id > 0) {
+                param.pList.push(row.id);
+                self.findParentByQuotationId(db, { quotationId: row.id, pList: param.pList }, callback);
+            } else {
+                callback(null, param.pList);
+            }
+        });
+    } else callback(null, []);
+};
+
 Quotation.prototype.checkUnicity = function(db, param, callback) {
     if (param.quotationRef && param.quotationRef != "") {
         // console.log("** START check Quotation Unicity" + param.quotationRef);
-        db.get("SELECT id FROM invoice WHERE ref = ?", [ param.quotationRef ], function(err, row) {
+        // 1. check parent
+        this.findParentByQuotationId(db, { quotationId : param.quotationId, quotationRef: param.quotationRef, pList: [ param.quotationId ] }, function(err, quotationList) {
             if (err) callback(err);
             else {
-                if (row) {
-                    if (row.id && row.id > 0) callback(null, { msg: "nok" });
-                    else callback(null, { msg: "ok" });
-                } else callback(null, { msg: "ok" });
+                if (quotationList.length == 0) {
+                    if (param.quotationRef) {
+                        // new quotation
+                        db.get("SELECT id FROM invoice WHERE ref = ?", [ param.quotationRef ], function(err, row) {
+                            if (err) callback(err);
+                            else {
+                                if (row && row.id > 0) callback(null, { msg: "nok" });
+                                else callback(null, { msg: "ok" });
+                            }
+                        });
+                    } else callback(null, { msg: "ok" } );
+                } else {
+                    var p = [ param.quotationRef ];
+                    var sql = "SELECT id, ref, version FROM invoice WHERE ref = ? AND id NOT IN (";
+                    for (var i = 0; i < quotationList.length; i++) {
+                        p.push(quotationList[i]);
+                        sql += "?" + (i < quotationList.length - 1 ? "," : "");
+                    }
+                    sql += ")";
+
+                    // 2. check others invoices (excepted the parent ones)
+                    db.get(sql, p, function(err, row) {
+                        if (err) callback(err);
+                        else {
+                            if (row) {
+                                if (row.id && row.id > 0) callback(null, { msg: "nok" });
+                                else callback(null, { msg: "ok" });
+                            } else callback(null, { msg: "ok" });
+                        }
+                    });
+                }
             }
-        }); // find customer data
+        });
     } else callback(null, { msg: "ok" });
 };
 

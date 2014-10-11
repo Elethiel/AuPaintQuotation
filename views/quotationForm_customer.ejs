@@ -2,6 +2,13 @@
 
     &nbsp;<br/>
     &nbsp;<br/>
+<% if (srv.Obj && srv.Obj.isAlreadyStarted) { %>
+    <div class="row text-center">
+        <small class="help red"><b>On ne change pas le client d'<% if (srv.type && srv.type == -1) { %>un devis<% } else { %>une facture<% } %> en cours</b></small>
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>
+<% } %>
     <!-- the chosen one -->
     <div class="form-group text-center">
         <label for="quotationSelectedCustomer" class="col-sm-3 control-label">
@@ -62,10 +69,6 @@
                 <% } %>
             </tbody>
         </table>
-    </div>
-<% }  else { %>
-    <div class="row text-center">
-        <small class="help">On ne change pas le client d'<% if (srv.type && srv.type == -1) { %>un devis<% } else { %>une facture<% } %> en cours</small>
     </div>
 <% } %>
     &nbsp;<br/>

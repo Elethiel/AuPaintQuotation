@@ -1,22 +1,14 @@
 
+var firstTime = true;
+
 var quotationInitTab = function () {
     $("#quotationtab").dataTable( {
                 "jQueryUI":         true,
                 "language":         { "url": "./js/datatables_quotation.lang" },
-                "dom":              '<T<"H"r<"#QuotationHeader">f>t<"F"i>',
+                "dom":              '<<"H"r<"#QuotationHeader">f>t<"F"i>',
                 "iDisplayLength":   -1,
                 "scrollY":          "400px",
                 "fnInitComplete":   function() { $("#QuotationHeader").html("<b>Devis et Factures</b>") },
-                "tableTools": {
-                                    "sSwfPath": "./libs/datatables/plugins/tabletools/swf/copy_csv_xls_pdf.swf",
-                                    "aButtons": [
-                                                    {
-                                                        "sExtends":    "collection",
-                                                        "sButtonText": "Export",
-                                                        "aButtons":    [ "xls", "pdf" ]
-                                                    }
-                                                ]
-                },
                 "order":            [ [ 4, "desc" ] , [ 3, "desc" ] ],
                 "columnDefs": [
                     {
@@ -31,9 +23,16 @@ var quotationInitTab = function () {
                     {
                         "className": "text-center text-small",
                         "render": function ( data, type, row ) {
-                            return data ? (new Date(data)).format("dd-mm-yyyy") : "";
+                            return data ? (new Date(data)).format("DD-MM-YYYY") : "";
                         },
                         "targets": [3, 5]
+                    },
+                    {
+                        "className": "text-center text-small",
+                        "render": function ( data, type, row ) {
+                            return data ? (new Date(data)).format("DD-MM-YYYY HH:mm") : "";
+                        },
+                        "targets": [4]
                     },
                     {
                         "visible": false,
@@ -111,6 +110,8 @@ var quotationValidator = function() {
         window.location.href='/quotationMenu';
     });
 
+    firstTime = true;
+
     customerInit();
     prestaInit();
     paymentInit();
@@ -160,6 +161,7 @@ var customerInit = function() {
                 // select
                 $("#selectCust" + i).click(function () {
                     var n = $( this ).attr('href').substring(1);
+                    firstTime = false;
                     quotationObj.customerObj = customerList[n];
                     checkCustomerSelectedField();
                     return false;
@@ -170,6 +172,7 @@ var customerInit = function() {
         // unselect
         $("#unselectCust").click( function() {
             quotationObj.customerObj = null;
+            firstTime = false;
             checkCustomerSelectedField();
             return false;
         });
@@ -353,6 +356,7 @@ var validNewCustomerHandler = function() {
             customerObj.displayName += customerObj.personObj.personFirstname ? customerObj.personObj.personFirstname : "";
         }
         quotationObj.customerObj = customerObj;
+        firstTime = false;
         checkCustomerSelectedField();
         popup.hide();
     }
@@ -411,16 +415,6 @@ var prestaTabInit = function() {
                 "dom":              '<<"H"r<"#ProductHeader">f>t<"F"i>',
                 "iDisplayLength":   -1,
                 "fnInitComplete":   function() { $("#ProductHeader").html("<b>Prestations</b>") },
-                "tableTools": {
-                                    "sSwfPath": "./libs/datatables/plugins/tabletools/swf/copy_csv_xls_pdf.swf",
-                                    "aButtons": [
-                                                    {
-                                                        "sExtends":    "collection",
-                                                        "sButtonText": "Export",
-                                                        "aButtons":    [ "xls", "pdf" ]
-                                                    }
-                                                ]
-                },
                 "order":            [[ 1, "asc" ], [2, "asc"]],
                 "columnDefs": [
                     {
@@ -490,6 +484,7 @@ var prestaTabInit = function() {
             // select
             $("#selectPresta" + i).click(function () {
                 var n = $( this ).attr('href').substring(1);
+                firstTime = false;
                 addPresta(productList[n]);
                 return false;
             });
@@ -549,6 +544,7 @@ var uncheckPresta = function() {
 };
 
 var refreshNumber = function() {
+    firstTime = false;
     if (quotationObj.quotationPrestaList.length == 0) {
         $("#TOTAL").html(formatAmount(0));
         uncheckPresta();
@@ -598,12 +594,14 @@ var refreshNumber = function() {
 var delSelectedPresta = function() {
     var n = $( this ).attr('href').substring(1);
     quotationObj.quotationPrestaList.splice(n, 1);
+    firstTime = false;
     refreshPrestaGrid();
     return false;
 };
 
 var swap = function(x , y) {
     var b = quotationObj.quotationPrestaList[y];
+    firstTime = false;
     quotationObj.quotationPrestaList[y] = quotationObj.quotationPrestaList[x];
     quotationObj.quotationPrestaList[x] = b;
 };
@@ -611,6 +609,7 @@ var swap = function(x , y) {
 var moveUpPresta = function() {
     var n = $( this ).attr('href').substring(1);
     if (n > 0) {
+        firstTime = false;
         swap(parseInt(n), parseInt(n) - 1);
         refreshPrestaGrid();
     }
@@ -620,6 +619,7 @@ var moveUpPresta = function() {
 var moveDownPresta = function() {
     var n = $( this ).attr('href').substring(1);
     if (n < quotationObj.quotationPrestaList.length - 1) {
+        firstTime = false;
         swap(parseInt(n), parseInt(n) + 1);
         refreshPrestaGrid();
     }
@@ -829,6 +829,7 @@ var getPositionToInsert = function() {
 };
 
 var insertIntoPresta = function(prestaObj, i) {
+    firstTime = false;
     if (i == quotationObj.quotationPrestaList.length ) { // last selected
         quotationObj.quotationPrestaList.push(prestaObj);
     } else {
@@ -1089,9 +1090,18 @@ var updatePaymentTab = function(total) {
     refreshAll();
 };
 
+var updatedTotalToPaid = function() {
+    firstTime = false;
+    updateTotalToPaid();
+};
+var updatedTotalToPaidPercent = function() {
+    firstTime = false;
+    updateTotalToPaidPercent();
+};
+
 var paymentInit = function() {
-    $("#quotationGlobalDiscount").keyup( updateTotalToPaid );
-    $("#quotationGlobalDiscountPercent").keyup( updateTotalToPaidPercent );
+    $("#quotationGlobalDiscount").keyup( updatedTotalToPaid );
+    $("#quotationGlobalDiscountPercent").keyup( updatedTotalToPaidPercent );
     // select box "Payment Conditions"
     for (var i = 0; i < payCondList.length; i++) {
         $("#optionquotationPayCond" + i).click( quotationPayCondSelect );
@@ -1105,7 +1115,7 @@ var paymentInit = function() {
     $("#addPayType").click( addPayType );
 
     // real deposite
-    $("#quotationRealDeposite"). keyup( refreshAll );
+    $("#quotationRealDeposite"). keyup( updatedDeposite );
 
     // the date picker for payment
     $("#paymentDate").datepicker( {
@@ -1119,6 +1129,11 @@ var paymentInit = function() {
     // button add payment
     $("#addPayment").click( addPayment );
 
+    refreshAll();
+};
+
+var updatedDeposite = function() {
+    firstTime = false;
     refreshAll();
 };
 
@@ -1219,6 +1234,7 @@ var updateTotalToPaidPercent = function() {
 };
 
 var updateAmount = function() {
+    firstTime = false;
     if ($("#paymentAmount").val() != "") {
         $("#paymentAmount").val($("#paymentAmount").val().replace(".",",").replace(/[^0-9,]+/i,"").replace(/(,[^,]*),/gi,"$1"));
     }
@@ -1227,6 +1243,7 @@ var updateAmount = function() {
 var quotationPayCondSelect = function() {
     // retrieve "i"
     var n = $( this ).attr("href").substring( 1 );
+    firstTime = false;
     $("#selectDropquotationPayCond").click();
     for(var i = 0; i < payCondList.length; i++) {
         if (payCondList[i].payCondId == n) {
@@ -1266,6 +1283,7 @@ var paymentPayTypeSelect = function() {
 };
 
 var addPayType = function() {
+    firstTime = false;
     if (quotationObj.currentPayTypeSelected != null) {
         for (var i = 0; i < quotationObj.quotationPayTypeList.length; i++) {
             if ( quotationObj.quotationPayTypeList[i].payTypeId == payTypeList[ quotationObj.currentPayTypeSelected ].payTypeId) return;
@@ -1277,6 +1295,7 @@ var addPayType = function() {
 
 var removePayType = function() {
     // retrieve "i"
+    firstTime = false;
     var n = $( this ).attr("href").substring( 1 );
     if (quotationObj.quotationPayTypeList) {
         quotationObj.quotationPayTypeList.splice(n, 1);
@@ -1323,7 +1342,7 @@ var refreshPaymentTab = function( remaining ) {
                 var rem = "<td class='text-center'><a href='#" + i + "' id='removePayment" + i + "'><span class='red glyphicon glyphicon-remove-sign'></span></a></td>";
 
                 var p = quotationObj.quotationPaymentList[i];
-                content += "<td class='text-center'>" + (p.paymentDatePaid ? p.paymentDatePaid.format("dd-mm-yyyy") : "") + "</td>";
+                content += "<td class='text-center'>" + (p.paymentDatePaid ? p.paymentDatePaid.format("DD-MM-YYYY") : "") + "</td>";
                 content += "<td class='text-right'>" + formatAmount( p.paymentAmount ) + "</td>";
                 content += "<td class='text-center'>" + p.payTypeObj.payTypeLabel + "</td>";
 
@@ -1349,6 +1368,7 @@ var refreshPaymentTab = function( remaining ) {
 };
 
 var removePayment = function() {
+    firstTime = false;
     var n = $( this ).attr('href').substring(1);
     quotationObj.quotationPaymentList.splice(n, 1);
     refreshAll();
@@ -1380,6 +1400,7 @@ var addPayment = function() {
             modal: true }
         );
     } else {
+        firstTime = false;
         // all "seems" to be ok
         var d = $("#paymentDate").datepicker("getDate");
         var pT = payTypeList[ parseInt( $("#paymentPayTypeSelect").val() ) ];
@@ -1409,49 +1430,63 @@ var uncheckData = function() {
 var dataInit = function() {
     // the date picker for creationdt
     $("#quotationCreationDt").datepicker( {
-            todayHighlight: true,
-            language: "fr"
-        }).on("changeDate", function(ev) {
-            quotationObj.quotationCreationDt = $("#quotationCreationDt").datepicker("getDate");
-            $(".datepicker").hide();
-            refreshStatus();
-        });
+        todayHighlight: true,
+        language: "fr"
+    }).on("changeDate", function(ev) {
+        firstTime = false;
+        quotationObj.quotationCreationDt = $("#quotationCreationDt").datepicker("getDate");
+        $(".datepicker").hide();
+        refreshStatus();
+    });
 
     // the date picker for end validity dt (quotation only)
     $("#quotationEndValidityDt").datepicker( {
-            todayHighlight: true,
-            language: "fr"
-        }).on("changeDate", function(ev) {
-            quotationObj.quotationEndValidityDt = $("#quotationEndValidityDt").datepicker("getDate");
-            $(".datepicker").hide();
-            refreshStatus();
-        });
+        todayHighlight: true,
+        language: "fr"
+    }).on("changeDate", function(ev) {
+        firstTime = false;
+        quotationObj.quotationEndValidityDt = $("#quotationEndValidityDt").datepicker("getDate");
+        $(".datepicker").hide();
+        refreshStatus();
+    });
 
     if (quotationObj.quotationCreationDt) {
         quotationObj.quotationCreationDt = new Date(quotationObj.quotationCreationDt);
-        $("#quotationCreationDt").datepicker("setDate", quotationObj.quotationCreationDt.format("dd-mm-yyyy") );
+        var first = firstTime;
+        $("#quotationCreationDt").datepicker("setDate", quotationObj.quotationCreationDt.format("DD-MM-YYYY") );
+        firstTime = first;
     }
     if (quotationObj.quotationUpdateDt) {
         quotationObj.quotationUpdateDt = new Date(quotationObj.quotationUpdateDt);
-        $("#quotationUpdateDt").html(quotationObj.quotationUpdateDt.format("dd-mm-yyyy hh:mm") );
+        $("#quotationUpdateDt").html(quotationObj.quotationUpdateDt.format("DD-MM-YYYY HH:mm") );
     } else {
         $("#quotationUpdateDt").html("<i>Nouveau</i>");
     }
     if (quotationObj.quotationEndValidityDt) {
         quotationObj.quotationEndValidityDt = new Date(quotationObj.quotationEndValidityDt);
-        $("#quotationEndValidityDt").datepicker("setDate", quotationObj.quotationEndValidityDt.format("dd-mm-yyyy") );
+        $("#quotationEndValidityDt").datepicker("setDate", quotationObj.quotationEndValidityDt.format("DD-MM-YYYY") );
     }
     $("#quotationRef").keyup( function() {
+        firstTime = false;
         quotationObj.quotationRef = $("#quotationRef").val();
     });
     $("#quotationCustomerNote").keyup( function() {
+        firstTime = false;
         quotationObj.quotationCustomerNote = $("#quotationCustomerNote").val();
     });
     $("#quotationInternalNote").keyup( function() {
+        firstTime = false;
         quotationObj.quotationInternalNote = $("#quotationInternalNote").val();
     });
 
     refreshStatus();
+
+    // doc button for generate/refresh
+    for(var i = 0; i < quotationObj.quotationDocList.length; i++) {
+        $("#docgen" + quotationObj.quotationDocList[i].quotationId).click( function() {
+
+        });
+    }
 };
 
 var refreshStatus = function() {
@@ -1531,7 +1566,21 @@ var validateQuotation = function() {
     if (quotationObj.quotationPrestaList.length == 0)   error += " - Pas de Prestation !<br/>";
     if (!quotationObj.payCondObj)                       error += " - Pas de Condition de Paiment choisie !<br/>";
 
-    if (error !== "") {
+    if (firstTime) {
+        $("#pop").html("<b>Aucun changement à sauvegarder !</b>");
+        $("#pop").dialog( {
+            dialogClass: "popsuperup",
+            title: "Erreur",
+            buttons: [ {
+                text: "OK",
+                click: function() {
+                    $( this ).dialog( "close" );
+                    $(".modalmask").remove();
+                }
+            } ],
+            modal: true }
+        );
+    } else if (error !== "") {
         $("#pop").html("<b>Impossible d'enregistrer</b> :<br/><br/>" + error);
         $("#pop").dialog( {
             dialogClass: "popsuperup",

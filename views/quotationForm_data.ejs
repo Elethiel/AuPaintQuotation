@@ -85,7 +85,7 @@
                 <span class="glyphicon glyphicon-info-sign"></span></a>
         </label>
         <div class="col-sm-7">
-            <textarea tabindex="43" class="form-control" name="quotationCustomerNote" id="quotationCustomerNote" rows="4" ><% if (srv.Obj.quotationCustomerNote) { %><%= srv.Obj.quotationCustomerNote %><% } %></textarea>
+            <textarea tabindex="43" class="form-control" <% if (srv.Obj && srv.Obj.isAlreadyStarted) { %>disabled<% } %> name="quotationCustomerNote" id="quotationCustomerNote" rows="4" ><% if (srv.Obj.quotationCustomerNote) { %><%= srv.Obj.quotationCustomerNote %><% } %></textarea>
         </div>
     </div>
     <div class="form-group">
@@ -110,18 +110,27 @@
                 <tr>
                     <th>Version</th>
                     <th>Date</th>
+                    <th>Fin</th>
                     <th>MAJ</th>
                     <th>DOC</th>
+                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
                 <% if (srv.Obj && srv.Obj.quotationDocList &&  srv.Obj.quotationDocList.length == 0) { %>
-                    <tr class="evenCondensed">
-                        <td colspan="5" class="text-center"><i>Aucun Document</i></td>
+                    <tr class="even">
+                        <td colspan="5" class="text-center"><i>Il faut enregistrer <%= (srv.type && srv.type == -1 ? "le devis" : "la facture" )%> avant de pouvoir générer un document</i></td>
                     </tr>
                 <% } else { %>
                     <% for(var i = 0; i < srv.Obj.quotationDocList.length; i++) { %>
-
+                        <tr class="<%= (i % 2 == 0 ? "even" : "odd") %>">
+                            <td><%= srv.Obj.quotationDocList[i].quotationRef %> (<%= srv.Obj.quotationDocList[i].quotationVersion %>)</td>
+                            <td><%= srv.Obj.quotationDocList[i].quotationCreationDt %></td>
+                            <td><%= srv.Obj.quotationDocList[i].quotationEndValidityDt %></td>
+                            <td><%= srv.Obj.quotationDocList[i].quotationUpdateDt %></td>
+                            <td><%= srv.Obj.quotationDocList[i].docId ? "<a href=" + srv.Obj.quotationDocList[i].docURL + "><span class='glyphicon glyphicon-file'></span></a>" : "" %></td>
+                            <td><button id="docgen<% srv.Obj.quotationDocList[i].quotationId %>" type="button" class="btn btn-primary"><%= srv.Obj.quotationDocList[i].docId ? "Régénérer" : "Créer" %></button></td>
+                        </tr>
                     <% } %>
                 <% } %>
             </tbody>
@@ -129,8 +138,10 @@
                 <tr>
                     <th>Version</th>
                     <th>Date</th>
+                    <th>Fin</th>
                     <th>MAJ</th>
                     <th>DOC</th>
+                    <th>&nbsp;</th>
                 </tr>
             </tfoot>
         </table>

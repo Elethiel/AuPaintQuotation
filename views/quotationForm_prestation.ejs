@@ -87,6 +87,12 @@
     &nbsp;<br/>
     <small class="help">Tout ce que vous allez insérer sera placé avant la ligne sélectionnée.</small><br/>
     &nbsp;<br/>
+<% } else { %>
+    <div class="row text-center">
+        <small class="help red"><b>On ne change pas les prestations d'<% if (srv.type && srv.type == -1) { %>un devis<% } else { %>une facture<% } %> en cours</b></small>
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>
 <% } %>
 
 <!-- List of current Presta -->

@@ -3,19 +3,9 @@ var customerInitTab = function () {
     $("#customertab").dataTable( {
                 "jQueryUI":         true,
                 "language":         { "url": "./js/datatables_customer.lang" },
-                "dom":              '<T<"H"r<"#CustomerHeader">f>t<"F"i>',
+                "dom":              '<<"H"r<"#CustomerHeader">f>t<"F"i>',
                 "iDisplayLength":   -1,
                 "fnInitComplete":   function() { $("#CustomerHeader").html("<b>Clients</b>") },
-                "tableTools": {
-                                    "sSwfPath": "./libs/datatables/plugins/tabletools/swf/copy_csv_xls_pdf.swf",
-                                    "aButtons": [
-                                                    {
-                                                        "sExtends":    "collection",
-                                                        "sButtonText": "Export",
-                                                        "aButtons":    [ "xls", "pdf" ]
-                                                    }
-                                                ]
-                },
                 "order":            [[ 2, "asc" ]],
                 "columnDefs": [
                     {
@@ -139,19 +129,9 @@ var customerValidator = function() {
     $("#persontab").dataTable( {
                 "jQueryUI":         true,
                 "language":         { "url": "./js/datatables_contact.lang" },
-                "dom":              '<T<"H"r<"#PersonHeader">>t<"F"i>',
+                "dom":              '<<"H"r<"#PersonHeader">>t<"F"i>',
                 "iDisplayLength":   -1,
                 "fnInitComplete":   function() { $("#PersonHeader").html("<b>Contacts</b>") },
-                "tableTools": {
-                                    "sSwfPath": "./libs/datatables/plugins/tabletools/swf/copy_csv_xls_pdf.swf",
-                                    "aButtons": [
-                                                    {
-                                                        "sExtends":    "collection",
-                                                        "sButtonText": "Export",
-                                                        "aButtons":    [ "xls", "pdf" ]
-                                                    }
-                                                ]
-                },
                 "order":            [[ 1, "asc" ]],
                 "columnDefs": [
                     {

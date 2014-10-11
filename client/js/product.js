@@ -3,19 +3,9 @@ var productInitTab = function () {
     $("#producttab").dataTable( {
                 "jQueryUI":         true,
                 "language":         { "url": "./js/datatables_product.lang" },
-                "dom":              '<T<"H"r<"#ProductHeader">>t<"F"i>',
+                "dom":              '<<"H"r<"#ProductHeader">>t<"F"i>',
                 "iDisplayLength":   -1,
                 "fnInitComplete":   function() { $("#ProductHeader").html("<b>Prestations</b>") },
-                "tableTools": {
-                                    "sSwfPath": "./libs/datatables/plugins/tabletools/swf/copy_csv_xls_pdf.swf",
-                                    "aButtons": [
-                                                    {
-                                                        "sExtends":    "collection",
-                                                        "sButtonText": "Export",
-                                                        "aButtons":    [ "xls", "pdf" ]
-                                                    }
-                                                ]
-                },
                 "order":            [[ 2, "asc" ], [3, "asc"]],
                 "columnDefs": [
                     {

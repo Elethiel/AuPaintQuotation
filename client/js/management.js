@@ -2,19 +2,9 @@ var initTVA = function() {
     $('#TVAtab').dataTable( {
                 "jQueryUI":         true,
                 "language":         { "url": "./js/datatables_tva.lang" },
-                "dom":              'T<"H"r<"#TVAHeader">>t<"F"i>',
+                "dom":              '<"H"r<"#TVAHeader">>t<"F"i>',
                 "iDisplayLength":   -1,
                 "fnInitComplete":   function() { $("#TVAHeader").html("<b>TVA</b>") },
-                "tableTools": {
-                                    "sSwfPath": "./libs/datatables/plugins/tabletools/swf/copy_csv_xls_pdf.swf",
-                                    "aButtons": [
-                                                    {
-                                                        "sExtends":    "collection",
-                                                        "sButtonText": "Export",
-                                                        "aButtons":    [ "xls", "pdf" ]
-                                                    }
-                                                ]
-                },
                 "order":            [[ 2, "asc" ]],
                 "columnDefs": [
                     {
@@ -50,19 +40,9 @@ var initGroupProduct = function() {
     $('#groupProducttab').dataTable( {
                 "jQueryUI":         true,
                 "language":         { "url": "./js/datatables_groupproduct.lang" },
-                "dom":              '<T<"H"r<"#groupProductHeader">>t<"F"i>',
+                "dom":              '<<"H"r<"#groupProductHeader">>t<"F"i>',
                 "iDisplayLength":   -1,
                 "fnInitComplete":   function() { $("#groupProductHeader").html("<b>Catégorie de Prestation</b>") },
-                "tableTools": {
-                                    "sSwfPath": "./libs/datatables/plugins/tabletools/swf/copy_csv_xls_pdf.swf",
-                                    "aButtons": [
-                                                    {
-                                                        "sExtends":    "collection",
-                                                        "sButtonText": "Export",
-                                                        "aButtons":    [ "xls", "pdf" ]
-                                                    }
-                                                ]
-                },
                 "order":            [[ 2, "asc" ]],
                 "columnDefs": [
                     {
@@ -99,19 +79,9 @@ var initPayType = function() {
     $('#PayTypetab').dataTable( {
                 "jQueryUI":         true,
                 "language":         { "url": "./js/datatables_paytype.lang" },
-                "dom":              'T<"H"r<"#PayTypeHeader">>t<"F"i>',
+                "dom":              '<"H"r<"#PayTypeHeader">>t<"F"i>',
                 "iDisplayLength":   -1,
                 "fnInitComplete":   function() { $("#PayTypeHeader").html("<b>Types de Paiement</b>") },
-                "tableTools": {
-                                    "sSwfPath": "./libs/datatables/plugins/tabletools/swf/copy_csv_xls_pdf.swf",
-                                    "aButtons": [
-                                                    {
-                                                        "sExtends":    "collection",
-                                                        "sButtonText": "Export",
-                                                        "aButtons":    [ "xls", "pdf" ]
-                                                    }
-                                                ]
-                },
                 "order":            [[ 1, "asc" ]],
                 "columnDefs": [
                     {
@@ -140,19 +110,9 @@ var initPayCond = function() {
     $('#PayCondtab').dataTable( {
                 "jQueryUI":         true,
                 "language":         { "url": "./js/datatables_paycond.lang" },
-                "dom":              'T<"H"r<"#PayCondHeader">>t<"F"i>',
+                "dom":              '<"H"r<"#PayCondHeader">>t<"F"i>',
                 "iDisplayLength":   -1,
                 "fnInitComplete":   function() { $("#PayCondHeader").html("<b>Conditions de Paiement</b>") },
-                "tableTools": {
-                                    "sSwfPath": "./libs/datatables/plugins/tabletools/swf/copy_csv_xls_pdf.swf",
-                                    "aButtons": [
-                                                    {
-                                                        "sExtends":    "collection",
-                                                        "sButtonText": "Export",
-                                                        "aButtons":    [ "xls", "pdf" ]
-                                                    }
-                                                ]
-                },
                 "order":            [[ 1, "asc" ]],
                 "columnDefs": [
                     {

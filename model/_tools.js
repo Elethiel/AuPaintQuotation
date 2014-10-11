@@ -1,4 +1,5 @@
 var util = require("util");
+var moment = require("moment");
 
 var Tools = function() {};
 
@@ -9,7 +10,7 @@ Tools.prototype.manageString = function(param) {
     if (param.personGender && param.personGender == "-") param.personGender = " ";
 
     // numeric fields
-    var numFields = [   "productTTC", "productPaid", "TVAPercent", "ownerFactorOk", "ownerFactorNull", 
+    var numFields = [   "productTTC", "productPaid", "TVAPercent", "ownerFactorOk", "ownerFactorNull",
                         "quotationGlobalDiscount", "quotationRealDeposite", "paymentAmount" ];
     // fields to UpperCase
     var uppFields = [   "personLastname", "companyAddressCity", "personAddressCity", "addressCity", "addressCountry",
@@ -79,10 +80,6 @@ Tools.prototype.trim = function (s) {
     else if (s == "") return "";
     else return s.replace(/^\s+|\s+$/g, '');
 };
-
-Date.prototype.format = function (mask, utc) {
-    return dateFormat(this, mask, utc);
-};
 Date.prototype.getWeek = function() {
     var date = new Date(this.getTime());
     date.setHours(0, 0, 0, 0);
@@ -98,6 +95,11 @@ Date.prototype.getWeekYear = function() {
     var date = new Date(this.getTime());
     date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
     return date.getFullYear();
+};
+
+Date.prototype.format = function (mask) {
+    if (!mask) return moment(this).format("L");
+    else return moment(this).format(mask);
 };
 
 module.exports = new Tools();

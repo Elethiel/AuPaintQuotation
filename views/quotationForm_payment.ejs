@@ -1,6 +1,13 @@
 &nbsp;<br/>
 &nbsp;<br/>
 
+<% if (srv.Obj && srv.Obj.isAlreadyStarted) { %>
+    <div class="row text-center">
+        <small class="help red"><b>On ne change pas les conditions de paiments d'<% if (srv.type && srv.type == -1) { %>un devis<% } else { %>une facture<% } %> en cours</b></small>
+    </div>
+    &nbsp;<br/>
+    &nbsp;<br/>
+<% } %>
 <div class="row midlight"><small class="help">Résumé d<% if (srv.type && srv.type == -1) { %>u Devis<% } else { %>e la Facture<% } %> et paiements</small></div>
 &nbsp;<br/>
 
@@ -194,7 +201,7 @@
         <div class="row text-center grayfield">
             <div class="row inputrefresh">
                 <div class="col-sm-4 col-sm-offset-2 text-center">
-                    <div class="input-append date" id="paymentDate" data-date="" data-date-format="dd-mm-yyyy">
+                    <div class="input-append date" id="paymentDate" data-date="" data-date-format="DD-MM-YYYY">
                         <input class="span2 text-center" id="paymentDateInput" size="16" type="text" value="">
                         <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>

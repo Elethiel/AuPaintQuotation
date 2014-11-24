@@ -4,7 +4,7 @@ var util = require("util");
 var lodash = require("lodash");
 
 
-// db.run("CREATE TABLE owner (id INTEGER PRIMARY KEY AUTOINCREMENT, company_id INT, fiscalDt INT, defaultValidity INT, logo TEXT, bigLogo TEXT, factorok REAL, factornull REAL)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'owner'); } });
+// db.run("CREATE TABLE owner (id INTEGER PRIMARY KEY AUTOINCREMENT, company_id INT, fiscalDt INT, defaultValidity INT, logo TEXT, bigLogo TEXT, factorok REAL, factornull REAL, pattern TEXT, apecity TEXT)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'owner'); } });
 
 var Owner = function() {};
 
@@ -42,8 +42,8 @@ Owner.prototype.insertUpdate = function(db, param, callback) {
                             // ensure Owner itself
                             if (param.ownerId && param.ownerId > 0) {
                                 // existing (update)
-                                db.run("UPDATE owner SET company_id = ?, fiscalDt = ?, defaultValidity = ?, logo = ?, bigLogo = ?, factorok = ?, factornull = ?, pattern = ? WHERE id = ?",
-                                    [ companyId, param.ownerFiscalDt, param.ownerDefaultValidity, param.ownerLogo, param.ownerBigLogo, param.ownerFactorOk, param.ownerFactorNull, param.ownerPattern, param.ownerId ],
+                                db.run("UPDATE owner SET company_id = ?, fiscalDt = ?, defaultValidity = ?, logo = ?, bigLogo = ?, factorok = ?, factornull = ?, pattern = ?, apecity = ? WHERE id = ?",
+                                    [ companyId, param.ownerFiscalDt, param.ownerDefaultValidity, param.ownerLogo, param.ownerBigLogo, param.ownerFactorOk, param.ownerFactorNull, param.ownerPattern, param.ownerAPECity, param.ownerId ],
                                     function(err, row) {
                                         if (err) callback(err);
                                         else {
@@ -54,8 +54,8 @@ Owner.prototype.insertUpdate = function(db, param, callback) {
                                 ); // update callback
                             } else {
                                 // new (insert)
-                                db.run("INSERT INTO owner (company_id, fiscalDt, defaultValidity, logo, bigLogo, factorok, factornull, pattern) VALUES(?, ?, ?, ?, ?, ?, ?)",
-                                    [ companyId, param.ownerFiscalDt, param.ownerDefaultValidity, param.ownerLogo, param.ownerBigLogo, param.ownerFactorOk, param.ownerFactorNull, param.ownerPattern ],
+                                db.run("INSERT INTO owner (company_id, fiscalDt, defaultValidity, logo, bigLogo, factorok, factornull, pattern, apecity) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+                                    [ companyId, param.ownerFiscalDt, param.ownerDefaultValidity, param.ownerLogo, param.ownerBigLogo, param.ownerFactorOk, param.ownerFactorNull, param.ownerPattern, param.ownerAPECity ],
                                     function(err, row) {
                                         if (err) callback(err);
                                         else {
@@ -78,7 +78,7 @@ Owner.prototype.findById = function(db, param, callback) {
         //console.log("** START find OWNER " + param.ownerId);
 
         var ownerObj = {};
-        db.get("SELECT id, company_id, fiscalDt, defaultValidity, logo, bigLogo, factorok, factornull, pattern FROM owner WHERE id = ?", [ param.ownerId ], function(err, row) {
+        db.get("SELECT id, company_id, fiscalDt, defaultValidity, logo, bigLogo, factorok, factornull, pattern, apecity FROM owner WHERE id = ?", [ param.ownerId ], function(err, row) {
             if (err) callback(err);
             else {
                 if (row) {
@@ -94,7 +94,7 @@ Owner.prototype.findById = function(db, param, callback) {
                                                 function(all, group1, group2) {
                                                     return(group2);
                                                 });
-                            lodash.assign(ownerObj, {ownerId: row.id, ownerClean: ownerClean, ownerRender: ownerRender, companyObj: companyObj, ownerFiscalDt: row.fiscalDt, ownerDefaultValidity: row.defaultValidity, ownerLogo: row.logo, ownerBigLogo: row.bigLogo, ownerFactorOk: row.factorok, ownerFactorNull: row.factornull, ownerPattern: row.pattern });
+                            lodash.assign(ownerObj, {ownerId: row.id, ownerClean: ownerClean, ownerRender: ownerRender, companyObj: companyObj, ownerFiscalDt: row.fiscalDt, ownerDefaultValidity: row.defaultValidity, ownerLogo: row.logo, ownerBigLogo: row.bigLogo, ownerFactorOk: row.factorok, ownerFactorNull: row.factornull, ownerPattern: row.pattern, ownerAPECity: row.apecity });
                             callback(null, ownerObj);
                         }
                     });

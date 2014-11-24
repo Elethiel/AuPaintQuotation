@@ -33,7 +33,11 @@
                                 <% } %>
                                 &nbsp;<br/>
 
-                                <button type="button" id="confirmQuotation" class="btn btn-danger">&nbsp; &nbsp; VALIDER &nbsp; &nbsp;</button><br/>
+                                <button type="button" id="confirmQuotation" class="btn btn-danger">&nbsp; &nbsp; VALIDER &nbsp; &nbsp;</button>
+                                <% if (srv.type && srv.type == -1 && (srv.Obj && srv.Obj.quotationId)) { %>
+                                    <button type="button" id="convertToInvoice" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Transformer ce devis en facture">&nbsp; &nbsp; <span class="glyphicon glyphicon-share-alt"></span> FACTURE &nbsp; &nbsp;</button>
+                                <% } %>
+                                <br/>
 
                                 &nbsp;<br/>
 
@@ -81,6 +85,7 @@
         <% include _popup %>
 
         <script type="text/javascript">
+            var dirname = '<%= srv.dirname %>';
             var quotationObj = <%- JSON.stringify(srv.Obj) %>;
             var customerList = <%- JSON.stringify(srv.customerList) %>;
             var productList = <%- JSON.stringify(srv.productList) %>;

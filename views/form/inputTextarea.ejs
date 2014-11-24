@@ -7,6 +7,6 @@
         <% } %>
     </label>
     <div class="col-sm-<%= o.inputw %>">
-        <textarea tabindex="<%= o.index %>" class="form-control" name="<%= o.field %>" id="<%= o.field %>" rows="4" ><% if (o.value) { %><%= o.value %><% } %></textarea>
+        <textarea tabindex="<%= o.index %>" class="form-control <%= o.cls %>" name="<%= o.field %>" id="<%= o.field %>" rows="4" ><% if (o.value) { %><%= o.value %><% } %></textarea>
     </div>
 </div>

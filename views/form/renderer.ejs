@@ -7,7 +7,7 @@
         <% } %>
     </label>
     <div class="col-sm-<%= o.inputw %>">
-        <span id="<%= o.field %>" class="form-control">
+        <span id="<%= o.field %>" class="form-control <%= o.cls %>">
                 <% if (o.value) { %><%- o.value %><% } %>
         </span>
     </div>

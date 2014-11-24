@@ -20,7 +20,8 @@
     "connect-sqlite3": "^0.9.3",
     "multer": "^0.1.4",
     "lwip": "0.0.2",
-    "moment": "^2.8.3"
+    "moment": "^2.8.3",
+    "pdfkit": "^0.7.0"
   },
   "optionalDependencies": {
     "node-windows": "^0.1.5"

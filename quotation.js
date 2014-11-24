@@ -28,6 +28,7 @@ var optionsRouter = require("./routes/optionsRoutes");
 var productRouter = require("./routes/productRoutes");
 var customerRouter = require("./routes/customerRoutes");
 var quotationRouter = require("./routes/quotationRoutes");
+var docRouter = require("./routes/docRoutes");
 
 // var srv to view
 var param = {session: null, loc: "", ownerid: 0, err: ""};
@@ -88,6 +89,7 @@ optionsRouter(app);
 productRouter(app);
 customerRouter(app);
 quotationRouter(app);
+docRouter(app);
 
 /// Error management
 app.use(errorhandler());

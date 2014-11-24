@@ -25,7 +25,7 @@ Tools.prototype.manageString = function(param) {
                         "contactMobile", "companyContactMobile", "personContactMobile", "companySiret",
                         "contactMail", "companyContactMail", "personContactMail", "companyAPE", "customerNote",
                         "groupProductLabel", "payCondLabel", "payTypeLabel", "productLabel", "productCode", "productUnit", "TVALabel",
-                        "quotationInternalNote", "quotationRef", "quotationCustomerNote" ];
+                        "quotationInternalNote", "quotationRef", "quotationCustomerNote", "ownerAPECity" ];
 
     // numeric
     for (var num in numFields) {

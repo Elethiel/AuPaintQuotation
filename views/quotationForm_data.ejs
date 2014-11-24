@@ -103,15 +103,21 @@
     &nbsp;<br/>
     <div class="row midlight"><small class="help">Documents et Historique</small></div>
     &nbsp;<br/>
+    <div class="text-center"><small class="help">Régénérer un fichier prendra la version correspondante et recréera un fichier PDF de zéro, en effaçant l'ancien.<br/>
+    En cliquant sur l'icône du document, il s'ouvrira dans une nouvelle fenêtre. Il faut faire <kbd>Click Droit</kbd> avec la souris et <kbd>Enregistrer la cible du lien sous...</kbd> pour sauvegarder le fichier<br/>
+    Les icônes en rouges sont celles qui viennent d'être générées<br/>
+    Cliquez sur l'icône <span class='glyphicon glyphicon-share'></span> pour envoyer directement le document par mail au client courant</small><br/></div>
+    &nbsp;<br/>
     <!-- List of current Docs & History -->
     <div class="row">
-        <table id="historytab" class="stripe hover cell-border row-border nowrap dataTable no-footer" cellspacing="0" style="width: 60% !important" >
+        <table id="historytab" class="stripe hover cell-border row-border nowrap dataTable no-footer" cellspacing="0" style="width: 80% !important" >
             <thead class="fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-tl ui-corner-tr">
                 <tr>
+                    <th>Type</th>
                     <th>Version</th>
                     <th>Date</th>
                     <th>Fin</th>
-                    <th>MAJ</th>
+                    <th>Date de Modif</th>
                     <th>DOC</th>
                     <th>&nbsp;</th>
                 </tr>
@@ -124,22 +130,29 @@
                 <% } else { %>
                     <% for(var i = 0; i < srv.Obj.quotationDocList.length; i++) { %>
                         <tr class="<%= (i % 2 == 0 ? "even" : "odd") %>">
-                            <td><%= srv.Obj.quotationDocList[i].quotationRef %> (<%= srv.Obj.quotationDocList[i].quotationVersion %>)</td>
+                            <td><%- srv.Obj.quotationDocList[i].quotationType == -1 ? "<i>Devis</i>" : "<b>Facture</b>" %></td>
+                            <td><%= srv.Obj.quotationDocList[i].quotationRef %> (<b><%= srv.Obj.quotationDocList[i].quotationVersion %></b>)</td>
                             <td><%= srv.Obj.quotationDocList[i].quotationCreationDt %></td>
                             <td><%= srv.Obj.quotationDocList[i].quotationEndValidityDt %></td>
                             <td><%= srv.Obj.quotationDocList[i].quotationUpdateDt %></td>
-                            <td><%= srv.Obj.quotationDocList[i].docId ? "<a href=" + srv.Obj.quotationDocList[i].docURL + "><span class='glyphicon glyphicon-file'></span></a>" : "" %></td>
-                            <td><button id="docgen<% srv.Obj.quotationDocList[i].quotationId %>" type="button" class="btn btn-primary"><%= srv.Obj.quotationDocList[i].docId ? "Régénérer" : "Créer" %></button></td>
+                            <td id="doclink<%= srv.Obj.quotationDocList[i].quotationId %>" class="text-center"><%- srv.Obj.quotationDocList[i].docId ? "<a href='" + srv.Obj.quotationDocList[i].docURL + "' target='_blank'><span class='glyphicon glyphicon-file'></span></a> <a href='mailto:" + srv.Obj.customerObj.personObj.personContactMail + "?subject=AuPaintSpace&attachment=" + srv.dirname + srv.Obj.quotationDocList[i].docURL + "' target='_blank'><span class='glyphicon glyphicon-share'></span></a>" : "" %></td>
+                            <td>
+                                <button id="docgen<%= srv.Obj.quotationDocList[i].quotationId %>" type="button" class="btn btn-primary"><%- srv.Obj.quotationDocList[i].docId ? "Régénérer <span class='glyphicon glyphicon-refresh'></span>" : "Créer <span class='glyphicon glyphicon-chevron-right'></span>" %></button>
+                                <% if (i > 0) { %>
+                                    <button id="docbackup<%= srv.Obj.quotationDocList[i].quotationId %>" type="button" class="btn btn-default">Reprendre <span class="glyphicon glyphicon-chevron-up"></span></button> <a href="#" data-placement="bottom" tabindex="-1" data-tooltipsmall="Reprendre cette version et la mettre en version courante"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                <% } %>
+                            </td>
                         </tr>
                     <% } %>
                 <% } %>
             </tbody>
             <tfoot class="fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-tl ui-corner-tr">
                 <tr>
+                    <th>Type</th>
                     <th>Version</th>
                     <th>Date</th>
                     <th>Fin</th>
-                    <th>MAJ</th>
+                    <th>Date de Modif</th>
                     <th>DOC</th>
                     <th>&nbsp;</th>
                 </tr>

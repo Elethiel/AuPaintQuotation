@@ -71,6 +71,7 @@ module.exports = function(app) {
                                                                         else {
                                                                             req.param.Obj = calculationQuotation(req, quotationObj);
                                                                             req.param.type = req.param.Obj.quotationType;
+                                                                            req.param.dirname = process.cwd() + "client";
                                                                             res.render("quotation", {srv:  req.param} );
                                                                         }
                                                                     }
@@ -78,6 +79,7 @@ module.exports = function(app) {
                                                             } else {
                                                                 req.param.Obj = calculationQuotation(req, { quotationId: null, quotationType: req.query.type, customerObj: null, quotationRef: pattern, quotationVersion: 1, quotationCreationDt: new Date(), quotationUpdateDt: null, quotationEndValidatyDt: "", quotationInvoiceStatus: "", quotationGlobalDiscount: 0, quotationDeposite: 0, quotationInternalNote: "", quotationCustomerNote: "", payCondObj: null, quotationPaymentList: [], quotationPayTypeList: [], quotationPrestaList: [], quotationParentId: null, quotationDocList: [], isAlreadyStarted: false });
                                                                 req.param.type = req.query.type;
+                                                                req.param.dirname = process.cwd() + "client";
                                                                 res.render("quotation", {srv:  req.param} );
                                                             }
                                                         }
@@ -132,5 +134,35 @@ module.exports = function(app) {
             }
         });
         // ---------------------------------------------------------------------------------------------
+    }).post("/quotationCopy", function(req, res, next) {
+        //
+        if (req.body && req.body.copyFrom && req.body.copyFrom > 0) {
+            quotation.findById(req.db, {quotationId : req.body.copyFrom }, function(err, backupObj) {
+                // get the current version instead of the historic one
+                backupObj.quotationVersion = req.body.quotationObj.quotationVersion;
+                backupObj.quotationParentId = null;
+                backupObj.backupId = req.body.quotationObj.quotationId;
+                quotation.insertUpdate(req.db, backupObj, function(err, ret) {
+                    if (err) next(err);
+                    else {
+                        res.render("quotationUpdate", {srv: (ret.msg === "ok"), id: ret.quotationId });
+                    }
+                });
+            });
+        }
+
+    }).post("/quotationConvert", function(req, res, next) {
+        //
+        if (req.body && req.body.quotationObj) {
+            req.body.quotationObj.quotationParentId = null;
+            req.body.quotationObj.quotationType = 1;
+            quotation.insertUpdate(req.db, req.body.quotationObj, function(err, ret) {
+                if (err) next(err);
+                else {
+                    res.render("quotationUpdate", {srv: (ret.msg === "ok"), id: ret.quotationId });
+                }
+            });
+        }
+
     });
 };

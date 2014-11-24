@@ -46,7 +46,8 @@ var productInitTab = function () {
                                     "<a href='#' data-placement='bottom' " +
                                     "data-tooltipsmall='TTC: " + formatAmount(data) +
                                     "\nHT: " + formatAmount(getHT(data, row[9])) +
-                                    "\nMarge: " + formatAmount(getProfit(getHT(data, row[9]), data, row[4])) +
+                                    "\nCoût: " + formatAmount(row[4]) +
+                                    "\n\nMarge: " + formatAmount(getProfit(getHT(data, row[9]), data, row[4])) +
                                     "\nFacteur: " + formatFactor(getProfitFactor(getHT(data, row[9]), data, row[4])) +
                                     "'> " +
                                     " <span class='glyphicon glyphicon-info-sign'></span></a> ";

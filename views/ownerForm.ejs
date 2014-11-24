@@ -30,56 +30,65 @@
     &nbsp;<br/>
         <div class="row">
             <div class="col-sm-6">
-                <% var o = { index: "5", label: "N° TVA intracom.", field: "companyTVA", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.companyTVA : srv.Obj) } %>
+                <% var o = { index: "5", label: "N° TVA intracom.", cls: "text-small", empty: "Le n° de TVA intracommunautaire est obligatoire pour les factures", field: "companyTVA", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.companyTVA : srv.Obj) } %>
                 <% include form/inputText %>
             </div>
             <div class="col-sm-6">
-                <% var o = { index: "6", label: "Code A.P.E.", field: "companyAPE", labelw: "5", inputw: "5", value: (srv.Obj ? srv.Obj.companyAPE : srv.Obj) } %>
+                <% var o = { index: "6", label: "N° RCS ou RM", tooltip: "Préciser le type de matricule : RCS xxxxx ou RM xxxxx", placeholder: "RCS xxxxx / RM xxxxx", empty: "Il faut au moins entrer l'un ou l'autre des matricules", field: "companyAPE", labelw: "4", inputw: "6", value: (srv.Obj ? srv.Obj.companyAPE : srv.Obj) } %>
                 <% include form/inputText %>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <% var o = { index: "7", label: "SIRET/SIREN", field: "companySiret", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.companySiret : srv.Obj) } %>
+                <% var o = { index: "7", label: "SIRET/SIREN", cls: "text-small", field: "companySiret", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.companySiret : srv.Obj) } %>
                 <% include form/inputText %>
             </div>
             <div class="col-sm-6">
-                <% var o = { index: "8", label: "Début d'Exercice", field: "ownerFiscalDt", labelw: "5", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFiscalDt : srv.Obj) } %>
+                <% var o = { index: "8", label: "Ville RCS/RM", empty: "La Ville d'immatriculation est obligatoire pour les factures.", field: "ownerAPECity", labelw: "4", inputw: "6", value: (srv.Obj ? srv.Obj.ownerAPECity : srv.Obj) } %>
+                <% include form/inputText %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                &nbsp;
+            </div>
+            <div class="col-sm-6">
+                <% var o = { index: "9", label: "Début d'Exercice", field: "ownerFiscalDt", labelw: "4", inputw: "6", value: (srv.Obj ? srv.Obj.ownerFiscalDt : srv.Obj) } %>
                 <% include form/inputSelectDate %>
                 <% include form/inputSelect %>
             </div>
         </div>
     &nbsp;<br/>
     <p class="midlight">Coordonnées</p>
-    <% var o = { index: "9", label: "Site Internet", field: "addressURL", placeholder: "http://", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.addressURL : srv.Obj) } %>
+    <% var o = { index: "10", label: "Site Internet", field: "addressURL", placeholder: "http://", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.addressURL : srv.Obj) } %>
     <% include form/inputURL %>
-    <% var o = { index: "10", label: "Adresse", field: "addressLine1", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.addressLine1 : srv.Obj) } %>
+    <% var o = { index: "11", label: "Adresse", empty: "l'Adresse est obligatoire pour les factures", field: "addressLine1", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.addressLine1 : srv.Obj) } %>
     <% include form/inputText %>
-    <% var o = { index: "11", label: "", field: "addressLine2", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.addressLine2 : srv.Obj) } %>
+    <% var o = { index: "12", label: "", field: "addressLine2", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.addressLine2 : srv.Obj) } %>
     <% include form/inputText %>
     <div class="row">
         <div class="col-sm-6">
-            <% var o = { index: "12", label: "CP", field: "addressCP", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.addressCP : srv.Obj) } %>
+            <% var o = { index: "13", label: "CP", empty: "Le Code Postal est obligatoire pour les factures", field: "addressCP", labelw: "8", inputw: "4", value: (srv.Obj ? srv.Obj.addressCP : srv.Obj) } %>
             <% include form/inputText %>
         </div>
         <div class="col-sm-6">
-            <% var o = { index: "13", label: "Ville", field: "addressCity", labelw: "2", inputw: "8", value: (srv.Obj ? srv.Obj.addressCity : srv.Obj) } %>
+            <% var o = { index: "14", label: "Ville", empty: "La Ville est obligatoire pour les factures", field: "addressCity", labelw: "2", inputw: "8", value: (srv.Obj ? srv.Obj.addressCity : srv.Obj) } %>
             <% include form/inputText %>
         </div>
     </div>
     &nbsp;<br/>
     <p class="midlight">Contact</p>
-    <% var o = { index: "14", label: "Téléphone", field: "contactTel", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactTel : srv.Obj) } %>
+    <% var o = { index: "15", label: "Téléphone", field: "contactTel", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactTel : srv.Obj) } %>
     <% include form/inputTel %>
-    <% var o = { index: "15", label: "Mobile", field: "contactMobile", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactMobile : srv.Obj) } %>
+    <% var o = { index: "16", label: "Mobile", field: "contactMobile", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactMobile : srv.Obj) } %>
     <% include form/inputTel %>
-    <% var o = { index: "16", label: "Fax", field: "contactFax", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactFax : srv.Obj) } %>
+    <% var o = { index: "17", label: "Fax", field: "contactFax", placeholder: "xx.xx.xx.xx.xx", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactFax : srv.Obj) } %>
     <% include form/inputTel %>
-    <% var o = { index: "17", label: "Email", field: "contactMail", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactMail : srv.Obj) } %>
+    <% var o = { index: "18", label: "Email", field: "contactMail", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.contactMail : srv.Obj) } %>
     <% include form/inputMail %>
     &nbsp;<br/>
     <p class="highlight">Paramètres</p>
-    <% var o = { index: "18", label: "Pattern", placeholder:"$yy$-$ss$-####-APS", tooltip: "Le pattern peut contenir quelques codes :\n $yy$ = l'année en cours\n $mm$ = le mois en cours\n $ss$ = le numéro de semaine\n $dd$ = le jour\n # = chaque # représente un nombre unique (ex: ### = 001, 002, 003...)\n une série par pattern et jusqu'à 6 chiffres max", field: "ownerPattern", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerPattern : srv.Obj) } %>
+    <% var o = { index: "19", label: "Pattern", placeholder:"$yy$-$ss$-####-APS", tooltip: "Le pattern peut contenir quelques codes :\n $yy$ = l'année en cours\n $mm$ = le mois en cours\n $ss$ = le numéro de semaine\n $dd$ = le jour\n # = chaque # représente un nombre unique (ex: ### = 001, 002, 003...)\n une série par pattern et jusqu'à 6 chiffres max", field: "ownerPattern", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerPattern : srv.Obj) } %>
     <% include form/inputText %>
     <div class="form-group text-center">
         <label for="ownerPatternRender" class="col-sm-4 control-label">
@@ -90,23 +99,23 @@
         </div>
     </div>
     &nbsp;<br/>
-    <% var o = { index: "19", label: "Validité d'un devis par défaut (en jours)", tooltip: "Il s'agit bien d'une valeur « par défaut » qui pourra être changée pour chaque devis individuellement.", field: "ownerDefaultValidity", labelw: "7", inputw: "4", value: (srv.Obj ? srv.Obj.ownerDefaultValidity : srv.Obj) } %>
+    <% var o = { index: "20", label: "Validité d'un devis par défaut (en jours)", tooltip: "Il s'agit bien d'une valeur « par défaut » qui pourra être changée pour chaque devis individuellement.", field: "ownerDefaultValidity", labelw: "7", inputw: "4", value: (srv.Obj ? srv.Obj.ownerDefaultValidity : srv.Obj) } %>
     <% include form/inputInt %>
     &nbsp;<br/>
-    <% var o = { index: "20", label: "Logo (JPG)", tooltip: "Le logo sera utilisé dans le menu.\nVider le champ pour ne plus utiliser d'image.", field: "ownerLogo", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerLogo : srv.Obj) } %>
+    <% var o = { index: "21", label: "Logo (JPG)", tooltip: "Le logo sera utilisé dans le menu.\nVider le champ pour ne plus utiliser d'image.", field: "ownerLogo", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerLogo : srv.Obj) } %>
     <% include form/inputImg %>
     &nbsp;<br/>
-    <% var o = { index: "21", label: "Grand Logo (JPG)", tooltip: "Le Grand Logo sera utilisé en icône d'application, sur les devis et en fond d'application.\nVider le champ pour ne plus utiliser d'image.", field: "ownerBigLogo", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerBigLogo : srv.Obj) } %>
+    <% var o = { index: "22", label: "Grand Logo (JPG)", tooltip: "Le Grand Logo sera utilisé en icône d'application, sur les devis et en fond d'application.\nVider le champ pour ne plus utiliser d'image.", field: "ownerBigLogo", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerBigLogo : srv.Obj) } %>
     <% include form/inputImg %>
     &nbsp;<br/>
-    <% var o = { index: "22", symbol: "%", addon: "ok", label: "Facteur Rentabilité", placeholder:"xx.xx", tooltip: "Ce facteur permet de savoir à partir de quand une prestation est rentable.\nPar exemple un produit acheté 1€ et vendu(ht) 2€ aura une rentabilité de +100%.", field: "ownerFactorOk", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFactorOk : srv.Obj) } %>
+    <% var o = { index: "23", symbol: "%", addon: "ok", label: "Facteur Rentabilité", placeholder:"xx.xx", tooltip: "Ce facteur permet de savoir à partir de quand une prestation est rentable.\nPar exemple un produit acheté 1€ et vendu(ht) 2€ aura une rentabilité de +100%.", field: "ownerFactorOk", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFactorOk : srv.Obj) } %>
     <% include form/inputNum %>
-    <% var o = { index: "23", symbol: "%", addon: "null", label: "Facteur Limite", placeholder:"xx.xx", tooltip: "Ce facteur permet de savoir à partir de quand une prestation reste viable.\nPar exemple un produit acheté 1€ et vendu(ht) 2€ aura une rentabilité de +100%.", field: "ownerFactorNull", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFactorNull : srv.Obj) } %>
+    <% var o = { index: "24", symbol: "%", addon: "null", label: "Facteur Limite", placeholder:"xx.xx", tooltip: "Ce facteur permet de savoir à partir de quand une prestation reste viable.\nPar exemple un produit acheté 1€ et vendu(ht) 2€ aura une rentabilité de +100%.", field: "ownerFactorNull", labelw: "4", inputw: "5", value: (srv.Obj ? srv.Obj.ownerFactorNull : srv.Obj) } %>
     <% include form/inputNum %>
-    <% var o = { index: "24", symbol: "%", addon: "nok", label: "Facteur Défavorable", tooltip: "En dessous du facteur limite, on considère une prestation à la limite de la perte.", field: "ownerFactorNok", labelw: "4", inputw: "5" } %>
+    <% var o = { index: "25", symbol: "%", addon: "nok", label: "Facteur Défavorable", tooltip: "En dessous du facteur limite, on considère une prestation à la limite de la perte.", field: "ownerFactorNok", labelw: "4", inputw: "5" } %>
     <% include form/inputNum %>
     &nbsp;<br/>
-    <% var o = { index: "25", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
+    <% var o = { index: "26", label: "", tooltip: "Cocher cette case évite les traitements automatique (suppression des espaces automatique, etc.)", field: "notstring", labelw: "4", inputw: "7", value: "",
             items: [ { val: "1", lab: "Pas de traitement des données du formulaire" } ] } %>
     <% include form/inputCheck %>
     &nbsp;<br/>

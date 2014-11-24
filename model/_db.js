@@ -122,7 +122,7 @@ db.prototype.init = function() {
                     },
                 function(callback) {
                         console.log("Creating TABLE owner.");
-                        db.run("CREATE TABLE owner (id INTEGER PRIMARY KEY AUTOINCREMENT, company_id INT, fiscalDt INT, defaultValidity INT, logo TEXT, bigLogo TEXT, factorok REAL, factornull REAL, pattern TEXT)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'owner'); } });
+                        db.run("CREATE TABLE owner (id INTEGER PRIMARY KEY AUTOINCREMENT, company_id INT, fiscalDt INT, defaultValidity INT, logo TEXT, bigLogo TEXT, factorok REAL, factornull REAL, pattern TEXT, apecity TEXT)", function(err) { if (err) callback(err, ''); else { console.log('==> done'); callback(err, 'owner'); } });
                     },
                 function(callback) {
                         console.log("Creating TABLE owner_invoice.");

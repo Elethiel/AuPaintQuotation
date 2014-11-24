@@ -119,6 +119,9 @@ var quotationValidator = function() {
 
     // validation button
     $("#confirmQuotation").click ( validateQuotation );
+
+    $("#convertToInvoice").tooltip();
+    $("#convertToInvoice").click ( convertToInvoice );
 };
 
 
@@ -1483,9 +1486,159 @@ var dataInit = function() {
 
     // doc button for generate/refresh
     for(var i = 0; i < quotationObj.quotationDocList.length; i++) {
-        $("#docgen" + quotationObj.quotationDocList[i].quotationId).click( function() {
-
-        });
+        $("#docgen" + quotationObj.quotationDocList[i].quotationId).click(
+            function() {
+                var i = $(this).attr("id").substr("docgen".length);
+                $(".tab-content").append("<div class='modal modalmask'></div>");
+                // ajax call to create the document on server side
+                $.ajax(
+                    "docGenerate",
+                    {
+                        success: function(data, status) {
+                            if (data.generatedDoc == null) { // error
+                                $(".modalmask").remove();
+                                $("#pop").html("Création impossible");
+                                $("#pop").dialog( {
+                                    dialogClass: "popsuperup",
+                                    title: "Erreur",
+                                    buttons: [ {
+                                        text: "OK",
+                                        click: function() {
+                                            $( this ).dialog( "close" );
+                                            $(".modalmask").remove();
+                                        }
+                                    } ],
+                                    modal: true }
+                                );
+                            } else {
+                                $(".modalmask").remove();
+                                $("#pop").html("Document créé");
+                                $("#pop").dialog( {
+                                    dialogClass: "popsuperup",
+                                    title: "OK",
+                                    buttons: [ {
+                                        text: "OK",
+                                        click: function() {
+                                            var generatedDoc = JSON.parse(data.generatedDoc);
+                                            $("#doclink" + generatedDoc.quotationId).html("<a href='" + generatedDoc.docURL + "' target='_blank'><span class='glyphicon glyphicon-file red'></span></a> <a href='mailto:" + quotationObj.customerObj.personObj.personContactMail + "?subject=AuPaintSpace&attachment=" + dirname + generatedDoc.docURL + "' target='_blank'><span class='glyphicon glyphicon-share'></span></a>");
+                                            $("#docgen" + generatedDoc.quotationId).html("Régénérer");
+                                            $( this ).dialog( "close" );
+                                        }
+                                    } ],
+                                    modal: true }
+                                );
+                            }
+                        },
+                        contentType: 'application/json',
+                        data: JSON.stringify({ "quotationObj": quotationObj, "generateDocFor": i}),
+                        error: function(data, status, err) {
+                            $(".modalmask").remove();
+                            $("#pop").html("Erreur lors de la transmission de données (doc) : " + err);
+                            $("#pop").dialog( {
+                                dialogClass: "popsuperup",
+                                title: "Erreurs",
+                                buttons: [ {
+                                    text: "OK",
+                                    click: function() {
+                                        $( this ).dialog( "close" );
+                                        $(".modalmask").remove();
+                                    }
+                                } ],
+                                modal: true }
+                            );
+                        },
+                        type: "POST"
+                    }
+                );
+                return false;
+            }
+        );
+        $("#docbackup" + quotationObj.quotationDocList[i].quotationId).click(
+            function() {
+                var i = $(this).attr("id").substr("docbackup".length);
+                $(".tab-content").append("<div class='modal modalmask'></div>");
+                // notification for the user
+                $("#pop").html("Vous allez reprendre une ancienne version et la remettre en version courante (copie intégrale).<br/><br/>Voulez-vous vraiment continuer ?");
+                $("#pop").dialog( {
+                    dialogClass: "popsuperup",
+                    title: "Back-up de Version",
+                    width: 500,
+                    buttons: [
+                        {
+                        text: "Annuler",
+                        click: function() {
+                            $( this ).dialog( "close" );
+                        }
+                        } , {
+                        text: "OUI",
+                        click: function() {
+                            $( this ).dialog( "close" );
+                            // ajax call to create the copy on server side
+                            $.ajax(
+                                "quotationCopy",
+                                {
+                                    success: function(data, status) {
+                                        if (data == "0") { // error
+                                            $(".modalmask").remove();
+                                            $("#pop").html("Back-up impossible");
+                                            $("#pop").dialog( {
+                                                dialogClass: "popsuperup",
+                                                title: "Erreur",
+                                                buttons: [ {
+                                                    text: "OK",
+                                                    click: function() {
+                                                        $( this ).dialog( "close" );
+                                                        $(".modalmask").remove();
+                                                    }
+                                                } ],
+                                                modal: true }
+                                            );
+                                        } else {
+                                            $(".modalmask").remove();
+                                            $("#pop").html("Back-up effectué");
+                                            $("#pop").dialog( {
+                                                dialogClass: "popsuperup",
+                                                title: "OK",
+                                                buttons: [ {
+                                                    text: "OK",
+                                                    click: function() {
+                                                        $(".tab-content").append("<div class='modal modalmask'></div>");
+                                                        window.location.href = "/quotation?quotationId=" + data;
+                                                        $( this ).dialog( "close" );
+                                                    }
+                                                } ],
+                                                modal: true }
+                                            );
+                                        }
+                                    },
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({ "quotationObj": quotationObj, "copyFrom": i}),
+                                    error: function(data, status, err) {
+                                        $(".modalmask").remove();
+                                        $("#pop").html("Erreur lors de la transmission de données (backup) : " + err);
+                                        $("#pop").dialog( {
+                                            dialogClass: "popsuperup",
+                                            title: "Erreurs",
+                                            buttons: [ {
+                                                text: "OK",
+                                                click: function() {
+                                                    $( this ).dialog( "close" );
+                                                    $(".modalmask").remove();
+                                                }
+                                            } ],
+                                            modal: true }
+                                        );
+                                    },
+                                    type: "POST"
+                                }
+                            );
+                        }
+                    } ],
+                    modal: true }
+                );
+                return false;
+            }
+        );
     }
 };
 
@@ -1695,4 +1848,89 @@ var validateQuotation = function() {
             }
         );
     }
+};
+
+var convertToInvoice = function() {
+    $(".tab-content").append("<div class='modal modalmask'></div>");
+    // notification for the user
+    $("#pop").html("Vous allez transformer ce devis en Facture.<br/><br/>Ceci validera automatiquement le client sans retour arrière possible (y compris lors d'un back-up).<br/><br/>Voulez-vous vraiment continuer ?");
+    $("#pop").dialog( {
+        dialogClass: "popsuperup",
+        title: "Conversion",
+        width: 500,
+        buttons: [
+            {
+            text: "Annuler",
+            click: function() {
+                $( this ).dialog( "close" );
+                $(".modalmask").remove();
+            }
+            } , {
+            text: "OUI",
+            click: function() {
+                $( this ).dialog( "close" );
+                // ajax call to create the copy on server side
+                $.ajax(
+                    "quotationConvert",
+                    {
+                        success: function(data, status) {
+                            if (data == "0") { // error
+                                $(".modalmask").remove();
+                                $("#pop").html("Conversion impossible");
+                                $("#pop").dialog( {
+                                    dialogClass: "popsuperup",
+                                    title: "Erreur",
+                                    buttons: [ {
+                                        text: "OK",
+                                        click: function() {
+                                            $( this ).dialog( "close" );
+                                            $(".modalmask").remove();
+                                        }
+                                    } ],
+                                    modal: true }
+                                );
+                            } else {
+                                $(".modalmask").remove();
+                                $("#pop").html("Conversion effectuée");
+                                $("#pop").dialog( {
+                                    dialogClass: "popsuperup",
+                                    title: "OK",
+                                    buttons: [ {
+                                        text: "OK",
+                                        click: function() {
+                                            $(".tab-content").append("<div class='modal modalmask'></div>");
+                                            window.location.href = "/quotation?quotationId=" + data;
+                                            $( this ).dialog( "close" );
+                                        }
+                                    } ],
+                                    modal: true }
+                                );
+                            }
+                        },
+                        contentType: 'application/json',
+                        data: JSON.stringify({ "quotationObj": quotationObj }),
+                        error: function(data, status, err) {
+                            $(".modalmask").remove();
+                            $("#pop").html("Erreur lors de la transmission de données (conversion) : " + err);
+                            $("#pop").dialog( {
+                                dialogClass: "popsuperup",
+                                title: "Erreurs",
+                                buttons: [ {
+                                    text: "OK",
+                                    click: function() {
+                                        $( this ).dialog( "close" );
+                                        $(".modalmask").remove();
+                                    }
+                                } ],
+                                modal: true }
+                            );
+                        },
+                        type: "POST"
+                    }
+                );
+            }
+        } ],
+        modal: true }
+    );
+    return false;
 };

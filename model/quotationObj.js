@@ -22,6 +22,7 @@ Quotation.prototype.insertUpdate = function(db, param, callback) {
     if (!param.notstring) tools.manageString(param);
 
     var parentId = param.quotationId;
+    if (param.backupId) parentId = param.backupId;
 
     if (param.quotationId && param.quotationId > 0) {
         // existing (update)

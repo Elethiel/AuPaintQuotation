@@ -21,7 +21,8 @@
     "multer": "^0.1.4",
     "lwip": "0.0.2",
     "moment": "^2.8.3",
-    "pdfkit": "^0.7.0"
+    "pdfkit": "^0.7.0",
+    "numeral": "^1.5.3"
   },
   "optionalDependencies": {
     "node-windows": "^0.1.5"

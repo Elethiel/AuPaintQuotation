@@ -10,6 +10,7 @@ module.exports = function(app) {
         console.log("Document Generation Start : " + req.body.generateDocFor);
         if (req.body && req.body.generateDocFor && req.body.generateDocFor > 0) {
             quotation.findById(req.db, {quotationId : req.body.generateDocFor }, function(err, quotationObj) {
+                req.session.ownerObj.username = req.session.username;
                 doc.generateDoc(req.db, {quotationId: req.body.generateDocFor, quotationObj: quotationObj, ownerObj: req.session.ownerObj }, function(err, generatedDoc) {
                     if (err) next(err);
                     else {

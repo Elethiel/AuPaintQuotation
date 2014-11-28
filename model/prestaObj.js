@@ -64,7 +64,7 @@ Presta.prototype.findById = function(db, param, callback) {
 
 Presta.prototype.findAllByQuotationId = function( db, param, callback ) {
     var self = this;
-    db.all("SELECT presta_id FROM invoice_presta WHERE invoice_id = ?", [ param.quotationId ], function(err, rows) {
+    db.all("SELECT ip.presta_id, p.ord FROM invoice_presta ip INNER JOIN presta p ON p.id = ip.presta_id WHERE ip. invoice_id = ? ORDER BY p.ord ASC", [ param.quotationId ], function(err, rows) {
         if (err) callback(err);
         else {
             if (rows) {

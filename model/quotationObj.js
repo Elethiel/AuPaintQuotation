@@ -332,8 +332,12 @@ Quotation.prototype.findAll = function(db, callback) {
                             // so need to get all presta related to the current quotation/invoice
                             presta.findAllByQuotationId(db, { quotationId: quotationList[o].quotationId }, function(err, prestaList) {
                                 quotationList[o].quotationPrestaList = prestaList;
-                                o++;
-                                c(err, null);
+                                // find all payment related to this quotation
+                                payment.findAllByQuotationId(db, { quotationId: quotationList[o].quotationId }, function(err, paymentList) {
+                                    quotationList[o].quotationPaymentList = paymentList;
+                                    o++;
+                                    c(err, null);
+                                });
                             });
                         });
                     });

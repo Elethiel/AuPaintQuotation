@@ -102,7 +102,7 @@ module.exports = function(app) {
         quotation.insertUpdate(req.db, req.body, function(err, ret) {
             if (err) next(err);
             else {
-                res.render("quotationUpdate", {srv: (ret.msg === "ok"), id: null });
+                res.render("quotationUpdate", {srv: (ret.msg === "ok"), id: ret.quotationId });
             }
         });
 
@@ -156,6 +156,8 @@ module.exports = function(app) {
         if (req.body && req.body.quotationObj) {
             req.body.quotationObj.quotationParentId = null;
             req.body.quotationObj.quotationType = 1;
+            // change status
+            req.body.quotationObj.quotationStatus = "Facture en cours";                         // in progress
             quotation.insertUpdate(req.db, req.body.quotationObj, function(err, ret) {
                 if (err) next(err);
                 else {

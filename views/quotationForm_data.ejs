@@ -133,7 +133,7 @@
                             <td><%- srv.Obj.quotationDocList[i].quotationType == -1 ? "<i>Devis</i>" : "<b>Facture</b>" %></td>
                             <td><%= srv.Obj.quotationDocList[i].quotationRef %> (<b><%= srv.Obj.quotationDocList[i].quotationVersion %></b>)</td>
                             <td><%= srv.Obj.quotationDocList[i].quotationCreationDt %></td>
-                            <td><%= srv.Obj.quotationDocList[i].quotationEndValidityDt %></td>
+                            <td><%= srv.Obj.quotationDocList[i].quotationType == -1 ? srv.Obj.quotationDocList[i].quotationEndValidityDt : "" %></td>
                             <td><%= srv.Obj.quotationDocList[i].quotationUpdateDt %></td>
                             <td id="doclink<%= srv.Obj.quotationDocList[i].quotationId %>" class="text-center"><%- srv.Obj.quotationDocList[i].docId ? "<a href='" + srv.Obj.quotationDocList[i].docURL + "' target='_blank'><span class='glyphicon glyphicon-file'></span></a> <a href='mailto:" + srv.Obj.customerObj.personObj.personContactMail + "?subject=AuPaintSpace&attachment=" + srv.dirname + srv.Obj.quotationDocList[i].docURL + "' target='_blank'><span class='glyphicon glyphicon-share'></span></a>" : "" %></td>
                             <td>

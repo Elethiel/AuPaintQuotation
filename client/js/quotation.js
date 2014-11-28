@@ -40,6 +40,12 @@ var quotationInitTab = function () {
                         "targets": [4]
                     },
                     {
+                        "targets": [6],
+                        "render": function( data, type, row) {
+                            return calculateStatusText(quotationList[row[7]]);
+                        }
+                    },
+                    {
                         "className": "text-right text-small",
                         "render": function ( data, type, row ) {
                             var total = 0;
@@ -664,7 +670,7 @@ var refreshPrestaGrid = function() {
             } else {
                 var p = quotationObj.quotationPrestaList[i].productObj;
                 content += sel;
-                content += "<td class='text-center'>" + p.productId + "</td>";
+                content += "<td class='text-center'>" + p.productCode + "</td>";
                 content += "<td class='text-left'>" + p.productLabel + (p.productUnit != "" ? " (/" + p.productUnit + ")" : "") + "</td>";
                 content += "<td class='text-right'>" + formatAmount(getHT(p.productTTC, p.TVAPercent)) + "</td>";
                 if (quotationObj && quotationObj.isAlreadyStarted) {
@@ -849,7 +855,7 @@ var productGroupSelectQuo = function() {
     // update text to let know to the user what field is selected
     $("#selectGroup").html($(this).html());
     productPriceUpdateFromGroupProductQuo();
-    $("#productForm").bootstrapValidator("revalidateField", "groupProductTVAPercent");
+    $("#popupForm2").bootstrapValidator("revalidateField", "groupProductTVAPercent");
     $("#selectDrop").click();
     return false;
 };
@@ -906,7 +912,7 @@ var validNewPrestaHandler = function() {
     $("#popupForm2").bootstrapValidator("validate");
     var fields = $("#popupForm2").data("bootstrapValidator").getInvalidFields();
     if (fields.length > 0) {
-        if (fields[0].type == "hidden") $("#select" + fields[0].id).get(0).scrollIntoView()
+        if (fields[0].type == "hidden") $("#selectGroup").get(0).scrollIntoView();
         else fields[0].scrollIntoView();
         popup.show2();
     } else {
@@ -1178,7 +1184,7 @@ var refreshAll = function() {
     if (quotationObj.payCondObj && quotationObj.payCondObj.payCondTVA > 0) {
         var deposite = quotationObj.payCondObj.payCondTVA / 100 * totalToPaid;
         $("#quotationDepositeForseen").html( formatAmountNoUnit( deposite ) );
-        quotationObj.quotationDepositeForseen = realDeposite;
+        quotationObj.quotationDepositeForseen = deposite;
     } else $("#quotationDepositeForseen").html( formatAmountNoUnit(0) );
 
     // 4 paytype list
@@ -1515,13 +1521,13 @@ var dataInit = function() {
                                 $("#pop").html("Document créé");
                                 $("#pop").dialog( {
                                     dialogClass: "popsuperup",
-                                    title: "OK",
+                                    title: "Génération de Document",
                                     buttons: [ {
                                         text: "OK",
                                         click: function() {
                                             var generatedDoc = JSON.parse(data.generatedDoc);
                                             $("#doclink" + generatedDoc.quotationId).html("<a href='" + generatedDoc.docURL + "' target='_blank'><span class='glyphicon glyphicon-file red'></span></a> <a href='mailto:" + quotationObj.customerObj.personObj.personContactMail + "?subject=AuPaintSpace&attachment=" + dirname + generatedDoc.docURL + "' target='_blank'><span class='glyphicon glyphicon-share'></span></a>");
-                                            $("#docgen" + generatedDoc.quotationId).html("Régénérer");
+                                            $("#docgen" + generatedDoc.quotationId).html("Régénérer <span class='glyphicon glyphicon-refresh'></span>");
                                             $( this ).dialog( "close" );
                                         }
                                     } ],
@@ -1563,6 +1569,9 @@ var dataInit = function() {
                     dialogClass: "popsuperup",
                     title: "Back-up de Version",
                     width: 500,
+                    beforeClose: function(event, ui) {
+                            $(".modalmask").remove();
+                    },
                     buttons: [
                         {
                         text: "Annuler",
@@ -1648,59 +1657,64 @@ var refreshStatus = function() {
 };
 
 var calculateStatus = function() {
+    quotationObj.quotationStatus = calculateStatusText(quotationObj);
+};
+
+var calculateStatusText = function(obj) {
     var today = new Date();
     today.setHours(12);
     today.setMinutes(0);
     today.setSeconds(0);
 
-    if (quotationObj.quotationCreationDt) quotationObj.quotationCreationDt = new Date(quotationObj.quotationCreationDt);
-    if (quotationObj.quotationUpdateDt) quotationObj.quotationUpdateDt = new Date(quotationObj.quotationUpdateDt);
-    if (quotationObj.quotationEndValidityDt) quotationObj.quotationEndValidityDt = new Date(quotationObj.quotationEndValidityDt);
+    if (obj.quotationCreationDt) obj.quotationCreationDt = new Date(obj.quotationCreationDt);
+    if (obj.quotationUpdateDt) obj.quotationUpdateDt = new Date(obj.quotationUpdateDt);
+    if (obj.quotationEndValidityDt) obj.quotationEndValidityDt = new Date(obj.quotationEndValidityDt);
 
-    quotationObj.quotationCreationDt.setHours(1);
-    quotationObj.quotationCreationDt.setMinutes(0);
-    quotationObj.quotationCreationDt.setSeconds(0);
+    obj.quotationCreationDt.setHours(1);
+    obj.quotationCreationDt.setMinutes(0);
+    obj.quotationCreationDt.setSeconds(0);
 
-    quotationObj.quotationEndValidityDt.setHours(23);
-    quotationObj.quotationEndValidityDt.setMinutes(0);
-    quotationObj.quotationEndValidityDt.setSeconds(0);
+    obj.quotationEndValidityDt.setHours(23);
+    obj.quotationEndValidityDt.setMinutes(0);
+    obj.quotationEndValidityDt.setSeconds(0);
 
     // 1 QUOTATION
-    if (quotationObj.quotationType == -1) {
-        if (today < quotationObj.quotationCreationDt)                                                       quotationObj.quotationStatus = "<i>Devis Prévisionnel</i>"; // not started
-        else if (today >= quotationObj.quotationCreationDt && today <= quotationObj.quotationEndValidityDt) quotationObj.quotationStatus = "Devis en cours"; // in progress
-        else if (today > quotationObj.quotationCreationDt && today > quotationObj.quotationEndValidityDt)   quotationObj.quotationStatus = "Devis plus valable"; // no more valable
-        else                                                                                                quotationObj.quotationStatus = "Devis"; // quotation ?
+    if (obj.quotationType == -1) {
+        if (today < obj.quotationCreationDt)                                                return "<i>Devis Prévisionnel</i>";     // not started
+        else if (today >= obj.quotationCreationDt && today <= obj.quotationEndValidityDt)   return "Devis en cours";                // in progress
+        else if (today > obj.quotationCreationDt && today > obj.quotationEndValidityDt)     return "Devis plus valable";            // no more valable
+        else                                                                                return "Devis";                         // quotation ?
     } else { // 2 INVOICE
-        if (today < quotationObj.quotationCreationDt)                                                       quotationObj.quotationStatus = "<i>Facture Prévisionnelle</i>"; // not started
-        if (today > quotationObj.quotationCreationDt) {
+        if (today < obj.quotationCreationDt)                                                return "<i>Facture Prévisionnelle</i>"; // not started
+        if (today >= obj.quotationCreationDt) {
             var total = 0;
-            for(var i = 0; i < quotationObj.quotationPrestaList.length; i++) {
-                if (quotationObj.quotationPrestaList[i].productObj) {
-                    var subtotal = quotationObj.quotationPrestaList[i].productObj.productTTC * quotationObj.quotationPrestaList[i].prestaQuantity;
-                    var discount = (quotationObj.quotationPrestaList[i].prestaDiscount > 0 ? ((100 - quotationObj.quotationPrestaList[i].prestaDiscount ) / 100.0) : 1);
+            for(var i = 0; i < obj.quotationPrestaList.length; i++) {
+                if (obj.quotationPrestaList[i].productObj) {
+                    var subtotal = obj.quotationPrestaList[i].productObj.productTTC * obj.quotationPrestaList[i].prestaQuantity;
+                    var discount = (obj.quotationPrestaList[i].prestaDiscount > 0 ? ((100 - obj.quotationPrestaList[i].prestaDiscount ) / 100.0) : 1);
 
                     subtotal *= discount;
                     total += subtotal;
                 }
             }
-            if (quotationObj.quotationGlobalDiscount) total -= quotationObj.quotationGlobalDiscount;
+            if (obj.quotationGlobalDiscount) total -= obj.quotationGlobalDiscount;
             total = rounded(total);
             var remaining = total;
-            if (quotationObj.quotationRealDeposite) remaining -= quotationObj.quotationRealDeposite;
+            if (obj.quotationRealDeposite) remaining -= obj.quotationRealDeposite;
 
-            for(var i = 0; i < quotationObj.quotationPaymentList.length; i++) {
-                remaining = remaining - quotationObj.quotationPaymentList[i].paymentAmount;
+            for(var i = 0; i < obj.quotationPaymentList.length; i++) {
+                remaining = remaining - obj.quotationPaymentList[i].paymentAmount;
             }
             remaining = rounded(remaining);
 
-            if (total <= 0)                                                                             quotationObj.quotationStatus = "<i>Facture Vide !</i>"; // empty !
-            else if (remaining > 0)                                                                     quotationObj.quotationStatus = "Facture en cours"; // in progress
-            else if (remaining == 0)                                                                    quotationObj.quotationStatus = "<b>Facture Réglée</b>"; // closed (fully paid)
-            else if (remaining < 0)                                                                     quotationObj.quotationStatus = "<b class='red'>Facture trop perçue !</b>"; // too much paid !
-            else                                                                                        quotationObj.quotationStatus = "Facture"; // invoice ?
+            if (total <= 0)                                                             return "<i>Facture Vide !</i>";                     // empty !
+            else if (remaining > 0)                                                     return "Facture en cours";                          // in progress
+            else if (remaining == 0)                                                    return "<b>Facture Réglée</b>";                     // closed (fully paid)
+            else if (remaining < 0)                                                     return "<b class='red'>Facture trop perçue !</b>";  // too much paid !
+            else                                                                        return "Facture";                                   // invoice ?
         }
     }
+    return "plop";
 };
 
 
@@ -1724,6 +1738,9 @@ var validateQuotation = function() {
         $("#pop").dialog( {
             dialogClass: "popsuperup",
             title: "Erreur",
+            beforeClose: function(event, ui) {
+                    $(".modalmask").remove();
+            },
             buttons: [ {
                 text: "OK",
                 click: function() {
@@ -1797,7 +1814,7 @@ var validateQuotation = function() {
                                                 text: "OK",
                                                 click: function() {
                                                     $(".tab-content").append("<div class='modal modalmask'></div>");
-                                                    window.location.href = "/quotationMenu";
+                                                    window.location.href = "/quotation?quotationId=" + data;
                                                     $( this ).dialog( "close" );
                                                 }
                                             } ],
@@ -1853,11 +1870,14 @@ var validateQuotation = function() {
 var convertToInvoice = function() {
     $(".tab-content").append("<div class='modal modalmask'></div>");
     // notification for the user
-    $("#pop").html("Vous allez transformer ce devis en Facture.<br/><br/>Ceci validera automatiquement le client sans retour arrière possible (y compris lors d'un back-up).<br/><br/>Voulez-vous vraiment continuer ?");
+    $("#pop").html("Vous allez transformer ce devis en Facture.<br/><br/>Ceci validera automatiquement le client sans retour arrière possible (y compris lors d'un back-up).<br/><br/>Pensez à changer les données comme la <b>Date de Valeur du Devis</b> (qui deviendra la future date de facture) pour éviter une version à vide avant de convertir<br/><br/>Voulez-vous vraiment continuer ?");
     $("#pop").dialog( {
         dialogClass: "popsuperup",
         title: "Conversion",
         width: 500,
+        beforeClose: function(event, ui) {
+                $(".modalmask").remove();
+        },
         buttons: [
             {
             text: "Annuler",

@@ -1,5 +1,6 @@
 var util = require("util");
 var moment = require("moment");
+var numeral = require("numeral");
 
 var Tools = function() {};
 
@@ -73,6 +74,38 @@ Tools.prototype.capitalize = function(s) {
         if (sSp.length > 1 && i != sSp.length - 1) ret += " ";
     }
     return ret;
+};
+
+Tools.prototype.rounded = function(n) {
+    if (!n && n!==0) return null;
+    return Math.round(parseFloat(n) * 100) / 100;
+};
+
+Tools.prototype.formatAmount = function(n) {
+    return numeral(parseFloat(n)).format("0.00") + " €";
+};
+
+Tools.prototype.formatAmountNoUnit = function(n) {
+    if (!n && n!==0) return "";
+    return numeral(parseFloat(n)).format("0.00");
+};
+
+Tools.prototype.formatProfit = function(n) {
+    if (!n && n!==0) return "";
+    return numeral(parseFloat(n)).format("0[.]00");
+};
+
+Tools.prototype.formatFactor = function(n) {
+    if (!n && n!==0) return "";
+    return numeral(parseFloat(n)).divide(100).format("+0[.]00 %");
+};
+
+Tools.prototype.getHT = function(ttc, tva) {
+    return parseFloat(ttc) * 100 / (100 + parseFloat(tva));
+};
+
+Tools.prototype.getTTC = function(ht, tva) {
+    return parseFloat(ht) * (1 + parseFloat(tva) / 100);
 };
 
 Tools.prototype.trim = function (s) {

@@ -27,7 +27,11 @@
                                     <legend><h1>Ajouter un<% if (srv.type && srv.type == -1) { %> Devis<% } else { %>e Facture<% } %></h1></legend>
                                 <% }%>
                                 <% if (srv.type && srv.type == -1) { %>
-                                    <small class="help">Un Devis est une proposition de services au client, qui a une durée de validité limitée. Il est possible de modifier le Devis pour générer un historique, et de le transformer en Facture. Les devis historisés deviendront alors le passé de la Facture.</small><br/>
+                                    <small class="help">Un Devis est une proposition de services au client, qui a une durée de validité limitée. Il est possible de modifier le Devis pour générer un historique, et de le transformer en Facture.<br/>Les devis historisés deviendront alors le passé de la Facture.
+                                    <% if (srv.type && srv.type == -1 && (srv.Obj && srv.Obj.quotationId)) { %>
+                                        <br/>Pensez à faire les modifications nécessaires avant de transformer un devis en facture via le bouton "Transformer en Facture".<br/>C'est la version actuelle + modifications en cours qui deviendront la facture finale.
+                                    <% } %>
+                                    </small><br/>
                                 <% } else { %>
                                     <small class="help">Une Facture est un Devis qui a été validée, ou une Facture directe issue d'un accord avec le client. Les devis qui ont servis de bases à la facture serviront d'historique à celle-ci.</small><br/>
                                 <% } %>

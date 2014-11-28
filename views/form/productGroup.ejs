@@ -8,11 +8,7 @@
     </label>
     <div class="col-sm-<%= o.inputw %>">
         <input type="hidden" name="<%= o.field %>" id="<%= o.field %>" value="<% if (o.value) { %><%= o.value %><% } %>" />
-        <input type="hidden" name="groupProductTVAPercent" id="groupProductTVAPercent" value="<% if (o.TVAPercent) { %><%= o.TVAPercent %><% } %>" 
-                trigger="blur"
-                data-bv-regexp="true"
-                data-bv-regexp-regexp="^([0-9])*((\.)|,){0,1}([0-9]){0,2}$"
-                data-bv-regexp-message="Merci de sélectionner une Catégorie !" 
+        <input type="hidden" name="groupProductTVAPercent" id="groupProductTVAPercent" value="<% if (o.TVAPercent) { %><%= o.TVAPercent %><% } %>"
                 data-bv-notempty="true"
                 data-bv-notempty-message="Merci de sélectionner une Catégorie !">
         <input type="hidden" name="maxGroupList" id="maxGroupList" value="<%= srv.groupProductList.length %>" />

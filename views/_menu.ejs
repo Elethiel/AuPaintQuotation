@@ -10,6 +10,8 @@
             <a class="navbar-brand" href="/">
                 <% if (srv.session && srv.session.ownerObj && srv.session.ownerObj.ownerLogo && srv.session.ownerObj.ownerLogo !== "") { %>
                     <img src="<%= srv.session.ownerObj.ownerLogo %>" alt="<%= srv.session.ownerObj.ownerClean %>" border="0" height=40 class="logomenu"/>
+                <% } else { %>
+                    <span class="glyphicon glyphicon-picture"></span>
                 <% } %>
                 <% if (srv.session && srv.session.ownerObj && srv.session.ownerObj.ownerBigLogo && srv.session.ownerObj.ownerBigLogo !== "") { %>
                     <style>
@@ -18,7 +20,6 @@
                         }
                     </style>
                 <% } else { %>
-                    <span class="glyphicon glyphicon-picture"></span>
                     <style>
                         .wrapper .background {
                            opacity : 0.7 !important;

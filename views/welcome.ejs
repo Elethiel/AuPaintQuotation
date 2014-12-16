@@ -1,9 +1,9 @@
 <% include _doc %>
-<html lang="en">
+<html>
     <head>
         <% include _header %>
         <% include _css %>
-        
+
         <% include _js %>
         <script type="text/javascript" src="/js/welcome.js"></script>
     </head>
@@ -11,32 +11,31 @@
         <% include _menu %>
         <div class="wrapper">
             <div class="background"></div>
-                <div class="container">
-                    <div class="row">&nbsp;</div>
-                    <div class="row">
-                        <div class="col-md-6 col-md-offset-3 text-center center">
-                            <div class="well">
-                                <legend><h1><% if (srv.session.ownerObj && srv.session.ownerObj.ownerRender != "") { %>
-                                                <%- srv.session.ownerObj.ownerRender %>
-                                            <% } else { %>
-                                                Application Devis / Facture
-                                            <% } %></h1></legend>
-                                <p class="lead">Bienvenue sur l'outil de gestion Clients</p>
-                                <% if (srv.session && srv.session.username) { %>
-                                    <span>Bonjour <b class="text-primary"><%= srv.session.username %></b> !</span>
-                                <% } else { %>
-                                    <span>Cliquez sur le menu en haut à droite <a href="/login"><span class="glyphicon glyphicon-user"></span> <b>Se Connecter</b></a> pour vous connecter au système</span>
-                                <% } %>
-                            </div>
+            <div class="container">
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 text-center center">
+                        <div class="well">
+                            <legend><h1><% if (srv.session.ownerObj && srv.session.ownerObj.ownerRender != "") { %>
+                                            <%- srv.session.ownerObj.ownerRender %>
+                                        <% } else { %>
+                                            Application Devis / Facture
+                                        <% } %></h1></legend>
+                            <p class="lead">Bienvenue sur l'outil de gestion Clients</p>
+                            <% if (srv.session && srv.session.username) { %>
+                                <span>Bonjour <b class="text-primary"><%= srv.session.username %></b> !</span>
+                            <% } else { %>
+                                <span>Cliquez sur le menu en haut à droite <a href="/login"><span class="glyphicon glyphicon-user"></span> <b>Se Connecter</b></a> pour vous connecter au système</span>
+                            <% } %>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <% include _footer %>
         <% include _popup %>
-        
+
         <% if (srv.session && srv.session.ownerId == 0 && srv.session.username) { %>
             <script language="javascript">
                 $( document ).ready( popupWelcome("<%= srv.session.username %>"));

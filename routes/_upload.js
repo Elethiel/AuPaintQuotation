@@ -26,7 +26,7 @@ module.exports = function(file, width, height, callback) {
                 if (!err) {
                     var ratio = 1;
                     if (image.height() > height) ratio = height / image.height();
-                    if (image.width() > width && ratio < width / image.width()) ration = width / image.width();
+                    if (image.width() > width && ratio > width / image.width()) ration = width / image.width();
                     // resize and rename image
                     image.batch().scale(ratio).writeFile("./client/" + newPath, function(err) {
                         if (!err) callback("ok", newPath);

@@ -1,3 +1,3 @@
 git add --all
-git commit -m "Doc complete"
+git commit -m "Minor"
 git push

@@ -12,7 +12,7 @@
         </div>
         &nbsp;<br/>
     <% } %>
-    <small class="help">Cette société apparaîtra sur tous les documents comme société émettrice des devis et facture. Les coordonnées et informations seront donc transmises à vos clients. Prenez le temps de remplir ce formulaire proprement.</small><br/>
+    <small class="help">Cette société apparaîtra sur tous les documents comme société émettrice des devis et factures. Les coordonnées et informations seront donc transmises à vos clients. Prenez le temps de remplir ce formulaire proprement.</small><br/>
     &nbsp;<br/>
     <p class="highlight">Raison Sociale</p>
     <% var o = { index: "1", label: "Responsable", empty: "Le responsable est obligatoire", field: "adminName", labelw: "4", inputw: "7", value: (srv.session ? srv.session.username : srv.session) } %>
@@ -24,7 +24,7 @@
 
     <% var o = { index: "3", label: "Dénomination", empty: "Le nom de la société est obligatoire", field: "companyName", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.companyName : srv.Obj) } %>
     <% include form/inputText %>
-    <% var o = { index: "4", label: "Dénomination (Rendu)", field: "rendered", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerRender : srv.Obj) } %>
+    <% var o = { index: "4", label: "Dénomination (Rendu)", field: "rendered", cls: "text-left", labelw: "4", inputw: "7", value: (srv.Obj ? srv.Obj.ownerRender : srv.Obj) } %>
     <% include form/renderer %>
     &nbsp;<br/>
     &nbsp;<br/>
@@ -34,7 +34,7 @@
                 <% include form/inputText %>
             </div>
             <div class="col-sm-6">
-                <% var o = { index: "6", label: "N° RCS ou RM", tooltip: "Préciser le type de matricule : RCS xxxxx ou RM xxxxx", placeholder: "RCS xxxxx / RM xxxxx", empty: "Il faut au moins entrer l'un ou l'autre des matricules", field: "companyAPE", labelw: "4", inputw: "6", value: (srv.Obj ? srv.Obj.companyAPE : srv.Obj) } %>
+                <% var o = { index: "6", label: "N° RCS ou RM", tooltip: "Précisez le type de matricule : RCS xxxxx ou RM xxxxx", placeholder: "RCS xxxxx / RM xxxxx", empty: "Il faut au moins entrer l'un ou l'autre des matricules", field: "companyAPE", labelw: "4", inputw: "6", value: (srv.Obj ? srv.Obj.companyAPE : srv.Obj) } %>
                 <% include form/inputText %>
             </div>
         </div>

@@ -1,4 +1,4 @@
-body {
+body, #myModal, #myModal2 {
     padding-top: 50px;
 }
 .wrapper {

@@ -54,7 +54,7 @@ Owner.prototype.insertUpdate = function(db, param, callback) {
                                 ); // update callback
                             } else {
                                 // new (insert)
-                                db.run("INSERT INTO owner (company_id, fiscalDt, defaultValidity, logo, bigLogo, factorok, factornull, pattern, apecity) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+                                db.run("INSERT INTO owner (company_id, fiscalDt, defaultValidity, logo, bigLogo, factorok, factornull, pattern, apecity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                     [ companyId, param.ownerFiscalDt, param.ownerDefaultValidity, param.ownerLogo, param.ownerBigLogo, param.ownerFactorOk, param.ownerFactorNull, param.ownerPattern, param.ownerAPECity ],
                                     function(err, row) {
                                         if (err) callback(err);

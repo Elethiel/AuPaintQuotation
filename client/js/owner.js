@@ -11,6 +11,7 @@ var ownerFormValidator = function() {
         $("#optionownerFiscalDt" + i).click(fiscalSelect);
     }
     $("#ownerPattern").keyup( refreshPattern );
+    $("#companyName").keyup( refreshRender );
     refreshPattern();
 };
 
@@ -71,5 +72,18 @@ var refreshPattern = function () {
         }
 
         $("#ownerPatternRender").html( patternRender );
+    }
+};
+
+var refreshRender = function () {
+    if ( JStrim($("#companyName").val()) != "" ) {
+        var rendered = JStrim($("#companyName").val());
+
+        rendered = rendered.replace("<", "&amp;lt;").replace(">", "&amp;gt;").replace("\"", "'").replace(new RegExp( "\\$(.*)\\$(.*)\\$", "gi" ),
+                    function(all, group1, group2) {
+                        return("<span style=\"color:" + group1 + ";\">" + group2 + "</span>");
+                    });
+
+        $("#rendered").html( rendered );
     }
 };

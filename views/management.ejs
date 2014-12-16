@@ -1,18 +1,18 @@
 <% include _doc %>
-<html lang="en">
+<html>
     <head>
         <% include _header %>
         <% include _css %>
-        
+
         <% include _js %>
-        
-        
+
+
         <script type="text/javascript" src="/js/management.js"></script>
     </head>
     <body>
         <% include _menu %>
         <div class="wrapper">
-            <div class="background"></div> 
+            <div class="background"></div>
                 <div class="container">
                     <div class="row">&nbsp;</div>
                     <div class="row">
@@ -28,19 +28,19 @@
                                         <% if (srv.pstatus === "del-TVA") { %><span class="label label-success">TVA bien supprimée</span><% } %>
                                         <% if (srv.pstatus === "err-TVA") { %><span class="label label-danger">Error lors de la suppression de la TVA</span><% } %>
                                         <% if (srv.pstatus === "rej-TVA") { %><span class="label label-danger">Impossible de supprimer cette TVA ! Elle est utilisée sur <b><%= srv.pstatusvar %></b> Catégorie(s) de Prestation</span><% } %>
-                                        
+
                                         <% if (srv.pstatus === "upd-payType") { %><span class="label label-success">Type de Paiement bien mis à jour</span><% } %>
                                         <% if (srv.pstatus === "new-payType") { %><span class="label label-success">Type de Paiement bien ajouté</span><% } %>
                                         <% if (srv.pstatus === "del-payType") { %><span class="label label-success">Type de Paiement bien supprimé</span><% } %>
                                         <% if (srv.pstatus === "err-payType") { %><span class="label label-danger">Error lors de la suppression du Type de Paiement</span><% } %>
                                         <% if (srv.pstatus === "rej-payType") { %><span class="label label-danger">Impossible de supprimer ce Type de Paiement ! Il est utilisé sur <b><%= srv.pstatusvar[0] %></b> Devis/Facture(s) et <b><%= srv.pstatusvar[1] %></b> Paiement(s)</span><% } %>
-                                        
+
                                         <% if (srv.pstatus === "upd-payCond") { %><span class="label label-success">Condition bien mise à jour</span><% } %>
                                         <% if (srv.pstatus === "new-payCond") { %><span class="label label-success">Condition bien ajoutée</span><% } %>
                                         <% if (srv.pstatus === "del-payCond") { %><span class="label label-success">Condition bien supprimée</span><% } %>
                                         <% if (srv.pstatus === "err-payCond") { %><span class="label label-danger">Error lors de la suppression de la Condition</span><% } %>
                                         <% if (srv.pstatus === "rej-payCond") { %><span class="label label-danger">Impossible de supprimer cette Condition ! Elle est utilisée sur <b><%= srv.pstatusvar %></b> Devis/Facture(s)</span><% } %>
-                                        
+
                                         <% if (srv.pstatus === "upd-groupProduct") { %><span class="label label-success">Catégorie bien mise à jour</span><% } %>
                                         <% if (srv.pstatus === "new-groupProduct") { %><span class="label label-success">Catégorie bien ajoutée</span><% } %>
                                         <% if (srv.pstatus === "del-groupProduct") { %><span class="label label-success">Catégorie bien supprimée</span><% } %>
@@ -77,10 +77,10 @@
                 </div>
             </div>
         </div>
-        
+
         <% include _footer %>
         <% include _popup %>
-        
+
         <script type="text/javascript">
             $(document).ready(initTabs);
         </script>

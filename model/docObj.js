@@ -166,7 +166,17 @@ Doc.prototype.generateDoc = function(db, param, callback) {
 
             // -----------------------------------------------------------------------------
             // START
-            var thedoc = new pdf( { bufferPages: true, margin: margin, size: "A4", layout: "portrait" });
+            var docinfo = {
+                Producer: "PDFKit",
+                Creator: param.ownerObj.ownerClean + " " + param.ownerObj.companyLegal,
+                CreationDate: new Date(),
+                Title: (param.quotationObj.quotationType == -1 ? "Devis n° " : "Facture n° ") + param.quotationObj.quotationRef,
+                Author: param.ownerObj.username,
+                Subject: (param.quotationObj.quotationType == -1 ? "Devis" : "Facture"),
+                Keywords: "Devis,Facture," + param.ownerObj.ownerClean,
+                ModDate: new Date()
+            };
+            var thedoc = new pdf( { bufferPages: true, margin: margin, size: "A4", layout: "portrait", info: docinfo });
             addTheHeader(thedoc, param);
 
             // -----------------------------------------------------------------------------
@@ -575,6 +585,7 @@ var getHTotalTable = function() {
         for(TVAId in tvaLab) {
             y += tinySize + tinySize / 2;
         }
+        y += tinySize + tinySize / 2;
     }
     return y;
 }
@@ -605,11 +616,16 @@ var addTotalTable = function(thedoc, param) {
 
     // TVA
     if (tvaLab.length > 0) {
+        var tvatotal = 0;
         for(TVAId in tvaLab) {
             thedoc.fontSize(tinySize).font(italic).text( "dont " + tvaLab[TVAId], TTCTableX, y, { width: TTCWLabel - d, align: 'right' });
             thedoc.fontSize(tinySize).font(italic).text( tools.formatAmount( tva[TVAId] * (100 - percent) / 100 ), TTCTableX + TTCWLabel, y, { width: TTCW - d, align: 'right' });
             y = thedoc.y + tinySize / 2;
+            tvatotal += tva[TVAId];
         }
+        thedoc.fontSize(tinySize).font(italic).text( "soit un total TVA de ", TTCTableX, y, { width: TTCWLabel - d, align: 'right' });
+        thedoc.fontSize(tinySize).font(italic).text( tools.formatAmount( tvatotal * (100 - percent) / 100 ), TTCTableX + TTCWLabel, y, { width: TTCW - d, align: 'right' });
+        y = thedoc.y + tinySize / 2;
     }
 
     // now the border
